@@ -34,7 +34,6 @@ body:
     attributes:
       label: DoD
       description: チェックボックス形式にしてください。
-      render: shell
     validations:
       required: true  
   - type: textarea
