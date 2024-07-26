@@ -1,36 +1,32 @@
 name: 新規タスク
 description: 機能追加や改善要望など
-title: ""
-labels: 
 body:
   - type: textarea
     id: user-story
     attributes:
       label: ユーザーストーリー
       description: ペルソナ、目標、理由を埋めてください。
-      value: [ペルソナ]として、[目標]したい。それは、[理由]だからだ。
+      value: "[ペルソナ]として、[目標]したい。それは、[理由]だからだ。"
     validations:
       required: true
   - type: textarea
     id: overview
     attributes:
       label: 概要
-      description: 
     validations:
       required: true
   - type: dropdown
     id: velocity
     attributes:
       label: ベロシティ
-      description:
       options:
-        - 1
-        - 2
-        - 3
-        - 5
-        - 8
-        - 13
-        - 21
+        - "1"
+        - "2"
+        - "3"
+        - "5"
+        - "8"
+        - "13"
+        - "21"
     validations:
       required: true
   - type: textarea
