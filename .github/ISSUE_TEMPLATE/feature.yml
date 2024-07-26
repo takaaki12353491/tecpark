@@ -1,5 +1,9 @@
 name: 新規タスク
 description: 機能追加や改善要望など
+projects:
+  - "takaaki12353491/11"
+assignees:
+  - "takaaki12353491"
 body:
   - type: textarea
     id: user-story
