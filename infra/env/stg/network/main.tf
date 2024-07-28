@@ -15,7 +15,7 @@ terraform {
 # Provider
 # ---------------------------------------------
 provider "aws" {
-  profile = "tecpark"
+  profile = "tecpark-stg"
   region  = "ap-northeast-1"
 }
 
