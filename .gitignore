@@ -3,7 +3,10 @@
 .envrc
 
 # terraform
-**/.terraform/*
+.terraform/
 *.tfstate
 *.tfstate.*
 *.tfvars
+
+# terragrunt
+.terragrunt-cache/
