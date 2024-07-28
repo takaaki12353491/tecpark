@@ -9,8 +9,8 @@ resource "aws_vpc" "vpc" {
   assign_generated_ipv6_cidr_block = false
 
   tags = {
-    Name    = "${var.project}-${var.environment}-vpc"
+    Name    = "${var.project}-${var.env}-vpc"
     Project = var.project
-    Env     = var.environment
+    Env     = var.env
   }
 }
