@@ -1,12 +1,13 @@
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = {
-    Name    = "${var.project}-${var.env}-public-rt"
-    Project = var.project
-    Env     = var.env
-    Type    = "public"
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-public-rt"
+      Type = "public"
+    }
+  )
 }
 
 resource "aws_route_table_association" "public_rt_1a" {
@@ -22,12 +23,13 @@ resource "aws_route_table_association" "public_rt_1c" {
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = {
-    Name    = "${var.project}-${var.env}-private-rt"
-    Project = var.project
-    Env     = var.env
-    Type    = "private"
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-private-rt"
+      Type = "private"
+    }
+  )
 }
 
 resource "aws_route_table_association" "private_rt_1a" {

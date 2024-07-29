@@ -5,9 +5,10 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames             = true
   assign_generated_ipv6_cidr_block = false
 
-  tags = {
-    Name    = "${var.project}-${var.env}-vpc"
-    Project = var.project
-    Env     = var.env
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-vpc"
+    }
+  )
 }
