@@ -12,7 +12,7 @@ remote_state {
   backend = "s3"
 
   config = {
-    bucket = "${local.project}-tfstate"
+    bucket = "${local.project}-${local.env}-tfstate"
     key    = "${local.project}/${path_relative_to_include()}.tfstate"
     region = "${local.region}"
     profile = "${local.project}-${local.env}"
@@ -30,12 +30,12 @@ generate "provider" {
 
   contents = <<EOF
 terraform {
-  required_version = ">= 1.3.7"
+  required_version = ">= 1.9.3"
 
   required_providers {
     aws = {
       # See https://github.com/terraform-providers/terraform-provider-aws
-      version = "~> 4.50.0"
+      version = "~> 5.60.0"
     }
   }
 }
