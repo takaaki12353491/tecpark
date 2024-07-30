@@ -33,3 +33,8 @@ resource "aws_db_subnet_group" "mysql_standalone_sg" {
     }
   )
 }
+
+resource "random_string" "db_password" {
+  length  = 16
+  special = false
+}
