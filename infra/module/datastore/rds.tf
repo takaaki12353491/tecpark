@@ -12,3 +12,9 @@ resource "aws_db_parameter_group" "mysql_standalone_pg" {
     value = "utf8mb4"
   }
 }
+
+resource "aws_db_option_group" "mysql_standalone_og" {
+  name                 = "${var.project}-${var.env}-mysql-standalone-og"
+  engine_name          = "mysql"
+  major_engine_version = "8.0"
+}
