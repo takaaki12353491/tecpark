@@ -20,3 +20,7 @@ variable "private_subnet_1a_id" {
 variable "private_subnet_1c_id" {
   type = string
 }
+
+variable "db_sg_id" {
+  type = string
+}
