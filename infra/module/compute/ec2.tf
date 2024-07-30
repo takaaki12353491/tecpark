@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "ec2_assume_role_pd" {
+data "aws_iam_policy_document" "ec2_assume_role_policy_document" {
   statement {
     effect = "Allow"
 
@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "ec2_assume_role_pd" {
 
 resource "aws_iam_role" "ec2_assume_role" {
   name               = "${var.project}-${var.env}-ec2-assume-role"
-  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role_pd.json
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role_policy_document.json
 
   tags = merge(
     local.common_tags,
@@ -45,12 +45,46 @@ resource "aws_instance" "bastion_server" {
   instance_type = "t2.micro"
 
   iam_instance_profile   = aws_iam_instance_profile.ec2_assume_role_profile.name
+  subnet_id              = var.public_subnet_1a_id
   vpc_security_group_ids = [var.app_sg_id]
 
   tags = merge(
     local.common_tags,
     {
       Name = "${var.project}-${var.env}-bastion-server"
+    }
+  )
+}
+resource "aws_cloudwatch_log_group" "ssm_log_group" {
+  name              = "${var.project}-${var.env}-ssm-log-group"
+  retention_in_days = 7
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-ssm-log-group"
+    }
+  )
+}
+
+resource "aws_ssm_document" "ssm_logging" {
+  name          = "${var.project}-${var.env}-ssm-logging"
+  document_type = "Session"
+
+  content = jsonencode({
+    schemaVersion = "1.0"
+    description   = "Enable Session Manager logging to CloudWatch Logs"
+    sessionType   = "Standard_Stream"
+    inputs = {
+      cloudWatchLogGroupName      = aws_cloudwatch_log_group.ssm_log_group.name
+      cloudWatchEncryptionEnabled = false
+    }
+  })
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-ssm-logging"
     }
   )
 }
