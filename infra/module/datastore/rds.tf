@@ -25,4 +25,11 @@ resource "aws_db_subnet_group" "mysql_standalone_sg" {
     var.private_subnet_1a_id,
     var.private_subnet_1c_id
   ]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.env}-standalone-sg"
+    }
+  )
 }
