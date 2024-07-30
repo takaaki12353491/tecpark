@@ -69,6 +69,15 @@ resource "aws_security_group_rule" "app_out_tcp3306" {
   source_security_group_id = aws_security_group.db_sg.id
 }
 
+resource "aws_security_group_rule" "app_out_https" {
+  security_group_id        = aws_security_group.app_sg.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = aws_security_group.db_sg.id
+}
+
 resource "aws_security_group" "db_sg" {
   name        = "${var.project}-${var.env}-db-sg"
   description = "database role security group"
