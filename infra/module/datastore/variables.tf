@@ -18,6 +18,6 @@ variable "private_subnet_1c_id" {
   type = string
 }
 
-variable "security_group_db_id" {
+variable "security_group_datastore_id" {
   type = string
 }

@@ -25,5 +25,5 @@ inputs = {
   env                  = local.env
   private_subnet_1a_id = dependency.network.outputs.private_subnet_1a_id
   private_subnet_1c_id = dependency.network.outputs.private_subnet_1c_id
-  security_group_db_id = dependency.network.outputs.security_group_db_id
+  security_group_datastore_id = dependency.network.outputs.security_group_datastore_id
 }

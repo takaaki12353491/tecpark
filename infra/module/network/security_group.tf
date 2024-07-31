@@ -11,7 +11,7 @@ resource "aws_security_group" "web" {
   )
 }
 
-resource "aws_security_group_rule" "web_from_all_http" {
+resource "aws_security_group_rule" "web_from_internet_http" {
   security_group_id = aws_security_group.web.id
   type              = "ingress"
   protocol          = "tcp"
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "web_from_all_http" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "web_from_all_https" {
+resource "aws_security_group_rule" "web_from_internet_https" {
   security_group_id = aws_security_group.web.id
   type              = "ingress"
   protocol          = "tcp"
@@ -60,13 +60,13 @@ resource "aws_security_group_rule" "app_from_web" {
   source_security_group_id = aws_security_group.web.id
 }
 
-resource "aws_security_group_rule" "app_to_db" {
+resource "aws_security_group_rule" "app_to_datastore" {
   security_group_id        = aws_security_group.app.id
   type                     = "egress"
   protocol                 = "tcp"
   from_port                = 3306
   to_port                  = 3306
-  source_security_group_id = aws_security_group.db.id
+  source_security_group_id = aws_security_group.datastore.id
 }
 
 resource "aws_security_group_rule" "app_out_https" {
@@ -78,21 +78,21 @@ resource "aws_security_group_rule" "app_out_https" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group" "db" {
-  name        = "db"
+resource "aws_security_group" "datastore" {
+  name        = "datastore"
   description = "database role security group"
   vpc_id      = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "db"
+      Name = "datastore"
     }
   )
 }
 
-resource "aws_security_group_rule" "db_from_app" {
-  security_group_id        = aws_security_group.db.id
+resource "aws_security_group_rule" "datastore_from_app" {
+  security_group_id        = aws_security_group.datastore.id
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 3306
@@ -100,8 +100,8 @@ resource "aws_security_group_rule" "db_from_app" {
   source_security_group_id = aws_security_group.app.id
 }
 
-resource "aws_security_group_rule" "db_from_bastion" {
-  security_group_id        = aws_security_group.db.id
+resource "aws_security_group_rule" "datastore_from_bastion" {
+  security_group_id        = aws_security_group.datastore.id
   type                     = "ingress"
   protocol                 = "tcp"
   from_port                = 3306
@@ -140,11 +140,11 @@ resource "aws_security_group_rule" "bastion_out_https" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "bastion_to_db" {
+resource "aws_security_group_rule" "bastion_to_datastore" {
   security_group_id        = aws_security_group.bastion.id
   type                     = "egress"
   protocol                 = "tcp"
   from_port                = 3306
   to_port                  = 3306
-  source_security_group_id = aws_security_group.db.id
+  source_security_group_id = aws_security_group.datastore.id
 }

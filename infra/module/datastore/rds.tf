@@ -58,7 +58,7 @@ resource "aws_db_instance" "main" {
   multi_az               = false
   availability_zone      = "ap-northeast-1a"
   db_subnet_group_name   = aws_db_subnet_group.private.name
-  vpc_security_group_ids = [var.security_group_db_id]
+  vpc_security_group_ids = [var.security_group_datastore_id]
   publicly_accessible    = false
   port                   = 3306
 
