@@ -76,6 +76,8 @@ resource "aws_db_instance" "main" {
   skip_final_snapshot = false
   apply_immediately   = true
 
+  final_snapshot_identifier = "main-final-snapshot-${formatdate("YYYYMMDDHHmmss", timestamp())}"
+
   tags = merge(
     local.common_tags,
     {
