@@ -1,4 +1,4 @@
-resource "aws_vpc" "vpc" {
+resource "aws_vpc" "main" {
   cidr_block                       = "10.0.0.0/16"
   instance_tenancy                 = "default"
   enable_dns_support               = true
@@ -8,7 +8,7 @@ resource "aws_vpc" "vpc" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-vpc"
+      Name = "main"
     }
   )
 }

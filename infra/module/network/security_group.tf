@@ -1,7 +1,7 @@
 resource "aws_security_group" "web" {
   name        = "web"
   description = "web front role security group"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
@@ -41,7 +41,7 @@ resource "aws_security_group_rule" "web_to_app" {
 resource "aws_security_group" "app" {
   name        = "app"
   description = "application server role security group"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
@@ -81,7 +81,7 @@ resource "aws_security_group_rule" "app_out_https" {
 resource "aws_security_group" "db" {
   name        = "db"
   description = "database role security group"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
@@ -112,7 +112,7 @@ resource "aws_security_group_rule" "db_from_bastion" {
 resource "aws_security_group" "bastion" {
   name        = "bastion"
   description = "bastion server role security group"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
