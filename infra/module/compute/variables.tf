@@ -10,6 +10,6 @@ variable "public_subnet_1a_id" {
   type = string
 }
 
-variable "app_sg_id" {
+variable "security_group_bastion_id" {
   type = string
 }

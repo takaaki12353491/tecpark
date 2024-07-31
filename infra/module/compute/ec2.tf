@@ -46,7 +46,7 @@ resource "aws_instance" "bastion_server" {
 
   iam_instance_profile   = aws_iam_instance_profile.ec2_assume_role_profile.name
   subnet_id              = var.public_subnet_1a_id
-  vpc_security_group_ids = [var.app_sg_id]
+  vpc_security_group_ids = [var.security_group_bastion_id]
 
   tags = merge(
     local.common_tags,
