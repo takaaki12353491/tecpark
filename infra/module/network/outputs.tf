@@ -15,11 +15,11 @@ output "private_subnet_1c_id" {
 }
 
 output "db_sg_id" {
-  value = aws_security_group.db_sg.id
+  value = aws_security_group.db.id
 }
 
 output "app_sg_id" {
-  value = aws_security_group.app_sg.id
+  value = aws_security_group.app.id
 }
 
 output "security_group_bastion_id" {
