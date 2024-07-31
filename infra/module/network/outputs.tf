@@ -15,7 +15,7 @@ output "private_subnet_1c_id" {
 }
 
 output "security_group_datastore_id" {
-  value = aws_security_group.datastore
+  value = aws_security_group.datastore.id
 }
 
 output "security_group_bastion_id" {
