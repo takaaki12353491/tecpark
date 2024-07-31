@@ -1,12 +1,12 @@
 resource "aws_security_group" "web" {
-  name        = "${var.project}-${var.env}-web"
+  name        = "web"
   description = "web front role security group"
   vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-web"
+      Name = "web"
     }
   )
 }
@@ -39,14 +39,14 @@ resource "aws_security_group_rule" "web_to_app" {
 }
 
 resource "aws_security_group" "app" {
-  name        = "${var.project}-${var.env}-app"
+  name        = "app"
   description = "application server role security group"
   vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-app"
+      Name = "app"
     }
   )
 }
@@ -79,14 +79,14 @@ resource "aws_security_group_rule" "app_out_https" {
 }
 
 resource "aws_security_group" "db" {
-  name        = "${var.project}-${var.env}-db"
+  name        = "db"
   description = "database role security group"
   vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-db"
+      Name = "db"
     }
   )
 }
@@ -110,14 +110,14 @@ resource "aws_security_group_rule" "db_from_bastion" {
 }
 
 resource "aws_security_group" "bastion" {
-  name        = "${var.project}-${var.env}-bastion"
+  name        = "bastion"
   description = "bastion server role security group"
   vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-bastion"
+      Name = "bastion"
     }
   )
 }
