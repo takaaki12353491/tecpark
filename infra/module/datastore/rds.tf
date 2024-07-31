@@ -20,7 +20,7 @@ resource "aws_db_option_group" "mysql" {
 }
 
 resource "aws_db_subnet_group" "private" {
-  name = "mysql"
+  name = "private"
   subnet_ids = [
     var.private_subnet_1a_id,
     var.private_subnet_1c_id
@@ -29,7 +29,7 @@ resource "aws_db_subnet_group" "private" {
   tags = merge(
     local.common_tags,
     {
-      Name = "mysql"
+      Name = "private"
     }
   )
 }
@@ -79,7 +79,7 @@ resource "aws_db_instance" "main" {
   tags = merge(
     local.common_tags,
     {
-      Name = "mysql"
+      Name = "main"
     }
   )
 }
