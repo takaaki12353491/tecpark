@@ -1,5 +1,5 @@
-resource "aws_db_parameter_group" "mysql_standalone_pg" {
-  name   = "${var.project}-${var.env}-mysql-standalone-pg"
+resource "aws_db_parameter_group" "mysql" {
+  name   = "main"
   family = "mysql8.0"
 
   parameter {
@@ -13,14 +13,14 @@ resource "aws_db_parameter_group" "mysql_standalone_pg" {
   }
 }
 
-resource "aws_db_option_group" "mysql_standalone_og" {
-  name                 = "${var.project}-${var.env}-mysql-standalone-og"
+resource "aws_db_option_group" "mysql" {
+  name                 = "mysql"
   engine_name          = "mysql"
   major_engine_version = "8.0"
 }
 
-resource "aws_db_subnet_group" "mysql_standalone_sg" {
-  name = "${var.project}-${var.env}-mysql-standalone-sg"
+resource "aws_db_subnet_group" "private" {
+  name = "mysql"
   subnet_ids = [
     var.private_subnet_1a_id,
     var.private_subnet_1c_id
@@ -29,24 +29,24 @@ resource "aws_db_subnet_group" "mysql_standalone_sg" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-standalone-sg"
+      Name = "mysql"
     }
   )
 }
 
-resource "random_string" "db_password" {
+resource "random_string" "rdb_password" {
   length  = 16
   special = false
 }
 
-resource "aws_db_instance" "mysql-standalone" {
+resource "aws_db_instance" "main" {
   engine         = "mysql"
   engine_version = "8.0"
 
-  identifier = "${var.project}-${var.env}-mysql-standalone"
+  identifier = "mysql"
 
-  username = "${var.project}_${var.env}_admin"
-  password = random_string.db_password.result
+  username = "admin_${var.env}"
+  password = random_string.rdb_password.result
 
   instance_class = "db.t3.micro"
 
@@ -57,14 +57,14 @@ resource "aws_db_instance" "mysql-standalone" {
 
   multi_az               = false
   availability_zone      = "ap-northeast-1a"
-  db_subnet_group_name   = aws_db_subnet_group.mysql_standalone_sg.name
+  db_subnet_group_name   = aws_db_subnet_group.private.name
   vpc_security_group_ids = [var.security_group_db_id]
   publicly_accessible    = false
   port                   = 3306
 
   db_name              = "${var.project}_${var.env}"
-  parameter_group_name = aws_db_parameter_group.mysql_standalone_pg.name
-  option_group_name    = aws_db_option_group.mysql_standalone_og.name
+  parameter_group_name = aws_db_parameter_group.mysql.name
+  option_group_name    = aws_db_option_group.mysql.name
 
   # バックアップを行ってからメンテナンスを行うように時間設定
   backup_window              = "04:00-05:00"
@@ -79,7 +79,7 @@ resource "aws_db_instance" "mysql-standalone" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.env}-mysql-standalone"
+      Name = "mysql"
     }
   )
 }
