@@ -152,10 +152,8 @@ resource "aws_ssm_parameter" "rds_main_username" {
   )
 }
 
-resource "aws_ssm_parameter" "rds_main_password" {
-  name  = "RDS_MAIN_PASSWORD"
-  type  = "SecureString"
-  value = aws_db_instance.main.password
+resource "aws_secretsmanager_secret" "rds_main_password" {
+  name = "RDS_MAIN_PASSWORD"
 
   tags = merge(
     local.common_tags,
@@ -163,4 +161,9 @@ resource "aws_ssm_parameter" "rds_main_password" {
       Name = "rds-main-password"
     }
   )
+}
+
+resource "aws_secretsmanager_secret_version" "rds_main_password_version" {
+  secret_id     = aws_secretsmanager_secret.rds_main_password.id
+  secret_string = random_string.rdb_password.result
 }

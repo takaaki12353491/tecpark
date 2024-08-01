@@ -13,7 +13,7 @@ RDS_MAIN_HOST=\$(aws ssm get-parameter --name "RDS_MAIN_HOST" --query "Parameter
 RDS_MAIN_PORT=\$(aws ssm get-parameter --name "RDS_MAIN_PORT" --query "Parameter.Value" --output text --with-decryption)
 RDS_MAIN_DATABASE=\$(aws ssm get-parameter --name "RDS_MAIN_DATABASE" --query "Parameter.Value" --output text --with-decryption)
 RDS_MAIN_USERNAME=\$(aws ssm get-parameter --name "RDS_MAIN_USERNAME" --query "Parameter.Value" --output text --with-decryption)
-RDS_MAIN_PASSWORD=\$(aws ssm get-parameter --name "RDS_MAIN_PASSWORD" --query "Parameter.Value" --output text --with-decryption)
+RDS_MAIN_PASSWORD=\$(aws secretsmanager get-secret-value --secret-id "RDS_MAIN_PASSWORD" --query "SecretString" --output text)
 
 mysql -h \$RDS_MAIN_HOST -P \$RDS_MAIN_PORT -u \$RDS_MAIN_USERNAME -p\$RDS_MAIN_PASSWORD -D \$RDS_MAIN_DATABASE
 EOF
