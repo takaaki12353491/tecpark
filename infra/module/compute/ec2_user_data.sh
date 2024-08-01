@@ -1,6 +1,7 @@
 #!/bin/bash
 # MySQLクライアントをインストール
-sudo yum update -y
+sudo dnf update -y
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
 sudo dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
 sudo dnf install -y mysql-community-client
 
