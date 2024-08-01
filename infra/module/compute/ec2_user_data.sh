@@ -4,6 +4,7 @@ sudo yum update -y
 sudo dnf install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
 sudo dnf install -y mysql-community-client
 
+# MySQLに接続するスクリプトを作成
 cat <<EOF > /home/ec2-user/connect_mysql.sh
 #!/bin/bash
 # MySQLに接続するスクリプト
@@ -15,3 +16,5 @@ RDS_MAIN_PASSWORD=$(aws ssm get-parameter --name "RDS_MAIN_PASSWORD" --query "Pa
 
 mysql -h \$RDS_MAIN_HOST -P \$RDS_MAIN_PORT -u \$RDS_MAIN_USERNAME -p -D \$RDS_MAIN_DATABASE
 EOF
+
+chmod +x /home/ec2-user/connect_mysql.sh
