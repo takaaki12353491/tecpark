@@ -11,12 +11,26 @@ resource "aws_db_parameter_group" "mysql" {
     name  = "character_set_server"
     value = "utf8mb4"
   }
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "mysql"
+    }
+  )
 }
 
 resource "aws_db_option_group" "mysql" {
   name                 = "mysql"
   engine_name          = "mysql"
   major_engine_version = "8.0"
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "mysql"
+    }
+  )
 }
 
 resource "aws_db_subnet_group" "private" {
@@ -90,28 +104,63 @@ resource "aws_ssm_parameter" "rds_main_host" {
   name  = "RDS_MAIN_HOST"
   type  = "String"
   value = aws_db_instance.main.address
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "rds-main-host"
+    }
+  )
 }
 
 resource "aws_ssm_parameter" "rds_main_port" {
   name  = "RDS_MAIN_PORT"
   type  = "String"
   value = aws_db_instance.main.port
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "rds-main-port"
+    }
+  )
 }
 
 resource "aws_ssm_parameter" "rds_main_database" {
   name  = "RDS_MAIN_DATABASE"
   type  = "String"
   value = aws_db_instance.main.db_name
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "rds-main-database"
+    }
+  )
 }
 
 resource "aws_ssm_parameter" "rds_main_username" {
   name  = "RDS_MAIN_USERNAME"
   type  = "String"
   value = aws_db_instance.main.username
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "rds-main-username"
+    }
+  )
 }
 
 resource "aws_ssm_parameter" "rds_main_password" {
   name  = "RDS_MAIN_PASSWORD"
   type  = "SecureString"
   value = aws_db_instance.main.password
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "rds-main-password"
+    }
+  )
 }
