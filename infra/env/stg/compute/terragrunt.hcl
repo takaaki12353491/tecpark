@@ -20,9 +20,9 @@ dependency "network" {
 }
 
 inputs = {
-  tool                        = local.tool
-  project                     = local.project
-  env                         = local.env
-  public_subnet_1a_id         = dependency.network.outputs.public_subnet_1a_id
-  security_group_bastion_id   = dependency.network.outputs.security_group_bastion_id
+  tool                      = local.tool
+  project                   = local.project
+  env                       = local.env
+  public_subnet_1a_id       = dependency.network.outputs.public_subnet_1a_id
+  security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
 }

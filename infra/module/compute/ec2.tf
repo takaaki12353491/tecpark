@@ -40,6 +40,8 @@ resource "aws_instance" "bastion_server" {
   subnet_id              = var.public_subnet_1a_id
   vpc_security_group_ids = [var.security_group_bastion_id]
 
+  user_data = file("ec2_user_data.sh")
+
   tags = merge(
     local.common_tags,
     {
