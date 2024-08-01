@@ -1,16 +1,3 @@
-data "aws_iam_policy_document" "ec2_assume_iam" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
 resource "aws_iam_role" "ec2_service_access" {
   name               = "ec2-service-access"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_iam.json
