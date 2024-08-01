@@ -85,3 +85,33 @@ resource "aws_db_instance" "main" {
     }
   )
 }
+
+resource "aws_ssm_parameter" "rds_main_host" {
+  name  = "RDS_MAIN_HOST"
+  type  = "String"
+  value = aws_db_instance.main.address
+}
+
+resource "aws_ssm_parameter" "rds_main_port" {
+  name  = "RDS_MAIN_PORT"
+  type  = "String"
+  value = aws_db_instance.main.port
+}
+
+resource "aws_ssm_parameter" "rds_main_database" {
+  name  = "RDS_MAIN_DATABASE"
+  type  = "String"
+  value = aws_db_instance.main.db_name
+}
+
+resource "aws_ssm_parameter" "rds_main_username" {
+  name  = "RDS_MAIN_USERNAME"
+  type  = "String"
+  value = aws_db_instance.main.username
+}
+
+resource "aws_ssm_parameter" "rds_main_password" {
+  name  = "RDS_MAIN_PASSWORD"
+  type  = "SecureString"
+  value = aws_db_instance.main.password
+}
