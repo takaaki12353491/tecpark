@@ -32,7 +32,7 @@ resource "aws_iam_instance_profile" "ec2_grant_service_access" {
   )
 }
 
-resource "aws_instance" "bastion_server" {
+resource "aws_instance" "bastion" {
   ami           = "ami-0d03c6e00d5732e28" # Amazon Linux 2023
   instance_type = "t2.micro"
 
@@ -45,7 +45,7 @@ resource "aws_instance" "bastion_server" {
   tags = merge(
     local.common_tags,
     {
-      Name = "bastion-server"
+      Name = "bastion"
     }
   )
 }
