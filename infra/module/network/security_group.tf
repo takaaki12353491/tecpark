@@ -69,15 +69,6 @@ resource "aws_security_group_rule" "app_to_datastore" {
   source_security_group_id = aws_security_group.datastore.id
 }
 
-resource "aws_security_group_rule" "app_out_https" {
-  security_group_id = aws_security_group.app.id
-  type              = "egress"
-  protocol          = "tcp"
-  from_port         = 443
-  to_port           = 443
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
 resource "aws_security_group" "datastore" {
   name        = "datastore"
   description = "database role security group"
