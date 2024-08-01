@@ -8,3 +8,26 @@ resource "aws_internet_gateway" "main" {
     }
   )
 }
+
+resource "aws_eip" "nat" {
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "nat"
+    }
+  )
+}
+
+resource "aws_nat_gateway" "public_1a" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public_1a.id
+
+  depends_on = [aws_internet_gateway.main]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "public_1a"
+    }
+  )
+}

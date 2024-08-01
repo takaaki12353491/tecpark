@@ -37,7 +37,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.micro"
 
   iam_instance_profile   = aws_iam_instance_profile.ec2_grant_service_access.name
-  subnet_id              = var.public_subnet_1a_id
+  subnet_id              = var.private_subnet_1a_id
   vpc_security_group_ids = [var.security_group_bastion_id]
 
   user_data = file("ec2_user_data.sh")

@@ -10,7 +10,7 @@ variable "env" {
   type = string
 }
 
-variable "public_subnet_1a_id" {
+variable "private_subnet_1a_id" {
   type = string
 }
 
