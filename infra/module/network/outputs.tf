@@ -14,6 +14,10 @@ output "private_subnet_1c_id" {
   value = aws_subnet.private_1c.id
 }
 
+output "security_group_app_id" {
+  value = aws_security_group.app.id
+}
+
 output "security_group_datastore_id" {
   value = aws_security_group.datastore.id
 }

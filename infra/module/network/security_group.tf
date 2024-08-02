@@ -33,8 +33,8 @@ resource "aws_security_group_rule" "web_to_app" {
   security_group_id        = aws_security_group.web.id
   type                     = "egress"
   protocol                 = "tcp"
-  from_port                = 3000
-  to_port                  = 3000
+  from_port                = 80
+  to_port                  = 80
   source_security_group_id = aws_security_group.app.id
 }
 
@@ -55,8 +55,8 @@ resource "aws_security_group_rule" "app_from_web" {
   security_group_id        = aws_security_group.app.id
   type                     = "ingress"
   protocol                 = "tcp"
-  from_port                = 3000
-  to_port                  = 3000
+  from_port                = 80
+  to_port                  = 80
   source_security_group_id = aws_security_group.web.id
 }
 

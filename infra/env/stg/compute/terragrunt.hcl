@@ -23,6 +23,7 @@ inputs = {
   tool                      = local.tool
   project                   = local.project
   env                       = local.env
-  private_subnet_1a_id       = dependency.network.outputs.private_subnet_1a_id
+  private_subnet_1a_id      = dependency.network.outputs.private_subnet_1a_id
+  security_group_app_id     = dependency.network.outputs.security_group_app_id
   security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
 }
