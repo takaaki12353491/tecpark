@@ -1,3 +1,16 @@
+resource "aws_security_group" "vpc_endpoint" {
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_security_group_rule" "vpc_endpoint_from_app" {
+  security_group_id        = aws_security_group.vpc_endpoint.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = aws_security_group.app.id
+}
+
 resource "aws_security_group" "web" {
   name        = "web"
   description = "web front role security group"
@@ -58,6 +71,15 @@ resource "aws_security_group_rule" "app_from_web" {
   from_port                = 80
   to_port                  = 80
   source_security_group_id = aws_security_group.web.id
+}
+
+resource "aws_security_group_rule" "app_to_vpc_endpoint" {
+  security_group_id        = aws_security_group.app.id
+  type                     = "egress"
+  protocol                 = "tcp"
+  from_port                = 443
+  to_port                  = 443
+  source_security_group_id = aws_security_group.vpc_endpoint.id
 }
 
 resource "aws_security_group_rule" "app_to_datastore" {
