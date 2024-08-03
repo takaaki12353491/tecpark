@@ -2,27 +2,18 @@ resource "aws_iam_role" "ec2_service_access" {
   name               = "ec2-service-access"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_iam.json
 
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+  ]
+
   tags = merge(
     local.common_tags,
     {
       Name = "ec2-service-access"
     }
   )
-}
-
-resource "aws_iam_role_policy_attachment" "ec2_ssm_access" {
-  role       = aws_iam_role.ec2_service_access.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_role_policy_attachment" "ec2_ssm_parameter_access" {
-  role       = aws_iam_role.ec2_service_access.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "ec2_secretsmanager_access" {
-  role       = aws_iam_role.ec2_service_access.name
-  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
 
 resource "aws_iam_instance_profile" "ec2_grant_service_access" {
@@ -42,7 +33,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.micro"
 
   iam_instance_profile   = aws_iam_instance_profile.ec2_grant_service_access.name
-  subnet_id              = var.private_subnet_1a_id
+  subnet_id              = var.private_subnet_ids[0]
   vpc_security_group_ids = [var.security_group_bastion_id]
 
   user_data = file("ec2_user_data.sh")
@@ -76,7 +67,7 @@ resource "aws_ssm_document" "ssm_logging" {
     description   = "Enable Session Manager logging to CloudWatch Logs"
     sessionType   = "Standard_Stream"
     inputs = {
-      cloudWatchLogGroupName      = aws_cloudwatch_log_group.ssm_log_group.name
+      cloudWatchLogGroupName      = "${aws_cloudwatch_log_group.ssm_log_group.name}"
       cloudWatchEncryptionEnabled = false
     }
   })
