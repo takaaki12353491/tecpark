@@ -12,7 +12,7 @@ locals {
 }
 
 terraform {
-  source = find_in_parent_folders("repository")
+  source = "${find_in_parent_folders("module")}/repository"
 }
 
 inputs = {
