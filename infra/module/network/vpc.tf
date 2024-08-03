@@ -1,5 +1,5 @@
 resource "aws_vpc" "main" {
-  cidr_block                       = "10.0.0.0/16"
+  cidr_block                       = local.vpc_cidr
   instance_tenancy                 = "default"
   enable_dns_support               = true
   enable_dns_hostnames             = true
@@ -18,10 +18,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   service_name      = data.aws_vpc_endpoint_service.ecr_dkr.service_name
   vpc_endpoint_type = "Interface"
 
-  subnet_ids = [
-    aws_subnet.private_1a.id,
-    aws_subnet.private_1c.id
-  ]
+  subnet_ids = aws_subnet.private[*].id
 
   security_group_ids = [
     aws_security_group.vpc_endpoint.id

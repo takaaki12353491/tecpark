@@ -1,6 +1,11 @@
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
+  route {
+    cidr_block = local.all_cidr
+    gateway_id = aws_internet_gateway.main.id
+  }
+
   tags = merge(
     local.common_tags,
     {
@@ -10,46 +15,34 @@ resource "aws_route_table" "public" {
   )
 }
 
-resource "aws_route_table_association" "public_link_1a" {
-  route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.public_1a.id
-}
+resource "aws_route_table_association" "public" {
+  count = length(aws_subnet.public)
 
-resource "aws_route_table_association" "public_link_1c" {
   route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.public_1c.id
-}
-
-resource "aws_route" "public_to_internet" {
-  route_table_id         = aws_route_table.public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.main.id
+  subnet_id      = aws_subnet.public[count.index].id
 }
 
 resource "aws_route_table" "private" {
+  count  = length(aws_nat_gateway.public)
   vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block     = local.all_cidr
+    nat_gateway_id = aws_nat_gateway.public[count.index].id
+  }
 
   tags = merge(
     local.common_tags,
     {
-      Name = "private"
+      Name = "private${count.index + 1}"
       Type = "private"
     }
   )
 }
 
-resource "aws_route_table_association" "private_link_1a" {
-  route_table_id = aws_route_table.private.id
-  subnet_id      = aws_subnet.private_1a.id
-}
+resource "aws_route_table_association" "private" {
+  count = length(aws_subnet.private)
 
-resource "aws_route_table_association" "private_link_1c" {
-  route_table_id = aws_route_table.private.id
-  subnet_id      = aws_subnet.private_1c.id
-}
-
-resource "aws_route" "private_to_internet" {
-  route_table_id         = aws_route_table.private.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.public_1a.id
+  route_table_id = aws_route_table.private[count.index].id
+  subnet_id      = aws_subnet.private[count.index].id
 }

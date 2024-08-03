@@ -9,3 +9,8 @@ variable "project" {
 variable "env" {
   type = string
 }
+
+variable "availability_zones" {
+  type    = list(string)
+  default = ["ap-northeast-1a", "ap-northeast-1c"]
+}
