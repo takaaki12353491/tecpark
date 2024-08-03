@@ -32,9 +32,9 @@ resource "aws_security_group" "web" {
   )
 }
 
-resource "aws_security_group" "app" {
-  name        = "app"
-  description = "application server role security group"
+resource "aws_security_group" "api" {
+  name        = "api"
+  description = "api server role security group"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -68,7 +68,7 @@ resource "aws_security_group" "app" {
   tags = merge(
     local.common_tags,
     {
-      Name = "app"
+      Name = "api"
     }
   )
 }
@@ -83,7 +83,7 @@ resource "aws_security_group" "datastore" {
     from_port = 3306
     to_port   = 3306
     security_groups = [
-      aws_security_group.app.id,
+      aws_security_group.api.id,
       aws_security_group.bastion.id
     ]
   }
