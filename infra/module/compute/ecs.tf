@@ -102,6 +102,12 @@ resource "aws_ecs_service" "api" {
     assign_public_ip = false
   }
 
+  load_balancer {
+    container_name   = "api"
+    container_port   = 80
+    target_group_arn = var.alb_target_group_api_arn
+  }
+
   tags = merge(
     local.common_tags,
     {

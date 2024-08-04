@@ -14,10 +14,11 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "api" {
-  vpc_id   = aws_vpc.main.id
-  name     = "api"
-  protocol = "HTTP"
-  port     = 80
+  vpc_id      = aws_vpc.main.id
+  name        = "api"
+  protocol    = "HTTP"
+  port        = 80
+  target_type = "ip"
 
   tags = merge(
     local.common_tags,

@@ -29,3 +29,7 @@ variable "security_group_bastion_id" {
 variable "ecr_repository_api_url" {
   type = string
 }
+
+variable "alb_target_group_api_arn" {
+  type = string
+}

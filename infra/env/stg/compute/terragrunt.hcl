@@ -33,6 +33,7 @@ inputs = {
   security_group_web_id     = dependency.network.outputs.security_group_web_id
   security_group_api_id     = dependency.network.outputs.security_group_api_id
   security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
+  alb_target_group_api_arn  = dependency.network.outputs.alb_target_group_api_arn
 
   ecr_repository_api_url = dependency.repository.outputs.ecr_repository_api_url
 }
