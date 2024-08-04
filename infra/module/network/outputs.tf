@@ -1,9 +1,9 @@
 output "public_subnet_ids" {
-  value = aws_subnet.public[*].id
+  value = [for subnet in aws_subnet.public : subnet.id]
 }
 
 output "private_subnet_ids" {
-  value = aws_subnet.private[*].id
+  value = [for subnet in aws_subnet.private : subnet.id]
 }
 
 output "security_group_web_id" {

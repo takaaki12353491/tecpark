@@ -1,32 +1,32 @@
 resource "aws_subnet" "public" {
-  count = length(local.availability_zones)
+  for_each = local.public_cidrs
 
   vpc_id                  = aws_vpc.main.id
-  availability_zone       = element(local.availability_zones, count.index)
-  cidr_block              = element(local.public_cidrs, count.index)
+  availability_zone       = each.key
+  cidr_block              = each.value
   map_public_ip_on_launch = true
 
   tags = merge(
     local.common_tags,
     {
-      Name = "public${count.index + 1}"
+      Name = "public-${each.key}"
       Type = "public"
     }
   )
 }
 
 resource "aws_subnet" "private" {
-  count = length(local.availability_zones)
+  for_each = local.private_cidrs
 
   vpc_id                  = aws_vpc.main.id
-  availability_zone       = element(local.availability_zones, count.index)
-  cidr_block              = element(local.private_cidrs, count.index)
+  availability_zone       = each.key
+  cidr_block              = each.value
   map_public_ip_on_launch = false
 
   tags = merge(
     local.common_tags,
     {
-      Name = "private${count.index + 1}"
+      Name = "private-${each.key}"
       Type = "private"
     }
   )

@@ -55,7 +55,7 @@ resource "aws_security_group" "api" {
     protocol    = "tcp"
     from_port   = 3306
     to_port     = 3306
-    cidr_blocks = local.private_cidrs
+    cidr_blocks = values(local.private_cidrs)
   }
 
   tags = merge(
@@ -96,7 +96,7 @@ resource "aws_security_group" "vpc_endpoint" {
     protocol    = "tcp"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = local.private_cidrs
+    cidr_blocks = values(local.private_cidrs)
   }
 
   tags = merge(
@@ -130,7 +130,7 @@ resource "aws_security_group" "bastion" {
     protocol    = "tcp"
     from_port   = 3306
     to_port     = 3306
-    cidr_blocks = local.private_cidrs
+    cidr_blocks = values(local.private_cidrs)
   }
 
   tags = merge(

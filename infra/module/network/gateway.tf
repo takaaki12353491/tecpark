@@ -10,26 +10,26 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_eip" "nat" {
-  count = length(local.availability_zones)
+  for_each = aws_subnet.public
 
   tags = merge(
     local.common_tags,
     {
-      Name = "nat${count.index + 1}"
+      Name = "nat-${each.key}"
     }
   )
 }
 
 resource "aws_nat_gateway" "public" {
-  count = length(local.availability_zones)
+  for_each = aws_subnet.public
 
-  allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
+  allocation_id = aws_eip.nat[each.key].id
+  subnet_id     = each.value.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "public${count.index + 1}"
+      Name = "public-${each.key}"
     }
   )
 }

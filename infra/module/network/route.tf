@@ -16,33 +16,33 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public_subnet" {
-  count = length(aws_subnet.public)
+  for_each = aws_subnet.public
 
   route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.public[count.index].id
+  subnet_id      = each.value.id
 }
 
 resource "aws_route_table" "private" {
-  count  = length(aws_nat_gateway.public)
-  vpc_id = aws_vpc.main.id
+  for_each = aws_nat_gateway.public
+  vpc_id   = aws_vpc.main.id
 
   route {
     cidr_block     = local.all_cidr
-    nat_gateway_id = aws_nat_gateway.public[count.index].id
+    nat_gateway_id = each.value.id
   }
 
   tags = merge(
     local.common_tags,
     {
-      Name = "private${count.index + 1}"
+      Name = "private-${each.key}"
       Type = "private"
     }
   )
 }
 
 resource "aws_route_table_association" "private_subnet" {
-  count = length(aws_subnet.private)
+  for_each = aws_subnet.private
 
-  route_table_id = aws_route_table.private[count.index].id
-  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = aws_route_table.private[each.key].id
+  subnet_id      = each.value.id
 }
