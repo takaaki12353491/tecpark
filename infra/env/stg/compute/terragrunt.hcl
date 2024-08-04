@@ -30,6 +30,7 @@ inputs = {
 
   public_subnet_ids         = dependency.network.outputs.public_subnet_ids
   private_subnet_ids        = dependency.network.outputs.private_subnet_ids
+  security_group_web_id     = dependency.network.outputs.security_group_web_id
   security_group_api_id     = dependency.network.outputs.security_group_api_id
   security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
 
