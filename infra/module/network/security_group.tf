@@ -98,6 +98,13 @@ resource "aws_security_group" "vpc_endpoint" {
     to_port     = 443
     cidr_blocks = local.private_cidrs
   }
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "vpc-endpoint"
+    }
+  )
 }
 
 resource "aws_security_group" "bastion" {

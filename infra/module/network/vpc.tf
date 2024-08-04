@@ -13,16 +13,72 @@ resource "aws_vpc" "main" {
   )
 }
 
-resource "aws_vpc_endpoint" "ecr_dkr" {
+resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.main.id
-  service_name      = data.aws_vpc_endpoint_service.ecr_dkr.service_name
-  vpc_endpoint_type = "Interface"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = aws_route_table.private[*].id
 
-  subnet_ids = aws_subnet.private[*].id
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "s3"
+    }
+  )
+}
 
-  security_group_ids = [
-    aws_security_group.vpc_endpoint.id
-  ]
+resource "aws_vpc_endpoint" "logs" {
+  vpc_id             = aws_vpc.main.id
+  service_name       = data.aws_vpc_endpoint_service.logs.service_name
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "logs"
+    }
+  )
+}
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id             = aws_vpc.main.id
+  service_name       = data.aws_vpc_endpoint_service.ecr_dkr.service_name
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "ecr-dkr"
+    }
+  )
+}
+
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id             = aws_vpc.main.id
+  service_name       = data.aws_vpc_endpoint_service.ecr_api.service_name
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = aws_subnet.private[*].id
+  security_group_ids = [aws_security_group.vpc_endpoint.id]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "ecr-dkr"
+    }
+  )
+}
+
+resource "aws_vpc_endpoint" "ssm" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.ap-northeast-1.ssm"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = aws_subnet.private[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoint.id]
+  private_dns_enabled = true
 
   tags = merge(
     local.common_tags,
