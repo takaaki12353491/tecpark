@@ -21,3 +21,11 @@ output "security_group_datastore_id" {
 output "security_group_bastion_id" {
   value = aws_security_group.bastion.id
 }
+
+output "alb_dns_name" {
+  value = aws_lb.alb.dns_name
+}
+
+output "alb_zone_id" {
+  value = aws_lb.alb.zone_id
+}
