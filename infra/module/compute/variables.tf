@@ -26,6 +26,6 @@ variable "security_group_bastion_id" {
   type = string
 }
 
-variable "ecr_repository_app_url" {
+variable "ecr_repository_api_url" {
   type = string
 }

@@ -33,5 +33,5 @@ inputs = {
   security_group_api_id     = dependency.network.outputs.security_group_api_id
   security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
 
-  ecr_repository_app_url = dependency.repository.outputs.ecr_repository_app_url
+  ecr_repository_api_url = dependency.repository.outputs.ecr_repository_api_url
 }

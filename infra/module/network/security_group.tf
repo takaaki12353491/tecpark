@@ -48,14 +48,7 @@ resource "aws_security_group" "api" {
     protocol    = "tcp"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = local.public_cidrs
-  }
-
-  egress {
-    protocol    = "tcp"
-    from_port   = 443
-    to_port     = 443
-    cidr_blocks = local.private_cidrs
+    cidr_blocks = [local.all_cidr]
   }
 
   egress {
