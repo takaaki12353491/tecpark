@@ -18,6 +18,14 @@ variable "private_subnet_ids" {
   type = list(string)
 }
 
+variable "security_group_api_id" {
+  type = string
+}
+
 variable "security_group_bastion_id" {
+  type = string
+}
+
+variable "ecr_repository_app_url" {
   type = string
 }

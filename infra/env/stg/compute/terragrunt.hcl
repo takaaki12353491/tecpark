@@ -19,12 +19,19 @@ dependency "network" {
   config_path = find_in_parent_folders("network")
 }
 
+dependency "repository" {
+  config_path = find_in_parent_folders("repository")
+}
+
 inputs = {
-  tool                      = local.tool
-  project                   = local.project
-  env                       = local.env
+  tool    = local.tool
+  project = local.project
+  env     = local.env
+
   public_subnet_ids         = dependency.network.outputs.public_subnet_ids
   private_subnet_ids        = dependency.network.outputs.private_subnet_ids
-  security_group_app_id     = dependency.network.outputs.security_group_app_id
+  security_group_api_id     = dependency.network.outputs.security_group_api_id
   security_group_bastion_id = dependency.network.outputs.security_group_bastion_id
+
+  ecr_repository_app_url = dependency.repository.outputs.ecr_repository_app_url
 }
