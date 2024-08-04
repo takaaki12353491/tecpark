@@ -10,7 +10,7 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_eip" "nat" {
-  count = length(var.availability_zones)
+  count = length(local.availability_zones)
 
   tags = merge(
     local.common_tags,
@@ -21,7 +21,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "public" {
-  count = length(var.availability_zones)
+  count = length(local.availability_zones)
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
