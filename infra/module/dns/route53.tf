@@ -10,9 +10,9 @@ resource "aws_route53_zone" "main" {
   )
 }
 
-resource "aws_route53_record" "name" {
+resource "aws_route53_record" "api" {
   zone_id = aws_route53_zone.main.id
-  name    = ""
+  name    = "api"
   type    = "A"
 
   alias {
