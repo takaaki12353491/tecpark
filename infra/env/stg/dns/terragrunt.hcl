@@ -24,7 +24,7 @@ inputs = {
   project = local.project
   env     = local.env
 
-  domain = get_env("DOMAIN", "tecpark.net")
+  domain = get_env("DOMAIN", "stg.tecpark.net")
 
   alb_dns_name = dependency.network.outputs.alb_dns_name
   alb_zone_id  = dependency.network.outputs.alb_zone_id

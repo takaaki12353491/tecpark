@@ -12,7 +12,7 @@ resource "aws_route53_zone" "main" {
 
 resource "aws_route53_record" "name" {
   zone_id = aws_route53_zone.main.id
-  name    = "alb"
+  name    = ""
   type    = "A"
 
   alias {
