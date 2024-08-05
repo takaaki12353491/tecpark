@@ -1,4 +1,7 @@
 {
+  "files.exclude": {
+    "**/.terragrunt-cache": true
+  },
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform",
     "editor.formatOnSave": true,
