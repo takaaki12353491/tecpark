@@ -1,20 +1,12 @@
 variable "public_subnet_ids" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "private_subnet_ids" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "security_group_api_id" {
-  type = string
-}
-
-variable "security_group_bastion_id" {
-  type = string
-}
-
-variable "ecr_repository_api_url" {
   type = string
 }
 

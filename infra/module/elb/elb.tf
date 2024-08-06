@@ -2,8 +2,8 @@ resource "aws_lb" "alb" {
   name               = "alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.web.id]
-  subnets            = [for subnet in aws_subnet.public : subnet.id]
+  security_groups    = [var.security_group_web_id]
+  subnets            = values(var.public_subnet_ids)
 
   tags = {
     Name = "alb"
@@ -11,7 +11,7 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "api" {
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_main_id
   name        = "api"
   protocol    = "HTTP"
   port        = 80

@@ -11,7 +11,7 @@ variable "env" {
 }
 
 variable "private_subnet_ids" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "security_group_datastore_id" {

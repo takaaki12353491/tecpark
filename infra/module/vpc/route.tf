@@ -21,7 +21,8 @@ resource "aws_route_table_association" "public_subnet" {
 
 resource "aws_route_table" "private" {
   for_each = aws_nat_gateway.public
-  vpc_id   = aws_vpc.main.id
+
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block     = local.all_cidr

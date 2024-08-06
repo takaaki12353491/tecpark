@@ -1,18 +1,7 @@
 resource "aws_iam_role" "ecs_api" {
   name = "ecs-api"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
@@ -51,7 +40,7 @@ resource "aws_ecs_task_definition" "api" {
   container_definitions = jsonencode([
     {
       name      = "api"
-      image     = "${var.ecr_repository_api_url}:latest"
+      image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
 
       portMappings = [
@@ -85,7 +74,7 @@ resource "aws_ecs_service" "api" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets          = var.private_subnet_ids
+    subnets          = values(var.private_subnet_ids)
     security_groups  = [var.security_group_api_id]
     assign_public_ip = false
   }

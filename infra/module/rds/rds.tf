@@ -29,7 +29,7 @@ resource "aws_db_option_group" "mysql" {
 
 resource "aws_db_subnet_group" "private" {
   name       = "private"
-  subnet_ids = var.private_subnet_ids
+  subnet_ids = values(var.private_subnet_ids)
 
   tags = {
     Name = "private"
@@ -38,7 +38,7 @@ resource "aws_db_subnet_group" "private" {
 
 resource "random_string" "rdb_password" {
   length  = 16
-  special = false
+  special = true
 }
 
 resource "aws_db_instance" "main" {
