@@ -1,9 +1,9 @@
 locals {
   common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
-  env_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+  env_vars    = read_terragrunt_config(find_in_parent_folders("env.hcl"))
   
-  tool    = local.common_vars.locals.tool
   project = local.common_vars.locals.project
+  tool    = local.common_vars.locals.tool
   region  = local.common_vars.locals.region
 
   env = local.env_vars.locals.env
@@ -13,9 +13,9 @@ remote_state {
   backend = "s3"
 
   config = {
-    bucket = "${local.project}-${local.env}-tfstate"
-    key    = "${local.project}/${path_relative_to_include()}.tfstate"
-    region = "${local.region}"
+    bucket  = "${local.project}-${local.env}-tfstate"
+    key     = "${basename(get_terragrunt_dir())}.tfstate"
+    region  = "${local.region}"
     profile = "${local.project}-${local.env}"
   }
 
@@ -55,4 +55,3 @@ provider "aws" {
 EOF
 
 }
-
