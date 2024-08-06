@@ -1,2 +1,12 @@
+# env
 .env
 .envrc
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# terragrunt
+.terragrunt-cache/
