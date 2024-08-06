@@ -1,5 +1,5 @@
-resource "aws_cloudwatch_log_group" "ssm_bastion" {
-  name              = "/ssm/bastion"
+resource "aws_cloudwatch_log_group" "ssm_ec2_bastion" {
+  name              = "/ssm/ec2/bastion"
   retention_in_days = 7
 
   tags = {
