@@ -10,3 +10,7 @@
 
 # terragrunt
 .terragrunt-cache/
+
+# 一時的
+frontend
+backend

@@ -5,12 +5,9 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames             = true
   assign_generated_ipv6_cidr_block = false
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "main"
-    }
-  )
+  tags = {
+    Name = "main"
+  }
 }
 
 resource "aws_vpc_endpoint" "s3" {
@@ -19,12 +16,9 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [for rt in aws_route_table.private : rt.id]
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "s3"
-    }
-  )
+  tags = {
+    Name = "s3"
+  }
 }
 
 # トラフィックが多いのでエンドポイントで料金を抑える
@@ -36,10 +30,7 @@ resource "aws_vpc_endpoint" "logs" {
   security_group_ids  = [aws_security_group.vpc_endpoint.id]
   private_dns_enabled = true
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "logs"
-    }
-  )
+  tags = {
+    Name = "logs"
+  }
 }

@@ -2,12 +2,9 @@ resource "aws_cloudwatch_log_group" "ssm_bastion" {
   name              = "/ssm/bastion"
   retention_in_days = 7
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "ssm-bastion"
-    }
-  )
+  tags = {
+    Name = "ssm-bastion"
+  }
 }
 
 resource "aws_ssm_document" "logging" {
@@ -25,10 +22,7 @@ resource "aws_ssm_document" "logging" {
     }
   })
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "logging"
-    }
-  )
+  tags = {
+    Name = "logging"
+  }
 }

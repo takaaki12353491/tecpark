@@ -24,12 +24,9 @@ resource "aws_security_group" "web" {
     cidr_blocks = [local.all_cidr]
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "web"
-    }
-  )
+  tags = {
+    Name = "web"
+  }
 }
 
 resource "aws_security_group" "api" {
@@ -58,12 +55,9 @@ resource "aws_security_group" "api" {
     cidr_blocks = values(local.private_cidrs)
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }
 
 resource "aws_security_group" "datastore" {
@@ -81,12 +75,9 @@ resource "aws_security_group" "datastore" {
     ]
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "datastore"
-    }
-  )
+  tags = {
+    Name = "datastore"
+  }
 }
 
 resource "aws_security_group" "vpc_endpoint" {
@@ -99,12 +90,9 @@ resource "aws_security_group" "vpc_endpoint" {
     cidr_blocks = values(local.private_cidrs)
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "vpc-endpoint"
-    }
-  )
+  tags = {
+    Name = "vpc-endpoint"
+  }
 }
 
 resource "aws_security_group" "bastion" {
@@ -133,10 +121,7 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = values(local.private_cidrs)
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "bastion"
-    }
-  )
+  tags = {
+    Name = "bastion"
+  }
 }

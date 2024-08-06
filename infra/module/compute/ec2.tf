@@ -9,24 +9,18 @@ resource "aws_iam_role" "bastion" {
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
   ]
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "bastion"
-    }
-  )
+  tags = {
+    Name = "bastion"
+  }
 }
 
 resource "aws_iam_instance_profile" "bastion" {
   name = "bastion"
   role = aws_iam_role.bastion.name
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "bastion"
-    }
-  )
+  tags = {
+    Name = "bastion"
+  }
 }
 
 resource "aws_instance" "bastion" {
@@ -39,11 +33,8 @@ resource "aws_instance" "bastion" {
 
   user_data = file("ec2_user_data.sh")
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "bastion"
-    }
-  )
+  tags = {
+    Name = "bastion"
+  }
 }
 

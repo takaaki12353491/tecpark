@@ -6,13 +6,10 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "public"
-      Type = "public"
-    }
-  )
+  tags = {
+    Name = "public"
+    Type = "public"
+  }
 }
 
 resource "aws_route_table_association" "public_subnet" {
@@ -31,13 +28,10 @@ resource "aws_route_table" "private" {
     nat_gateway_id = each.value.id
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "private-${each.key}"
-      Type = "private"
-    }
-  )
+  tags = {
+    Name = "private-${each.key}"
+    Type = "private"
+  }
 }
 
 resource "aws_route_table_association" "private_subnet" {

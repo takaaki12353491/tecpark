@@ -12,12 +12,9 @@ resource "aws_db_parameter_group" "mysql" {
     value = "utf8mb4"
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "mysql"
-    }
-  )
+  tags = {
+    Name = "mysql"
+  }
 }
 
 resource "aws_db_option_group" "mysql" {
@@ -25,24 +22,18 @@ resource "aws_db_option_group" "mysql" {
   engine_name          = "mysql"
   major_engine_version = "8.0"
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "mysql"
-    }
-  )
+  tags = {
+    Name = "mysql"
+  }
 }
 
 resource "aws_db_subnet_group" "private" {
   name       = "private"
   subnet_ids = var.private_subnet_ids
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "private"
-    }
-  )
+  tags = {
+    Name = "private"
+  }
 }
 
 resource "random_string" "rdb_password" {
@@ -89,12 +80,9 @@ resource "aws_db_instance" "main" {
 
   final_snapshot_identifier = "main-final-snapshot-${formatdate("YYYYMMDDHHmmss", timestamp())}"
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "main"
-    }
-  )
+  tags = {
+    Name = "main"
+  }
 }
 
 resource "aws_ssm_parameter" "rds_main_host" {
@@ -102,12 +90,9 @@ resource "aws_ssm_parameter" "rds_main_host" {
   type  = "String"
   value = aws_db_instance.main.address
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "rds-main-host"
-    }
-  )
+  tags = {
+    Name = "rds-main-host"
+  }
 }
 
 resource "aws_ssm_parameter" "rds_main_port" {
@@ -115,12 +100,9 @@ resource "aws_ssm_parameter" "rds_main_port" {
   type  = "String"
   value = aws_db_instance.main.port
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "rds-main-port"
-    }
-  )
+  tags = {
+    Name = "rds-main-port"
+  }
 }
 
 resource "aws_ssm_parameter" "rds_main_database" {
@@ -128,12 +110,9 @@ resource "aws_ssm_parameter" "rds_main_database" {
   type  = "String"
   value = aws_db_instance.main.db_name
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "rds-main-database"
-    }
-  )
+  tags = {
+    Name = "rds-main-database"
+  }
 }
 
 resource "aws_ssm_parameter" "rds_main_username" {
@@ -141,23 +120,17 @@ resource "aws_ssm_parameter" "rds_main_username" {
   type  = "String"
   value = aws_db_instance.main.username
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "rds-main-username"
-    }
-  )
+  tags = {
+    Name = "rds-main-username"
+  }
 }
 
 resource "aws_secretsmanager_secret" "rds_main_password" {
   name = "RDS_MAIN_PASSWORD"
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "rds-main-password"
-    }
-  )
+  tags = {
+    Name = "rds-main-password"
+  }
 
   lifecycle {
     prevent_destroy = true

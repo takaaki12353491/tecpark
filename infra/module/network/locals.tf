@@ -1,10 +1,4 @@
 locals {
-  common_tags = {
-    Tool    = var.tool
-    Project = var.project
-    Env     = var.env
-  }
-
   availability_zones = [
     "${data.aws_region.current.name}a",
     "${data.aws_region.current.name}c"

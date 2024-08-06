@@ -6,13 +6,10 @@ resource "aws_subnet" "public" {
   cidr_block              = each.value
   map_public_ip_on_launch = true
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "public-${each.key}"
-      Type = "public"
-    }
-  )
+  tags = {
+    Name = "public-${each.key}"
+    Type = "public"
+  }
 }
 
 resource "aws_subnet" "private" {
@@ -23,11 +20,8 @@ resource "aws_subnet" "private" {
   cidr_block              = each.value
   map_public_ip_on_launch = false
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "private-${each.key}"
-      Type = "private"
-    }
-  )
+  tags = {
+    Name = "private-${each.key}"
+    Type = "private"
+  }
 }

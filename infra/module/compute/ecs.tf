@@ -18,35 +18,26 @@ resource "aws_iam_role" "ecs_api" {
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
   ]
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "ecs-api"
-    }
-  )
+  tags = {
+    Name = "ecs-api"
+  }
 }
 
 resource "aws_ecs_cluster" "api" {
   name = "api"
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api" {
   name              = "/ecs/api"
   retention_in_days = 30
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }
 
 resource "aws_ecs_task_definition" "api" {
@@ -81,12 +72,9 @@ resource "aws_ecs_task_definition" "api" {
     }
   ])
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }
 
 resource "aws_ecs_service" "api" {
@@ -108,10 +96,7 @@ resource "aws_ecs_service" "api" {
     target_group_arn = var.alb_target_group_api_arn
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }

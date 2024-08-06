@@ -5,12 +5,9 @@ resource "aws_lb" "alb" {
   security_groups    = [aws_security_group.web.id]
   subnets            = [for subnet in aws_subnet.public : subnet.id]
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "alb"
-    }
-  )
+  tags = {
+    Name = "alb"
+  }
 }
 
 resource "aws_lb_target_group" "api" {
@@ -20,12 +17,9 @@ resource "aws_lb_target_group" "api" {
   port        = 80
   target_type = "ip"
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "api"
-    }
-  )
+  tags = {
+    Name = "api"
+  }
 }
 
 resource "aws_lb_listener" "http" {
@@ -38,10 +32,7 @@ resource "aws_lb_listener" "http" {
     target_group_arn = aws_lb_target_group.api.arn
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "http"
-    }
-  )
+  tags = {
+    Name = "http"
+  }
 }
