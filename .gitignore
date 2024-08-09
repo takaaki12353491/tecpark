@@ -1,2 +1,16 @@
+# env
 .env
 .envrc
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# terragrunt
+.terragrunt-cache/
+
+# 一時的
+frontend
+backend
