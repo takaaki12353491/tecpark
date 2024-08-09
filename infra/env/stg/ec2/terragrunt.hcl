@@ -11,7 +11,7 @@ dependency "vpc" {
 }
 
 inputs = {
-  availability_zones        = dependency.vpc.outputs.availability_zones
+  azs                       = dependency.vpc.outputs.azs
   private_subnet_ids        = dependency.vpc.outputs.private_subnet_ids
   security_group_bastion_id = dependency.vpc.outputs.security_group_bastion_id
 }

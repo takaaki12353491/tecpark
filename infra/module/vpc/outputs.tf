@@ -1,5 +1,5 @@
-output "availability_zones" {
-  value = local.availability_zones
+output "azs" {
+  value = local.azs
 }
 
 output "vpc_main_id" {
@@ -12,6 +12,10 @@ output "public_subnet_ids" {
 
 output "private_subnet_ids" {
   value = { for key, subnet in aws_subnet.private : key => subnet.id }
+}
+
+output "dummy_subnet_id" {
+  value = aws_subnet.dummy.id
 }
 
 output "security_group_web_id" {

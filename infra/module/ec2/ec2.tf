@@ -28,7 +28,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t2.micro"
 
   iam_instance_profile   = aws_iam_instance_profile.bastion.name
-  subnet_id              = var.private_subnet_ids[var.availability_zones[0]]
+  subnet_id              = var.private_subnet_ids[var.azs[0]]
   vpc_security_group_ids = [var.security_group_bastion_id]
 
   user_data = file("ec2_user_data.sh")

@@ -3,7 +3,7 @@ resource "aws_lb" "alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.security_group_web_id]
-  subnets            = values(var.public_subnet_ids)
+  subnets            = concat(values(var.public_subnet_ids), [var.dummy_subnet_id])
 
   tags = {
     Name = "alb"

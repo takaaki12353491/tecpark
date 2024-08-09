@@ -1,14 +1,14 @@
 locals {
-  availability_zones = [
-    "${data.aws_region.current.name}a",
-    "${data.aws_region.current.name}c"
+  azs = [
+    for suffix in var.az_suffixes : "${data.aws_region.current.name}${suffix}"
   ]
   all_cidr = "0.0.0.0/0"
   vpc_cidr = "10.0.0.0/16"
   public_cidrs = {
-    for az in local.availability_zones : az => "10.0.${index(local.availability_zones, az) + 1}.0/24"
+    for az in local.azs : az => "10.0.${index(local.azs, az) + 1}.0/24"
   }
   private_cidrs = {
-    for az in local.availability_zones : az => "10.0.${index(local.availability_zones, az) + 3}.0/24"
+    for az in local.azs : az => "10.0.${index(local.azs, az) + 3}.0/24"
   }
+  dummy_cidr = "10.0.10.0/24"
 }

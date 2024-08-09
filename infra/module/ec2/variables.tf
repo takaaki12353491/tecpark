@@ -1,4 +1,4 @@
-variable "availability_zones" {
+variable "azs" {
   type = list(string)
   default = [
     "ap-northeast-1a",
