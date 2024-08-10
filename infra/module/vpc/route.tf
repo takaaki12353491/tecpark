@@ -19,6 +19,12 @@ resource "aws_route_table_association" "public_subnet" {
   subnet_id      = each.value.id
 }
 
+# ALBに設定するサブネットは２つともパブリックサブネットでないといけない
+resource "aws_route_table_association" "dummy_subnet" {
+  route_table_id = aws_route_table.public.id
+  subnet_id      = aws_subnet.dummy.id
+}
+
 resource "aws_route_table" "private" {
   for_each = aws_nat_gateway.public
 

@@ -28,6 +28,7 @@ inputs = {
 
   main_vpc_id       = dependency.vpc.outputs.main_vpc_id
   public_subnet_ids = dependency.vpc.outputs.public_subnet_ids
+  dummy_subnet_id   = dependency.vpc.outputs.dummy_subnet_id
 
   main_route53_zone_id = dependency.route53.outputs.main_route53_zone_id
 }
