@@ -10,5 +10,4 @@ locals {
   private_cidrs = {
     for az in local.azs : az => "10.0.${index(local.azs, az) + 3}.0/24"
   }
-  dummy_cidr = "10.0.10.0/24"
 }
