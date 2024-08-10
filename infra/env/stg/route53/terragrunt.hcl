@@ -6,7 +6,7 @@ locals {
   common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
   env_vars    = read_terragrunt_config(find_in_parent_folders("env.hcl"))
 
-  domain = local.common_vars.locals.domain
+  custom_domain = local.common_vars.locals.custom_domain
 
   env = local.env_vars.locals.env
 }
@@ -24,7 +24,7 @@ dependency "s3" {
 }
 
 inputs = {
-  domain = "${local.env}.${local.domain}"
+  domain = "${local.env}.${local.custom_domain}"
 
   alb_dns_name = dependency.elb.outputs.alb_dns_name
   alb_zone_id  = dependency.elb.outputs.alb_zone_id
