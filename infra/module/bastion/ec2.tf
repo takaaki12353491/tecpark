@@ -29,7 +29,7 @@ resource "aws_instance" "bastion" {
 
   iam_instance_profile   = aws_iam_instance_profile.bastion.name
   subnet_id              = var.private_subnet_ids[var.azs[0]]
-  vpc_security_group_ids = [var.security_group_bastion_id]
+  vpc_security_group_ids = [aws_security_group.bastion.id]
 
   user_data = file("ec2_user_data.sh")
 

@@ -6,10 +6,10 @@ variable "azs" {
   ]
 }
 
-variable "private_subnet_ids" {
+variable "private_cidrs" {
   type = map(string)
 }
 
-variable "security_group_bastion_id" {
-  type = string
+variable "private_subnet_ids" {
+  type = map(string)
 }
