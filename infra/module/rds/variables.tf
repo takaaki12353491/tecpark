@@ -10,6 +10,10 @@ variable "private_subnet_ids" {
   type = map(string)
 }
 
-variable "security_group_datastore_id" {
+variable "api_security_group_id" {
+  type = string
+}
+
+variable "bastion_security_group_id" {
   type = string
 }

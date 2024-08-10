@@ -13,11 +13,3 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   value = { for key, subnet in aws_subnet.private : key => subnet.id }
 }
-
-output "security_group_api_id" {
-  value = aws_security_group.api.id
-}
-
-output "security_group_datastore_id" {
-  value = aws_security_group.datastore.id
-}
