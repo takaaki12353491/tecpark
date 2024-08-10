@@ -10,6 +10,6 @@ variable "domain" {
   type = string
 }
 
-variable "sso_roles" {
-  type = list(string)
+variable "main_route53_zone_id" {
+  type = string
 }
