@@ -1,9 +1,17 @@
+variable "main_vpc_id" {
+  type = string
+}
+
 variable "private_cidrs" {
   type = map(string)
 }
 
 variable "private_subnet_ids" {
   type = map(string)
+}
+
+variable "web_security_group_id" {
+  type = string
 }
 
 variable "alb_target_group_api_arn" {

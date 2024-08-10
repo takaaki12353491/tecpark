@@ -1,7 +1,7 @@
 resource "aws_security_group" "web" {
   name        = "web"
   description = "web front role security group"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.main_vpc_id
 
   ingress {
     protocol    = "tcp"

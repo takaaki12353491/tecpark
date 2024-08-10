@@ -6,6 +6,10 @@ variable "env" {
   type = string
 }
 
+variable "main_vpc_id" {
+  type = string
+}
+
 variable "private_subnet_ids" {
   type = map(string)
 }

@@ -1,7 +1,7 @@
 resource "aws_security_group" "bastion" {
   name        = "bastion"
   description = "bastion server role security group"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.main_vpc_id
 
   egress {
     protocol    = "tcp"

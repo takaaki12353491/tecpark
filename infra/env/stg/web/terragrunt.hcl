@@ -15,7 +15,7 @@ dependency "route53" {
 }
 
 inputs = {
-  vpc_main_id       = dependency.vpc.outputs.vpc_main_id
+  main_vpc_id       = dependency.vpc.outputs.main_vpc_id
   public_subnet_ids = dependency.vpc.outputs.public_subnet_ids
 
   main_route53_zone_id = dependency.route53.outputs.main_route53_zone_id

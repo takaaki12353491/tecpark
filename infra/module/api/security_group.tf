@@ -1,13 +1,13 @@
 resource "aws_security_group" "api" {
   name        = "api"
   description = "api server role security group"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.main_vpc_id
 
   ingress {
     protocol        = "tcp"
     from_port       = 80
     to_port         = 80
-    security_groups = [aws_security_group.web.id]
+    security_groups = [var.web_security_group_id]
   }
 
   egress {

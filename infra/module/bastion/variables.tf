@@ -1,3 +1,7 @@
+variable "main_vpc_id" {
+  type = string
+}
+
 variable "azs" {
   type = list(string)
   default = [

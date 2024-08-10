@@ -1,5 +1,5 @@
 resource "aws_route53_record" "api" {
-  zone_id = aws_route53_zone.main.id
+  zone_id = var.main_route53_zone_id
   name    = "api"
   type    = "A"
 
