@@ -2,12 +2,18 @@ include "root" {
   path = find_in_parent_folders()
 }
 
+locals {
+  common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
+
+  domain = local.common_vars.locals.domain
+}
+
 terraform {
   source = "./"
 }
 
 inputs = {
-  domain = get_env("DOMAIN", "tecpark.net")
+  domain = local.domain
 
   stg_name_servers = [
     "ns-1471.awsdns-55.org.",
