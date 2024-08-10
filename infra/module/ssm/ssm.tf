@@ -17,7 +17,7 @@ resource "aws_ssm_document" "logging" {
     description   = "Enable Session Manager logging to CloudWatch Logs"
     sessionType   = "Standard_Stream"
     inputs = {
-      cloudWatchLogGroupName      = "${aws_cloudwatch_log_group.ssm_bastion.name}"
+      cloudWatchLogGroupName      = "${aws_cloudwatch_log_group.ssm_ec2_bastion.name}"
       cloudWatchEncryptionEnabled = false
     }
   })
