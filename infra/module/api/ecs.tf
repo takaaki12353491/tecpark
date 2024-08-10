@@ -1,28 +1,5 @@
-resource "aws_iam_role" "ecs_api" {
-  name = "ecs-api"
-
-  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
-
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-  ]
-
-  tags = {
-    Name = "ecs-api"
-  }
-}
-
 resource "aws_ecs_cluster" "api" {
   name = "api"
-
-  tags = {
-    Name = "api"
-  }
-}
-
-resource "aws_cloudwatch_log_group" "api" {
-  name              = "/ecs/api"
-  retention_in_days = 30
 
   tags = {
     Name = "api"
@@ -40,7 +17,7 @@ resource "aws_ecs_task_definition" "api" {
   container_definitions = jsonencode([
     {
       name      = "api"
-      image     = "${var.ecr_api_repository_url}:latest"
+      image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
 
       portMappings = [
@@ -75,7 +52,7 @@ resource "aws_ecs_service" "api" {
 
   network_configuration {
     subnets          = values(var.private_subnet_ids)
-    security_groups  = [var.security_group_api_id]
+    security_groups  = [aws_security_group.api.id]
     assign_public_ip = false
   }
 
