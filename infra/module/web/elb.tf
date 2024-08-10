@@ -36,3 +36,19 @@ resource "aws_lb_listener" "http" {
     Name = "http"
   }
 }
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.alb.arn
+  protocol          = "HTTPS"
+  port              = 443
+  certificate_arn   = aws_acm_certificate.alb.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.api.arn
+  }
+
+  tags = {
+    Name = "http"
+  }
+}
