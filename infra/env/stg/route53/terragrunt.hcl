@@ -2,6 +2,12 @@ include "root" {
   path = find_in_parent_folders()
 }
 
+locals {
+  common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
+
+  domain = local.common_vars.locals.domain
+}
+
 terraform {
   source = "${find_in_parent_folders("module")}/route53"
 }
@@ -15,7 +21,7 @@ dependency "s3" {
 }
 
 inputs = {
-  domain = get_env("DOMAIN", "stg.tecpark.net")
+  domain = "stg.${local.domain}"
 
   alb_dns_name = dependency.elb.outputs.alb_dns_name
   alb_zone_id  = dependency.elb.outputs.alb_zone_id
