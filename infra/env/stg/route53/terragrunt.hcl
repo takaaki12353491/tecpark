@@ -4,8 +4,11 @@ include "root" {
 
 locals {
   common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
+  env_vars    = read_terragrunt_config(find_in_parent_folders("env.hcl"))
 
   domain = local.common_vars.locals.domain
+
+  env = local.env_vars.locals.env
 }
 
 terraform {
@@ -21,7 +24,7 @@ dependency "s3" {
 }
 
 inputs = {
-  domain = "stg.${local.domain}"
+  domain = "${local.env}.${local.domain}"
 
   alb_dns_name = dependency.elb.outputs.alb_dns_name
   alb_zone_id  = dependency.elb.outputs.alb_zone_id
