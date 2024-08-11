@@ -1,4 +1,4 @@
-resource "aws_route53_record" "api" {
+resource "aws_route53_record" "alb" {
   zone_id = var.main_route53_zone_id
   name    = "api"
   type    = "A"
