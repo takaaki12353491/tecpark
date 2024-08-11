@@ -17,3 +17,7 @@ variable "dummy_subnet_id" {
 variable "main_route53_zone_id" {
   type = string
 }
+
+variable "main_acm_certificate_arn" {
+  type = string
+}

@@ -41,7 +41,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.alb.arn
   protocol          = "HTTPS"
   port              = 443
-  certificate_arn   = aws_acm_certificate.alb.arn
+  certificate_arn   = var.main_acm_certificate_arn
 
   default_action {
     type             = "forward"
