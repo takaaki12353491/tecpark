@@ -1,6 +1,6 @@
 resource "aws_route53_record" "alb" {
   zone_id = var.main_route53_zone_id
-  name    = "api"
+  name    = "alb"
   type    = "A"
 
   alias {
