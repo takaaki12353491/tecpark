@@ -21,3 +21,7 @@ variable "main_route53_zone_id" {
 variable "main_acm_certificate_arn" {
   type = string
 }
+
+variable "cloudfront_acm_certificate_arn" {
+  type = string
+}

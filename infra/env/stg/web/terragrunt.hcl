@@ -36,5 +36,6 @@ inputs = {
 
   main_route53_zone_id = dependency.route53.outputs.main_route53_zone_id
 
-  main_acm_certificate_arn = dependency.acm.outputs.main_acm_certificate_arn
+  main_acm_certificate_arn       = dependency.acm.outputs.main_acm_certificate_arn
+  cloudfront_acm_certificate_arn = dependency.acm.outputs.cloudfront_acm_certificate_arn
 }
