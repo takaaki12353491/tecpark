@@ -28,8 +28,13 @@ resource "aws_lb_listener" "http" {
   port              = 80
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.api.arn
+    type = "redirect"
+
+    redirect {
+      protocol    = "HTTPS"
+      port        = "443"
+      status_code = "HTTP_301"
+    }
   }
 
   tags = {
