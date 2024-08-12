@@ -12,5 +12,5 @@ resource "aws_route53_record" "stg" {
   name            = "stg.${var.domain}"
   type            = "NS"
   records         = var.stg_name_servers
-  ttl             = 300
+  ttl             = 172800
 }
