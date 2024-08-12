@@ -5,8 +5,8 @@ data "aws_iam_policy_document" "front_admin" {
     resources = ["${aws_s3_bucket.front_admin.arn}/*"]
 
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.front_admin.iam_arn]
     }
   }
 }

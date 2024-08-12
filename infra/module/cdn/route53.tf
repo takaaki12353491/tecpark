@@ -15,14 +15,27 @@ resource "aws_route53_record" "cloudfront_acm_dns_resolve" {
   ttl             = "300"
 }
 
-resource "aws_route53_record" "cloudfront" {
+resource "aws_route53_record" "main" {
   zone_id = var.main_route53_zone_id
-  name    = "cdn.${var.domain}"
+  name    = ""
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.asset.domain_name
-    zone_id                = aws_cloudfront_distribution.asset.hosted_zone_id
+    name                   = aws_cloudfront_distribution.user.domain_name
+    zone_id                = aws_cloudfront_distribution.user.hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+
+
+resource "aws_route53_record" "cloudfront" {
+  zone_id = var.main_route53_zone_id
+  name    = "admin"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.admin.domain_name
+    zone_id                = aws_cloudfront_distribution.admin.hosted_zone_id
     evaluate_target_health = true
   }
 }

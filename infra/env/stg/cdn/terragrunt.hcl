@@ -27,6 +27,10 @@ dependency "web" {
   config_path = find_in_parent_folders("web")
 }
 
+dependency "front_admin" {
+  config_path = find_in_parent_folders("front_admin")
+}
+
 inputs = {
   domain = "${local.env}.${local.custom_domain}"
 
@@ -34,4 +38,7 @@ inputs = {
 
   alb_id                  = dependency.web.outputs.alb_id
   alb_route53_record_fqdn = dependency.web.outputs.alb_route53_record_fqdn
+
+  front_admin_s3_bucket                              = dependency.front_admin.outputs.front_admin_s3_bucket
+  front_admin_cloudfront_origin_access_identity_path = dependency.front_admin.outputs.front_admin_cloudfront_origin_access_identity_path
 }
