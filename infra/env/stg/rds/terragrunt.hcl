@@ -19,10 +19,22 @@ dependency "vpc" {
   config_path = find_in_parent_folders("vpc")
 }
 
+dependency "api" {
+  config_path = find_in_parent_folders("api")
+}
+
+dependency "bastion" {
+  config_path = find_in_parent_folders("bastion")
+}
+
 inputs = {
   project = local.project
   env     = local.env
 
-  private_subnet_ids          = dependency.vpc.outputs.private_subnet_ids
-  security_group_datastore_id = dependency.vpc.outputs.security_group_datastore_id
+  main_vpc_id        = dependency.vpc.outputs.main_vpc_id
+  private_subnet_ids = dependency.vpc.outputs.private_subnet_ids
+
+  api_security_group_id = dependency.api.outputs.api_security_group_id
+
+  bastion_security_group_id = dependency.bastion.outputs.bastion_security_group_id
 }

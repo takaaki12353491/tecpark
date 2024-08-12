@@ -60,7 +60,7 @@ resource "aws_db_instance" "main" {
   multi_az               = false
   availability_zone      = "ap-northeast-1a"
   db_subnet_group_name   = aws_db_subnet_group.private.name
-  vpc_security_group_ids = [var.security_group_datastore_id]
+  vpc_security_group_ids = [aws_security_group.datastore.id]
   publicly_accessible    = false
   port                   = 3306
 
@@ -82,66 +82,5 @@ resource "aws_db_instance" "main" {
 
   tags = {
     Name = "main"
-  }
-}
-
-resource "aws_ssm_parameter" "rds_main_host" {
-  name  = "RDS_MAIN_HOST"
-  type  = "String"
-  value = aws_db_instance.main.address
-
-  tags = {
-    Name = "rds-main-host"
-  }
-}
-
-resource "aws_ssm_parameter" "rds_main_port" {
-  name  = "RDS_MAIN_PORT"
-  type  = "String"
-  value = aws_db_instance.main.port
-
-  tags = {
-    Name = "rds-main-port"
-  }
-}
-
-resource "aws_ssm_parameter" "rds_main_database" {
-  name  = "RDS_MAIN_DATABASE"
-  type  = "String"
-  value = aws_db_instance.main.db_name
-
-  tags = {
-    Name = "rds-main-database"
-  }
-}
-
-resource "aws_ssm_parameter" "rds_main_username" {
-  name  = "RDS_MAIN_USERNAME"
-  type  = "String"
-  value = aws_db_instance.main.username
-
-  tags = {
-    Name = "rds-main-username"
-  }
-}
-
-resource "aws_secretsmanager_secret" "rds_main_password" {
-  name = "RDS_MAIN_PASSWORD"
-
-  tags = {
-    Name = "rds-main-password"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_secretsmanager_secret_version" "rds_main_password_version" {
-  secret_id     = aws_secretsmanager_secret.rds_main_password.id
-  secret_string = random_string.rdb_password.result
-
-  lifecycle {
-    prevent_destroy = true
   }
 }

@@ -2,8 +2,12 @@ output "azs" {
   value = local.azs
 }
 
-output "vpc_main_id" {
+output "main_vpc_id" {
   value = aws_vpc.main.id
+}
+
+output "private_cidrs" {
+  value = local.private_cidrs
 }
 
 output "public_subnet_ids" {
@@ -16,20 +20,4 @@ output "private_subnet_ids" {
 
 output "dummy_subnet_id" {
   value = aws_subnet.dummy.id
-}
-
-output "security_group_web_id" {
-  value = aws_security_group.web.id
-}
-
-output "security_group_api_id" {
-  value = aws_security_group.api.id
-}
-
-output "security_group_datastore_id" {
-  value = aws_security_group.datastore.id
-}
-
-output "security_group_bastion_id" {
-  value = aws_security_group.bastion.id
 }

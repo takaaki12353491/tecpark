@@ -52,6 +52,20 @@ provider "aws" {
     }
   }
 }
+
+provider "aws" {
+  alias   = "virginia"
+  profile = "${local.project}-${local.env}"
+  region  = "us-east-1"
+
+  default_tags {
+    tags = {
+      Tool    = "${local.tool}"
+      Project = "${local.project}"
+      Env     = "${local.env}"
+    }
+  }
+}
 EOF
 
 }
