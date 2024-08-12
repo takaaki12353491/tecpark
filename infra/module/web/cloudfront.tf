@@ -14,6 +14,11 @@ resource "aws_cloudfront_distribution" "user" {
       origin_protocol_policy = "match-viewer"
       origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
+
+    custom_header {
+      name  = local.user_cloudfront_secret_header
+      value = random_string.user_cloudfront_secret_header.result
+    }
   }
 
   default_cache_behavior {
