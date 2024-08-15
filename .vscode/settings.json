@@ -1,8 +1,8 @@
 {
+  "editor.formatOnSave": true,
   "files.exclude": {
     "**/.terragrunt-cache": true
   },
-  "editor.formatOnSave": true,
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform",
     "editor.formatOnSaveMode": "file"
@@ -14,4 +14,10 @@
   "Prettier-SQL.keywordCase": "upper",
   "Prettier-SQL.ignoreTabSettings": true,
   "Prettier-SQL.tabSizeOverride": 2,
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "gopls": {
+    "staticcheck": true
+  },
 }
