@@ -18,6 +18,17 @@ services:
     networks:
       - db
 
+  migrate:
+    image: arigaio/atlas:latest
+    command: migrate apply --url mysql://tecpark:tecpark@mysql:3306/tecpark
+    volumes:
+      - ./db/mysql/migrations/:/migrations
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - db
+
 volumes:
   mysql_data:
 
