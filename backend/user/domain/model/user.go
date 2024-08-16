@@ -1,16 +1,11 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type User struct {
-	gorm.Model
-	Name string
-	Pets []Pet
-}
-
-type Pet struct {
-	gorm.Model
-	Name   string
-	User   User
-	UserID uint
+	ID        uint      `gorm:"primarykey"`
+	CreatedAt time.Time `gorm:"not null;default:CURRENT_TIMESTAMP(3)"`
+	UpdatedAt time.Time `gorm:"not null;default:CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"`
 }
