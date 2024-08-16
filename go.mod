@@ -2,7 +2,10 @@ module github.com/takaaki12353491/tecpark/backend/user
 
 go 1.22.5
 
-require ariga.io/atlas-provider-gorm v0.5.0
+require (
+	ariga.io/atlas-provider-gorm v0.5.0
+	gorm.io/gorm v1.25.11
+)
 
 require (
 	ariga.io/atlas-go-sdk v0.5.7 // indirect
@@ -26,5 +29,4 @@ require (
 	gorm.io/driver/postgres v1.5.9 // indirect
 	gorm.io/driver/sqlite v1.5.6 // indirect
 	gorm.io/driver/sqlserver v1.5.3 // indirect
-	gorm.io/gorm v1.25.11 // indirect
 )
