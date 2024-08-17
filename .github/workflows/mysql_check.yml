@@ -5,6 +5,7 @@ on:
     paths:
       - "db/mysql/migrations/**"
       - ".github/workflows/mysql_check.yml"
+  workflow_dispatch:
 
 jobs:
   lint:
