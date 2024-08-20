@@ -12,7 +12,7 @@ locals {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/rds"
+  source = "${find_in_parent_folders("module")}/service/rds"
 }
 
 dependency "vpc" {

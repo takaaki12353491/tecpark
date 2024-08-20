@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/bastion"
+  source = "${find_in_parent_folders("module")}/service/bastion"
 }
 
 dependency "vpc" {

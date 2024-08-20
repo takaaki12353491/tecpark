@@ -12,7 +12,7 @@ locals {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/acm"
+  source = "${find_in_parent_folders("module")}/common/acm"
 }
 
 dependency "vpc" {

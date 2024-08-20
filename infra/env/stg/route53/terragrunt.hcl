@@ -12,7 +12,7 @@ locals {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/route53"
+  source = "${find_in_parent_folders("module")}/common/route53"
 }
 
 inputs = {

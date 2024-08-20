@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/vpc"
+  source = "${find_in_parent_folders("module")}/common/vpc"
 }
 
 inputs = {
