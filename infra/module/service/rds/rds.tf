@@ -29,7 +29,7 @@ resource "aws_db_option_group" "mysql" {
 
 resource "aws_db_subnet_group" "private" {
   name       = "private"
-  subnet_ids = values(var.private_subnet_ids)
+  subnet_ids = local.rds_subnets
 
   tags = {
     Name = "private"
@@ -57,10 +57,10 @@ resource "aws_db_instance" "main" {
   storage_type          = "gp2"
   storage_encrypted     = false
 
-  multi_az               = false
-  availability_zone      = "ap-northeast-1a"
+  multi_az               = length(var.azs) >= 2
+  availability_zone      = var.azs[0]
   db_subnet_group_name   = aws_db_subnet_group.private.name
-  vpc_security_group_ids = [aws_security_group.datastore.id]
+  vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = false
   port                   = 3306
 

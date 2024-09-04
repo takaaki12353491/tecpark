@@ -26,7 +26,7 @@ resource "aws_subnet" "private" {
   }
 }
 
-# シングルAZでもALBを作成できるようにするためのサブネット
+# シングルAZでもマルチAZ用のリソースを作成できるようにするためのサブネット
 resource "aws_subnet" "dummy" {
   vpc_id                  = aws_vpc.main.id
   availability_zone       = "${data.aws_region.current.name}c"

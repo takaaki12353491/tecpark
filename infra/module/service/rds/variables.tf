@@ -10,14 +10,18 @@ variable "main_vpc_id" {
   type = string
 }
 
+variable "azs" {
+  type = list(string)
+}
+
+variable "private_cidrs" {
+  type = map(string)
+}
+
 variable "private_subnet_ids" {
   type = map(string)
 }
 
-variable "api_security_group_id" {
-  type = string
-}
-
-variable "bastion_security_group_id" {
+variable "dummy_subnet_id" {
   type = string
 }
