@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "db/mysql/migrations/**"
-      - ".github/workflows/mysql_check.yml"
+      - ".github/workflows/mysql-check.yml"
   workflow_dispatch:
 
 jobs:
