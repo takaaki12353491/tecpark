@@ -1,0 +1,17 @@
+name: Deploy STG
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      env: stg
+      aws_region: ${{ vars.AWS_REGION }}
+      aws_migration_ecr_url: ${{ vars.AWS_MIGRATION_ECR_URL }}
+    secrets:
+      AWS_GITHUB_ACTIONS_IAM_ROLE_ARN: ${{ secrets.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}

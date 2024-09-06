@@ -1,0 +1,43 @@
+name: Reusable Deploy
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+      aws_migration_ecr_url:
+        required: true
+        type: string
+    secrets:
+      AWS_GITHUB_ACTIONS_IAM_ROLE_ARN:
+        required: true
+
+jobs:
+  migration:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ inputs.aws_region }}
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ inputs.aws_migration_ecr_url }}:latest db/mysql
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${{ inputs.aws_migration_ecr_url }}:latest
