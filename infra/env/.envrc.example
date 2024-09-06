@@ -2,7 +2,10 @@
 # 各環境のルートディレクトリに.envrcを配置する
 # direnvで値を読み込む
 
+GITHUB_TOKEN=$(gh auth token)
+
 export AWS_PROFILE=
 
 export TF_VAR_terragrunt_env=
-export TF_VAR_az_suffixes=
+export TF_VAR_terragrunt_github_token=$GITHUB_TOKEN
+export TF_VAR_terragrunt_github_owner=
