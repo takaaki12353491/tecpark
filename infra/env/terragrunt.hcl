@@ -6,7 +6,7 @@ locals {
   custom_domain       = local.local_vars.locals.custom_domain
   region              = local.local_vars.locals.region
   github_organization = local.local_vars.locals.github_organization
-  github_repositories = local.local_vars.locals.github_repositories
+  github_repository   = local.local_vars.locals.github_repository
 
   env = get_env("TF_VAR_terragrunt_env")
 
@@ -48,6 +48,6 @@ inputs = {
   custom_domain       = local.custom_domain
   region              = local.region
   github_organization = local.github_organization
-  github_repositories = local.github_repositories
+  github_repository   = local.github_repository
   env                 = local.env
 }

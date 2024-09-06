@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "github_actions" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = local.github_paths
+      values   = local.github_path
     }
 
     condition {
