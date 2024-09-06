@@ -1,12 +1,12 @@
 locals {
   local_vars = read_terragrunt_config(find_in_parent_folders("locals.tf"))
   
-  project             = local.local_vars.locals.project
-  tool                = local.local_vars.locals.tool
-  custom_domain       = local.local_vars.locals.custom_domain
-  region              = local.local_vars.locals.region
-  github_username = local.local_vars.locals.github_username
-  github_repository   = local.local_vars.locals.github_repository
+  project           = local.local_vars.locals.project
+  tool              = local.local_vars.locals.tool
+  custom_domain     = local.local_vars.locals.custom_domain
+  region            = local.local_vars.locals.region
+  github_username   = local.local_vars.locals.github_username
+  github_repository = local.local_vars.locals.github_repository
 
   env = get_env("TF_VAR_terragrunt_env")
 

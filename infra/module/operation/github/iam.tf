@@ -19,12 +19,11 @@ resource "aws_iam_role" "github_actions" {
   assume_role_policy = data.aws_iam_policy_document.github_actions.json
   description        = "IAM Role for GitHub Actions OIDC"
 
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  ]
+
   tags = {
     Name = "github-actions"
   }
-}
-
-resource "aws_iam_role_policy_attachment" "admin" {
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role       = aws_iam_role.github_actions.name
 }
