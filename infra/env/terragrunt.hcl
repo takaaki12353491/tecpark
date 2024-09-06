@@ -46,7 +46,6 @@ inputs = {
   project           = local.project
   tool              = local.tool
   custom_domain     = local.custom_domain
-  region            = local.region
   github_username   = local.github_username
   github_repository = local.github_repository
   env               = local.env
