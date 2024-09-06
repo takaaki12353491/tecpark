@@ -28,6 +28,7 @@ remote_state {
     key     = "${basename(get_terragrunt_dir())}.tfstate"
     region  = "${local.region}"
     profile = "${local.project}-${local.env}"
+    encrypt = true
   }
 
   generate = {
