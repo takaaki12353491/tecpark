@@ -18,15 +18,15 @@ data "aws_iam_policy_document" "github_actions" {
     }
 
     condition {
-      test     = "StringLike"
-      variable = "token.actions.githubusercontent.com:sub"
-      values   = [local.github_path]
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
     }
 
     condition {
       test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
-      values   = ["sts.amazonaws.com"]
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = [local.github_path]
     }
   }
 }
