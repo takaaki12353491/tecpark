@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "user" {
   enabled         = true
   is_ipv6_enabled = true
-  aliases         = [var.domain]
+  aliases         = [local.domain]
   price_class     = "PriceClass_200"
 
   origin {

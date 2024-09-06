@@ -1,12 +1,23 @@
 locals {
-  common_vars = read_terragrunt_config(find_in_parent_folders("common.hcl"))
-  env_vars    = read_terragrunt_config(find_in_parent_folders("env.hcl"))
+  local_vars = read_terragrunt_config(find_in_parent_folders("locals.tf"))
   
-  project = local.common_vars.locals.project
-  tool    = local.common_vars.locals.tool
-  region  = local.common_vars.locals.region
+  project             = local.local_vars.locals.project
+  tool                = local.local_vars.locals.tool
+  custom_domain       = local.local_vars.locals.custom_domain
+  region              = local.local_vars.locals.region
+  github_organization = local.local_vars.locals.github_organization
+  github_repositories = local.local_vars.locals.github_repositories
 
-  env = local.env_vars.locals.env
+  env = get_env("TF_VAR_terragrunt_env")
+
+  locals_content    = file("locals.tf")
+  variables_content = file("variables.tf")
+  provider_content  = file("provider.tf")
+  generated_content = join("\n", [
+    local.locals_content, 
+    local.variables_content, 
+    local.provider_content
+  ])
 }
 
 remote_state {
@@ -28,45 +39,15 @@ remote_state {
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
-
-  contents = <<EOF
-terraform {
-  required_version = ">= 1.9.3"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.60.0"
-    }
-  }
+  contents  = local.generated_content
 }
 
-provider "aws" {
-  profile = "${local.project}-${local.env}"
-  region  = "${local.region}"
-
-  default_tags {
-    tags = {
-      Tool    = "${local.tool}"
-      Project = "${local.project}"
-      Env     = "${local.env}"
-    }
-  }
-}
-
-provider "aws" {
-  alias   = "virginia"
-  profile = "${local.project}-${local.env}"
-  region  = "us-east-1"
-
-  default_tags {
-    tags = {
-      Tool    = "${local.tool}"
-      Project = "${local.project}"
-      Env     = "${local.env}"
-    }
-  }
-}
-EOF
-
+inputs = {
+  project             = local.project
+  tool                = local.tool
+  custom_domain       = local.custom_domain
+  region              = local.region
+  github_organization = local.github_organization
+  github_repositories = local.github_repositories
+  env                 = local.env
 }

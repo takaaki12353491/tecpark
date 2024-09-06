@@ -1,6 +1,6 @@
 resource "aws_acm_certificate" "main" {
-  domain_name               = var.domain
-  subject_alternative_names = ["*.${var.domain}"]
+  domain_name               = local.domain
+  subject_alternative_names = ["*.${local.domain}"]
   validation_method         = "DNS"
 
   tags = {
@@ -20,8 +20,8 @@ resource "aws_acm_certificate_validation" "main" {
 resource "aws_acm_certificate" "cloudfront" {
   provider = aws.virginia
 
-  domain_name               = var.domain
-  subject_alternative_names = ["*.${var.domain}"]
+  domain_name               = local.domain
+  subject_alternative_names = ["*.${local.domain}"]
   validation_method         = "DNS"
 
   lifecycle {

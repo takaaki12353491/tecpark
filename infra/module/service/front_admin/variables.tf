@@ -2,11 +2,11 @@ variable "project" {
   type = string
 }
 
-variable "env" {
+variable "custom_domain" {
   type = string
 }
 
-variable "domain" {
+variable "env" {
   type = string
 }
 

@@ -5,3 +5,7 @@ variable "github_organization" {
 variable "github_repositories" {
   type = list(string)
 }
+
+variable "env" {
+  type = string
+}

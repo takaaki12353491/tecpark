@@ -1,0 +1,8 @@
+#!/bin/bash
+# 各環境のルートディレクトリに.envrcを配置する
+# direnvで値を読み込む
+
+export AWS_PROFILE=
+
+export TF_VAR_terragrunt_env=
+export TF_VAR_az_suffixes=

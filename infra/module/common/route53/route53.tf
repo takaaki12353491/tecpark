@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "main" {
-  name          = var.domain
+  name          = local.domain
   force_destroy = false
 
   tags = {

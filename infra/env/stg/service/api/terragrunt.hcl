@@ -7,11 +7,11 @@ terraform {
 }
 
 dependency "vpc" {
-  config_path = find_in_parent_folders("vpc")
+  config_path = "${find_in_parent_folders("common")}/vpc"
 }
 
 dependency "web" {
-  config_path = find_in_parent_folders("web")
+  config_path = "${find_in_parent_folders("web")}"
 }
 
 inputs = {

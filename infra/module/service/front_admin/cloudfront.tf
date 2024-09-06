@@ -5,7 +5,7 @@ resource "aws_cloudfront_origin_access_identity" "front_admin" {
 resource "aws_cloudfront_distribution" "admin" {
   enabled             = true
   is_ipv6_enabled     = true
-  aliases             = ["admin.${var.domain}"]
+  aliases             = ["admin.${local.domain}"]
   price_class         = "PriceClass_200"
   default_root_object = "index.html"
 
