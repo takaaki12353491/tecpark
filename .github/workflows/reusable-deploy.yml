@@ -6,15 +6,6 @@ on:
       env:
         required: true
         type: string
-      aws_region:
-        required: true
-        type: string
-      aws_migration_ecr_url:
-        required: true
-        type: string
-    secrets:
-      AWS_GITHUB_ACTIONS_IAM_ROLE_ARN:
-        required: true
 
 jobs:
   migration:
@@ -27,7 +18,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ inputs.aws_region }}
+          aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
       - name: Log in to Amazon ECR
@@ -36,8 +27,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ inputs.aws_migration_ecr_url }}:latest db/mysql
+          docker build -t ${{ vars.AWS_MIGRATION_ECR_URL }}:latest db/mysql
 
       - name: Push Docker image to ECR
         run: |
-          docker push ${{ inputs.aws_migration_ecr_url }}:latest
+          docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:latest
