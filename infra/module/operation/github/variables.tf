@@ -1,4 +1,4 @@
-variable "github_organization" {
+variable "github_username" {
   type = string
 }
 

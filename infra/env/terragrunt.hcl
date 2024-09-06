@@ -5,7 +5,7 @@ locals {
   tool                = local.local_vars.locals.tool
   custom_domain       = local.local_vars.locals.custom_domain
   region              = local.local_vars.locals.region
-  github_organization = local.local_vars.locals.github_organization
+  github_username = local.local_vars.locals.github_username
   github_repository   = local.local_vars.locals.github_repository
 
   env = get_env("TF_VAR_terragrunt_env")
@@ -43,11 +43,11 @@ generate "provider" {
 }
 
 inputs = {
-  project             = local.project
-  tool                = local.tool
-  custom_domain       = local.custom_domain
-  region              = local.region
-  github_organization = local.github_organization
-  github_repository   = local.github_repository
-  env                 = local.env
+  project           = local.project
+  tool              = local.tool
+  custom_domain     = local.custom_domain
+  region            = local.region
+  github_username   = local.github_username
+  github_repository = local.github_repository
+  env               = local.env
 }
