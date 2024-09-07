@@ -3,6 +3,10 @@ name: Reusable Deploy
 on:
   workflow_call:
     inputs:
+      project:
+        required: false
+        type: string
+        default: tecpark
       env:
         required: true
         type: string
@@ -28,6 +32,12 @@ jobs:
         with:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+
+      - name: Configure AWS Profile
+        run: |
+          echo "AWS_PROFILE=${{ inputs.project }}-${{ inputs.env }}" >> $GITHUB_ENV
+          aws configure set credential_source Environment
+          aws configure set role_arn ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
       - name: Log in to Amazon ECR
         id: login-ecr
