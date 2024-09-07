@@ -8,12 +8,12 @@ on:
         type: string
       tf_version:
         required: false
-        type: number
-        default: 1.9.5
+        type: string
+        default: "1.9.5"
       tg_version:
         required: false
-        type: number
-        default: 0.66.9
+        type: string
+        default: "0.66.9"
 
 jobs:
   migration:
