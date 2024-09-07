@@ -50,16 +50,13 @@ jobs:
         run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: |
-          docker build -t ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }} db/mysql
+        run: docker build -t ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }} db/mysql
 
       - name: Push Docker image to ECR
-        run: |
-          docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }}
+        run: docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }}
 
       - name: Set Terragrunt Env
-        run: |
-          echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
+        run: echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
 
       - name: Plan migration task
         uses: gruntwork-io/terragrunt-action@v2
