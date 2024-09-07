@@ -35,9 +35,9 @@ jobs:
 
       - name: Configure AWS Profile
         run: |
-          echo "AWS_PROFILE=${{ inputs.project }}-${{ inputs.env }}" >> $GITHUB_ENV
-          aws configure set credential_source Environment
-          aws configure set role_arn ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+          export AWS_PROFILE="${{ inputs.project }}-${{ inputs.env }}"
+          aws configure set credential_source Environment --profile $AWS_PROFILE
+          aws configure set role_arn ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }} --profile $AWS_PROFILE
 
       - name: Log in to Amazon ECR
         id: login-ecr
