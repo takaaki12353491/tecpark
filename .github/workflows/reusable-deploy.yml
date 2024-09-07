@@ -50,7 +50,7 @@ jobs:
         with:
           tf_version: ${{ inputs.tf_version }}
           tg_version: ${{ inputs.tg_version }}
-          tg_dir: "env/stg/operation/migration/"
+          tg_dir: "infra/env/stg/operation/migration/"
           tg_command: "plan --target=aws_ecs_task_definition.migration -var=image_tag=${{ env.IMAGE_TAG }}"
 
       - name: Apply migration task
@@ -58,5 +58,5 @@ jobs:
         with:
           tf_version: ${{ inputs.tf_version }}
           tg_version: ${{ inputs.tg_version }}
-          tg_dir: "env/stg/operation/migration/"
+          tg_dir: "infra/env/stg/operation/migration/"
           tg_command: "apply --target=aws_ecs_task_definition.migration -var=image_tag=${{ env.IMAGE_TAG }}"
