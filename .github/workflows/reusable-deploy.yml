@@ -55,26 +55,28 @@ jobs:
       - name: Push Docker image to ECR
         run: docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }}
 
-      - name: Plan migration task
-        uses: gruntwork-io/terragrunt-action@v2
+      - uses: hashicorp/setup-terraform@v3
         with:
-          tf_version: ${{ inputs.tf_version }}
-          tg_version: ${{ inputs.tg_version }}
-          tg_dir: "infra/env/stg/operation/migration/"
-          tg_command: "plan --target=aws_ecs_task_definition.migration"
+          terraform_version: ${{ inputs.tf_version }}
+
+      - name: Set up Terragrunt
+        run: |
+          sudo curl -sSL https://github.com/gruntwork-io/terragrunt/releases/download/v${{ inputs.tg_version }}/terragrunt_linux_amd64 -o /usr/local/bin/terragrunt
+          sudo chmod a+x /usr/local/bin/terragrunt
+          terragrunt --version
+
+      - name: Plan migration task
+        working-directory: infra/env/stg/operation/migration/
         env:
           AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
+        run: terragrunt plan --target=aws_ecs_task_definition.migration
 
       - name: Apply migration task
-        uses: gruntwork-io/terragrunt-action@v2
-        with:
-          tf_version: ${{ inputs.tf_version }}
-          tg_version: ${{ inputs.tg_version }}
-          tg_dir: "infra/env/stg/operation/migration/"
-          tg_command: "apply --target=aws_ecs_task_definition.migration"
+        working-directory: infra/env/stg/operation/migration/
         env:
           AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
+        run: terragrunt apply --target=aws_ecs_task_definition.migration
