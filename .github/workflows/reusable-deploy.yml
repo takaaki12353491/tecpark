@@ -38,12 +38,12 @@ jobs:
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
       - name: Configure AWS Profile
-        id: configure_aws_profile
         run: |
           export AWS_PROFILE="${{ inputs.project }}-${{ inputs.env }}"
-          aws configure set credential_source Environment --profile $AWS_PROFILE
-          aws configure set role_arn ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }} --profile $AWS_PROFILE
-          echo "aws_profile=$AWS_PROFILE" >> $GITHUB_OUTPUT
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE
+          aws configure set aws_session_token $AWS_SESSION_TOKEN --profile $AWS_PROFILE
+          echo "AWS_PROFILE=$AWS_PROFILE" >> $GITHUB_ENV
 
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
@@ -69,11 +69,11 @@ jobs:
         env:
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
-        run: terragrunt plan --target=aws_ecs_task_definition.migration --profile=${{ steps.configure_aws_profile.outputs.aws_profile }}
+        run: terragrunt plan --target=aws_ecs_task_definition.migration
 
       - name: Apply migration task
         working-directory: infra/env/stg/operation/migration/
         env:
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
-        run: terragrunt apply --target=aws_ecs_task_definition.migration --profile=${{ steps.configure_aws_profile.outputs.aws_profile }}
+        run: terragrunt apply --target=aws_ecs_task_definition.migration
