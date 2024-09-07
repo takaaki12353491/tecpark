@@ -1,3 +1,3 @@
 locals {
-  github_path = "repo:${var.github_username}/${var.github_repository}:environment:${var.env}"
+  github_path = "repo:${var.github_owner}/${var.github_repository}:environment:${var.env}"
 }

@@ -1,12 +1,10 @@
 locals {
   local_vars = read_terragrunt_config(find_in_parent_folders("locals.tf"))
   
-  project           = local.local_vars.locals.project
-  tool              = local.local_vars.locals.tool
-  custom_domain     = local.local_vars.locals.custom_domain
-  region            = local.local_vars.locals.region
-  github_username   = local.local_vars.locals.github_username
-  github_repository = local.local_vars.locals.github_repository
+  project       = local.local_vars.locals.project
+  tool          = local.local_vars.locals.tool
+  custom_domain = local.local_vars.locals.custom_domain
+  region        = local.local_vars.locals.region
 
   env = get_env("TF_VAR_terragrunt_env")
 
@@ -44,10 +42,8 @@ generate "provider" {
 }
 
 inputs = {
-  project           = local.project
-  tool              = local.tool
-  custom_domain     = local.custom_domain
-  github_username   = local.github_username
-  github_repository = local.github_repository
-  env               = local.env
+  project       = local.project
+  tool          = local.tool
+  custom_domain = local.custom_domain
+  env           = local.env
 }
