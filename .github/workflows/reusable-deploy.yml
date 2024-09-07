@@ -67,15 +67,13 @@ jobs:
       - name: Plan migration task
         working-directory: infra/env/stg/operation/migration/
         env:
-          AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
-        run: terragrunt plan --target=aws_ecs_task_definition.migration
+        run: terragrunt plan --target=aws_ecs_task_definition.migration --profile=${{ steps.configure_aws_profile.outputs.aws_profile }}
 
       - name: Apply migration task
         working-directory: infra/env/stg/operation/migration/
         env:
-          AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
           TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
-        run: terragrunt apply --target=aws_ecs_task_definition.migration
+        run: terragrunt apply --target=aws_ecs_task_definition.migration --profile=${{ steps.configure_aws_profile.outputs.aws_profile }}
