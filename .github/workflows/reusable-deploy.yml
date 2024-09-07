@@ -45,6 +45,10 @@ jobs:
         run: |
           docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }}
 
+      - name: Set Terragrunt Env
+        run: |
+          echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
+
       - name: Plan migration task
         uses: gruntwork-io/terragrunt-action@v2
         with:
