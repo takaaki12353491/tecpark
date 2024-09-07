@@ -74,8 +74,8 @@ jobs:
 
       - name: Plan migration task
         working-directory: infra/env/stg/operation/migration/
-        run: terragrunt plan --target=aws_ecs_task_definition.migration
+        run: terragrunt plan
 
       - name: Apply migration task
         working-directory: infra/env/stg/operation/migration/
-        run: terragrunt apply --target=aws_ecs_task_definition.migration
+        run: terragrunt apply
