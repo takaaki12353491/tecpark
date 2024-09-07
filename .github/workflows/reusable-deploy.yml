@@ -34,10 +34,12 @@ jobs:
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
       - name: Configure AWS Profile
+        id: configure_aws_profile
         run: |
           export AWS_PROFILE="${{ inputs.project }}-${{ inputs.env }}"
           aws configure set credential_source Environment --profile $AWS_PROFILE
           aws configure set role_arn ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }} --profile $AWS_PROFILE
+          echo "aws_profile=$AWS_PROFILE" >> "$GITHUB_OUTPUT"
 
       - name: Log in to Amazon ECR
         id: login-ecr
