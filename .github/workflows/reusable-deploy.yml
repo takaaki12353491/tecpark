@@ -55,9 +55,6 @@ jobs:
       - name: Push Docker image to ECR
         run: docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ env.IMAGE_TAG }}
 
-      - name: Set Terragrunt Env
-        run: echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
-
       - name: Plan migration task
         uses: gruntwork-io/terragrunt-action@v2
         with:
@@ -67,6 +64,7 @@ jobs:
           tg_command: "plan --target=aws_ecs_task_definition.migration"
         env:
           AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
+          TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
 
       - name: Apply migration task
@@ -78,4 +76,5 @@ jobs:
           tg_command: "apply --target=aws_ecs_task_definition.migration"
         env:
           AWS_PROFILE: ${{ steps.configure_aws_profile.outputs.aws_profile }}
+          TF_VAR_terragrunt_env: ${{ inputs.env }}
           TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
