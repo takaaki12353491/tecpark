@@ -5,3 +5,8 @@ variable "github_repository" {
 variable "env" {
   type = string
 }
+
+variable "image_tag" {
+  type    = string
+  default = "latest"
+}

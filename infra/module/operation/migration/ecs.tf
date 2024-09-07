@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "migration" {
   container_definitions = jsonencode([
     {
       name      = "migration"
-      image     = "${aws_ecr_repository.migration.repository_url}:latest"
+      image     = "${aws_ecr_repository.migration.repository_url}:${var.image_tag}"
       essential = true
 
       logConfiguration = {
