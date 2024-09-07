@@ -64,16 +64,18 @@ jobs:
           sudo chmod a+x /usr/local/bin/terragrunt
           terragrunt --version
 
+      - name: Configure Terraform variables
+        run: |
+          echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
+          echo "TF_VAR_terragrunt_github_token=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "TF_VAR_terragrunt_github_owner=${GITHUB_REPOSITORY_OWNER}" >> $GITHUB_ENV
+          echo "TF_VAR_github_repository=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+          echo "TF_VAR_image_tag=${{ inputs.image_tag }}" >> $GITHUB_ENV
+
       - name: Plan migration task
         working-directory: infra/env/stg/operation/migration/
-        env:
-          TF_VAR_terragrunt_env: ${{ inputs.env }}
-          TF_VAR_image_tag: ${{ inputs.image_tag }}
         run: terragrunt plan --target=aws_ecs_task_definition.migration
 
       - name: Apply migration task
         working-directory: infra/env/stg/operation/migration/
-        env:
-          TF_VAR_terragrunt_env: ${{ inputs.env }}
-          TF_VAR_image_tag: ${{ inputs.image_tag }}
         run: terragrunt apply --target=aws_ecs_task_definition.migration
