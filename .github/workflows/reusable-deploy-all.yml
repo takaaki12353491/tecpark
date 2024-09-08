@@ -16,7 +16,22 @@ on:
         default: ${{ github.sha }}
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      mysql: ${{ steps.filter.outputs.mysql }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            mysql:
+              - "db/mysql/**"
+
   mysql:
+    needs: changes
+    if: ${{ needs.changes.outputs.mysql == 'true' }}
     uses: ./.github/workflows/reusable-deploy-mysql.yml
     with:
       env: ${{ inputs.env }}
