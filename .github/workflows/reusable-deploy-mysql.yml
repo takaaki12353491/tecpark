@@ -1,4 +1,4 @@
-name: Reusable Deploy
+name: Reusable Deploy MySQL
 
 on:
   workflow_call:

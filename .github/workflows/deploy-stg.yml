@@ -12,6 +12,6 @@ permissions:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/reusable-deploy-all.yml
     with:
       env: stg

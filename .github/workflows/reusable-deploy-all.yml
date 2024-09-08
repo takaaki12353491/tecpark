@@ -1,0 +1,22 @@
+name: Reusable Deploy All
+
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: false
+        type: string
+        default: tecpark
+      env:
+        required: true
+        type: string
+      image_tag:
+        required: false
+        type: string
+        default: ${{ github.sha }}
+
+jobs:
+  mysql:
+    uses: ./.github/workflows/reusable-deploy-mysql.yml
+    with:
+      env: ${{ inputs.env }}
