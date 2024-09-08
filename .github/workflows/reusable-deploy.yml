@@ -10,14 +10,6 @@ on:
       env:
         required: true
         type: string
-      tf_version:
-        required: false
-        type: string
-        default: "1.9.5"
-      tg_version:
-        required: false
-        type: string
-        default: "0.66.9"
       image_tag:
         required: false
         type: string
@@ -53,29 +45,3 @@ jobs:
 
       - name: Push Docker image to ECR
         run: docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }}
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ inputs.tf_version }}
-
-      - name: Set up Terragrunt
-        run: |
-          sudo curl -sSL https://github.com/gruntwork-io/terragrunt/releases/download/v${{ inputs.tg_version }}/terragrunt_linux_amd64 -o /usr/local/bin/terragrunt
-          sudo chmod a+x /usr/local/bin/terragrunt
-          terragrunt --version
-
-      - name: Configure Terraform variables
-        run: |
-          echo "TF_VAR_terragrunt_env=${{ inputs.env }}" >> $GITHUB_ENV
-          echo "TF_VAR_terragrunt_github_token=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-          echo "TF_VAR_terragrunt_github_owner=${GITHUB_REPOSITORY_OWNER}" >> $GITHUB_ENV
-          echo "TF_VAR_github_repository=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
-          echo "TF_VAR_image_tag=${{ inputs.image_tag }}" >> $GITHUB_ENV
-
-      - name: Plan migration task
-        working-directory: infra/env/stg/operation/migration/
-        run: terragrunt plan
-
-      - name: Apply migration task
-        working-directory: infra/env/stg/operation/migration/
-        run: terragrunt apply
