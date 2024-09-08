@@ -19,6 +19,8 @@ jobs:
   migration:
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    env:
+      IMAGE: "${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -29,19 +31,33 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
-      - name: Configure AWS Profile
-        run: |
-          export AWS_PROFILE="${{ inputs.project }}-${{ inputs.env }}"
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile $AWS_PROFILE
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile $AWS_PROFILE
-          aws configure set aws_session_token $AWS_SESSION_TOKEN --profile $AWS_PROFILE
-          echo "AWS_PROFILE=$AWS_PROFILE" >> $GITHUB_ENV
-
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
-        run: docker build -t ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }} db/mysql
+        run: docker build -t $IMAGE db/mysql
 
       - name: Push Docker image to ECR
-        run: docker push ${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }}
+        run: docker push $IMAGE
+
+      - name: Download ECS task definition
+        id: download-ecs-task-definition
+        env:
+          ECS_TASK_FAMILY: ${{ vars.AWS_MIGRATION_ECS_TASK_FAMILY }}
+          ECS_TASK_DEFINITION_FILE_PATH: task-definition.json
+        run: |
+          aws ecs describe-task-definition --task-definition $ECS_TASK_FAMILY --query taskDefinition > $ECS_TASK_DEFINITION_FILE_PATH
+          echo "file_path=$ECS_TASK_DEFINITION_FILE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Update ECS task definition
+        id: update-ecs-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.download-ecs-task-definition.outputs.file_path }}
+          container-name: migration
+          image: ${{ env.IMAGE }}
+
+      - name: Deploy ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.update-ecs-task-definition.outputs.task-definition }}
