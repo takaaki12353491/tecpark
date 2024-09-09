@@ -1,20 +1,12 @@
-resource "aws_secretsmanager_secret" "rds_main_password" {
-  name = "RDS_MAIN_PASSWORD"
+resource "aws_secretsmanager_secret" "main_db_password" {
+  name = "MAIN_DB_PASSWORD"
 
   tags = {
-    Name = "rds-main-password"
-  }
-
-  lifecycle {
-    prevent_destroy = true
+    Name = "main-db-password"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "rds_main_password_version" {
-  secret_id     = aws_secretsmanager_secret.rds_main_password.id
-  secret_string = random_string.rdb_password.result
-
-  lifecycle {
-    prevent_destroy = true
-  }
+resource "aws_secretsmanager_secret_version" "main_db_password" {
+  secret_id     = aws_secretsmanager_secret.main_db_password.id
+  secret_string = aws_db_instance.main.password
 }
