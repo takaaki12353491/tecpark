@@ -1,4 +1,3 @@
-
 resource "aws_ssm_parameter" "rds_main_host" {
   name  = "RDS_MAIN_HOST"
   type  = "String"
