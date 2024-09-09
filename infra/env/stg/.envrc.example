@@ -1,0 +1,8 @@
+#!/bin/bash
+source_up
+
+# Terragrunt
+export TF_VAR_terragrunt_env=
+
+# AWS
+export AWS_PROFILE="${PROJECT}-${TF_VAR_terragrunt_env}"
