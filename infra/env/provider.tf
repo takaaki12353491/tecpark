@@ -15,13 +15,13 @@ terraform {
 }
 
 provider "aws" {
-  profile = "${local.project}-${var.terragrunt_env}"
+  profile = "${var.terragrunt_project}-${var.terragrunt_env}"
   region  = local.region
 
   default_tags {
     tags = {
       Tool    = "${local.tool}"
-      Project = "${local.project}"
+      Project = "${var.terragrunt_project}"
       Env     = "${var.terragrunt_env}"
     }
   }
@@ -29,13 +29,13 @@ provider "aws" {
 
 provider "aws" {
   alias   = "virginia"
-  profile = "${local.project}-${var.terragrunt_env}"
+  profile = "${var.terragrunt_project}-${var.terragrunt_env}"
   region  = "us-east-1"
 
   default_tags {
     tags = {
       Tool    = "${local.tool}"
-      Project = "${local.project}"
+      Project = "${var.terragrunt_project}"
       Env     = "${var.terragrunt_env}"
     }
   }

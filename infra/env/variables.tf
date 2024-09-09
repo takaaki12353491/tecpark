@@ -1,5 +1,5 @@
-# moduleのvariableと被らないようにする
-variable "terragrunt_env" {
+# moduleのvariableと被らないようにするためにプレフィックスにterragruntを付ける
+variable "terragrunt_project" {
   type = string
 }
 
@@ -9,5 +9,9 @@ variable "terragrunt_github_token" {
 }
 
 variable "terragrunt_github_owner" {
+  type = string
+}
+
+variable "terragrunt_env" {
   type = string
 }

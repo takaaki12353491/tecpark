@@ -5,4 +5,5 @@ source_up
 export TF_VAR_terragrunt_env=
 
 # AWS
-export AWS_PROFILE="${PROJECT}-${TF_VAR_terragrunt_env}"
+# shellcheck disable=SC2154
+export AWS_PROFILE="${TF_VAR_terragrunt_project}-${TF_VAR_terragrunt_env}"
