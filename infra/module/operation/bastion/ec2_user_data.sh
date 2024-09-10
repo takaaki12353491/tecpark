@@ -9,13 +9,13 @@ sudo dnf install -y mysql-community-client
 cat <<EOF > /home/ec2-user/connect_mysql.sh
 #!/bin/bash
 # MySQLに接続するスクリプト
-RDS_MAIN_HOST=\$(aws ssm get-parameter --name "RDS_MAIN_HOST" --query "Parameter.Value" --output text --with-decryption)
-RDS_MAIN_PORT=\$(aws ssm get-parameter --name "RDS_MAIN_PORT" --query "Parameter.Value" --output text --with-decryption)
-RDS_MAIN_DATABASE=\$(aws ssm get-parameter --name "RDS_MAIN_DATABASE" --query "Parameter.Value" --output text --with-decryption)
-RDS_MAIN_USERNAME=\$(aws ssm get-parameter --name "RDS_MAIN_USERNAME" --query "Parameter.Value" --output text --with-decryption)
-RDS_MAIN_PASSWORD=\$(aws secretsmanager get-secret-value --secret-id "RDS_MAIN_PASSWORD" --query "SecretString" --output text)
+MYSQL_HOST=\$(aws ssm get-parameter --name "MAIN_DB_HOST" --query "Parameter.Value" --output text --with-decryption)
+MYSQL_PORT=\$(aws ssm get-parameter --name "MAIN_DB_PORT" --query "Parameter.Value" --output text --with-decryption)
+MYSQL_DATABASE=\$(aws ssm get-parameter --name "MAIN_DB_DATABASE" --query "Parameter.Value" --output text --with-decryption)
+MYSQL_USERNAME=\$(aws ssm get-parameter --name "MAIN_DB_USERNAME" --query "Parameter.Value" --output text --with-decryption)
+MYSQL_PASSWORD=\$(aws secretsmanager get-secret-value --secret-id "MAIN_DB_PASSWORD" --query "SecretString" --output text)
 
-mysql -h \$RDS_MAIN_HOST -P \$RDS_MAIN_PORT -u \$RDS_MAIN_USERNAME -p\$RDS_MAIN_PASSWORD -D \$RDS_MAIN_DATABASE
+mysql -h \$MYSQL_HOST -P \$MYSQL_PORT -u \$MYSQL_USERNAME -p\$MYSQL_PASSWORD -D \$MYSQL_DATABASE
 EOF
 
 chmod +x /home/ec2-user/connect_mysql.sh
