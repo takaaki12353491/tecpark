@@ -19,10 +19,14 @@ services:
       - db
 
   migrate:
-    image: arigaio/atlas:latest
-    command: migrate apply --url mysql://tecpark:tecpark@mysql:3306/tecpark
-    volumes:
-      - ./db/mysql/migrations/:/migrations
+    build:
+      context: ./db/mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: tecpark
+      MYSQL_USER: tecpark
+      MYSQL_PASSWORD: tecpark
     depends_on:
       mysql:
         condition: service_healthy
