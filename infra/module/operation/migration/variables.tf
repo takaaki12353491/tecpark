@@ -11,7 +11,22 @@ variable "image_tag" {
   default = "latest"
 }
 
-variable "atlas_cloud_token" {
-  type      = string
-  sensitive = true
+variable "main_db_host" {
+  type = string
+}
+
+variable "main_db_port" {
+  type = string
+}
+
+variable "main_db_database" {
+  type = string
+}
+
+variable "main_db_username" {
+  type = string
+}
+
+variable "main_db_password_secretsmanager_secret_arn" {
+  type = string
 }

@@ -19,7 +19,30 @@ resource "aws_ecs_task_definition" "migration" {
       name      = "migration"
       image     = "${aws_ecr_repository.migration.repository_url}:${var.image_tag}"
       essential = true
-
+      environment = [
+        {
+          name  = "MYSQL_HOST",
+          value = var.main_db_host
+        },
+        {
+          name  = "MYSQL_PORT",
+          value = var.main_db_port
+        },
+        {
+          name  = "MYSQL_DATABASE",
+          value = var.main_db_database
+        },
+        {
+          name  = "MYSQL_USER",
+          value = var.main_db_username
+        },
+      ]
+      secrets = [
+        {
+          name      = "MYSQL_PASSWORD",
+          valueFrom = var.main_db_password_secretsmanager_secret_arn
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
