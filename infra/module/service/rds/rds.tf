@@ -36,9 +36,10 @@ resource "aws_db_subnet_group" "private" {
   }
 }
 
-resource "random_string" "rdb_password" {
-  length  = 16
-  special = true
+resource "random_string" "main_db_password" {
+  length = 16
+  # エスケープ処理しなくてもいいように特殊文字は使わない
+  special = false
 }
 
 resource "aws_db_instance" "main" {
@@ -48,7 +49,7 @@ resource "aws_db_instance" "main" {
   identifier = "mysql"
 
   username = "admin_${var.env}"
-  password = random_string.rdb_password.result
+  password = random_string.main_db_password.result
 
   instance_class = "db.t3.micro"
 
