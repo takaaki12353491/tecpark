@@ -46,7 +46,15 @@ jobs:
           ECS_TASK_FAMILY: ${{ vars.AWS_MIGRATION_ECS_TASK_FAMILY }}
           ECS_TASK_DEFINITION_FILE_PATH: task-definition.json
         run: |
-          aws ecs describe-task-definition --task-definition $ECS_TASK_FAMILY --query taskDefinition > $ECS_TASK_DEFINITION_FILE_PATH
+          aws ecs describe-task-definition --task-definition $ECS_TASK_FAMILY --query taskDefinition | jq 'del(
+            .compatibilities,
+            .taskDefinitionArn,
+            .requiresAttributes,
+            .revision,
+            .status,
+            .registeredAt,
+            .registeredBy
+          )' > $ECS_TASK_DEFINITION_FILE_PATH
           echo "file_path=$ECS_TASK_DEFINITION_FILE_PATH" >> $GITHUB_OUTPUT
 
       - name: Update ECS task definition
