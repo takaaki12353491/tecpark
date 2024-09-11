@@ -10,28 +10,17 @@ on:
       env:
         required: true
         type: string
+      should_run_migration:
+        required: true
+        type: boolean
       image_tag:
         required: false
         type: string
         default: ${{ github.sha }}
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      mysql: ${{ steps.filter.outputs.mysql }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            mysql:
-              - "db/mysql/**"
-
   mysql:
-    needs: changes
-    if: ${{ needs.changes.outputs.mysql == 'true' }}
+    if: ${{ inputs.should_run_migration }}
     uses: ./.github/workflows/reusable-deploy-mysql.yml
     with:
       env: ${{ inputs.env }}
