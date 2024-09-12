@@ -1,4 +1,4 @@
-name: Reusable Deploy MySQL
+name: Reusable deploy migration
 
 on:
   workflow_call:

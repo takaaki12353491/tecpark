@@ -1,4 +1,4 @@
-name: Reusable Deploy All
+name: Reusable deploy all
 
 on:
   workflow_call:
@@ -19,8 +19,8 @@ on:
         default: ${{ github.sha }}
 
 jobs:
-  mysql:
+  migration:
     if: ${{ inputs.should_run_migration }}
-    uses: ./.github/workflows/reusable-deploy-mysql.yml
+    uses: ./.github/workflows/reusable-deploy-migration.yml
     with:
       env: ${{ inputs.env }}
