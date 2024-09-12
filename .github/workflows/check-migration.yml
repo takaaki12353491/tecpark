@@ -42,3 +42,34 @@ jobs:
           dir: "file://db/mysql/migrations"
           dir-name: "tecpark"
           dev-url: "mysql://root:pass@localhost:3306/dev"
+
+  test:
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: dev
+          MYSQL_ROOT_PASSWORD: pass
+        ports:
+          - "3306:3306"
+        options: >-
+          --health-cmd "mysqladmin ping -ppass"
+          --health-interval 10s
+          --health-start-period 10s
+          --health-timeout 5s
+          --health-retries 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Atlas
+        uses: ariga/setup-atlas@v0
+        with:
+          cloud-token: ${{ secrets.ATLAS_CLOUD_TOKEN }}
+
+      - name: Test
+        uses: ariga/atlas-action/migrate/test@v1
+        with:
+          dir: file://db/mysql/migrations
+          dev-url: mysql://root:pass@localhost:3306/dev
