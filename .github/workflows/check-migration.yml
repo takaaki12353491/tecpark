@@ -1,10 +1,10 @@
-name: MySQL Check
+name: Check migration
 
 on:
   push:
     paths:
       - "db/mysql/migrations/**"
-      - ".github/workflows/mysql-check.yml"
+      - ".github/workflows/check-migration.yml"
   workflow_dispatch:
 
 jobs:
