@@ -16,7 +16,11 @@ on:
         default: ${{ github.sha }}
 
 jobs:
+  check:
+    uses: ./.github/workflows/check-migration.yml
+
   migration:
+    needs: check
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
     env:

@@ -2,10 +2,13 @@ name: Check migration
 
 on:
   push:
+    branches-ignore:
+      - "main"
     paths:
       - "db/mysql/migrations/**"
       - ".github/workflows/check-migration.yml"
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   lint:
