@@ -3,7 +3,7 @@ name: Check migration
 on:
   push:
     branches-ignore:
-      - "main"
+      - main
     paths:
       - "db/mysql/migrations/**"
       - ".github/workflows/check-migration.yml"
