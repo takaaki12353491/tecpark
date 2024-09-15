@@ -17,4 +17,8 @@ resource "github_branch_protection" "main" {
   enforce_admins                  = true
   require_conversation_resolution = true
   required_linear_history         = true
+
+  required_status_checks {
+    contexts = ["lint", "test"]
+  }
 }
