@@ -10,10 +10,6 @@ on:
       env:
         required: true
         type: string
-      image_tag:
-        required: false
-        type: string
-        default: ${{ github.sha }}
 
 jobs:
   check:
@@ -24,8 +20,6 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
-    env:
-      IMAGE: "${{ vars.AWS_MIGRATION_ECR_URL }}:${{ inputs.image_tag }}"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -37,12 +31,23 @@ jobs:
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
 
       - name: Log in to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
-        run: docker build -t $IMAGE db/mysql
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ vars.AWS_MIGRATION_ECR_REPOSITORY_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          export IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $IMAGE db/mysql
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: Push Docker image to ECR
+        env:
+          IMAGE: ${{ steps.build-image.outputs.image }}
         run: docker push $IMAGE
 
       - name: Download ECS task definition
@@ -68,7 +73,7 @@ jobs:
         with:
           task-definition: ${{ steps.download-ecs-task-definition.outputs.file_path }}
           container-name: migration
-          image: ${{ env.IMAGE }}
+          image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
