@@ -1,0 +1,23 @@
+name: Reusable deploy all
+
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: false
+        type: string
+        default: tecpark
+      env:
+        required: true
+        type: string
+      should_run_migration:
+        required: true
+        type: boolean
+
+jobs:
+  migration:
+    if: ${{ inputs.should_run_migration }}
+    uses: ./.github/workflows/reusable-deploy-migration.yml
+    with:
+      env: ${{ inputs.env }}
+    secrets: inherit

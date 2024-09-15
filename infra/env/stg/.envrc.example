@@ -1,0 +1,9 @@
+#!/bin/bash
+source_up
+
+# Terragrunt
+export TF_VAR_terragrunt_env=
+
+# AWS
+# shellcheck disable=SC2154
+export AWS_PROFILE="${TF_VAR_terragrunt_project}-${TF_VAR_terragrunt_env}"

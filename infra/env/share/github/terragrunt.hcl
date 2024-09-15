@@ -5,7 +5,3 @@ include "root" {
 terraform {
   source = "./"
 }
-
-inputs = {
-  stg_name_servers = split(",", get_env("STG_NAME_SERVERS"))
-}

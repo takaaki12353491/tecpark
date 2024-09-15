@@ -1,0 +1,35 @@
+name: Deploy STG
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      migration: ${{ steps.filter.outputs.migration }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: main
+          filters: |
+            migration:
+              - "db/mysql/migrations/**"
+
+  deploy:
+    needs: changes
+    uses: ./.github/workflows/reusable-deploy-all.yml
+    with:
+      env: stg
+      should_run_migration: ${{ needs.changes.outputs.migration == 'true' }}
+    secrets: inherit
