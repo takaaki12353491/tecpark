@@ -18,6 +18,7 @@ on:
 jobs:
   check:
     uses: ./.github/workflows/check-migration.yml
+    secrets: inherit
 
   deploy:
     needs: check
