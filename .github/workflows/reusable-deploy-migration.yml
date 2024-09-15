@@ -116,4 +116,4 @@ jobs:
         with:
           dir: file://db/mysql/migrations
           dir-name: tecpark
-          dev-url: "mysql://root:pass@localhost:3306/"
+          dev-url: mysql://root:pass@localhost:3306/dev
