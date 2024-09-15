@@ -13,10 +13,6 @@ on:
       should_run_migration:
         required: true
         type: boolean
-      image_tag:
-        required: false
-        type: string
-        default: ${{ github.sha }}
 
 jobs:
   migration:
