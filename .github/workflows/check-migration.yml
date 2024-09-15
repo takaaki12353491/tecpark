@@ -9,9 +9,6 @@ on:
       - .github/workflows/check-migration.yml
   workflow_dispatch:
   workflow_call:
-    secrets:
-      ATLAS_CLOUD_TOKEN:
-        required: true
 
 jobs:
   lint:
