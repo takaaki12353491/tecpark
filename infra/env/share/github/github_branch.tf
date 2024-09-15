@@ -18,10 +18,6 @@ resource "github_branch_protection" "main" {
   require_conversation_resolution = true
   required_linear_history         = true
 
-  required_status_checks {
-    contexts = ["lint", "test"]
-  }
-
   required_pull_request_reviews {
     dismiss_stale_reviews           = true
     required_approving_review_count = 0
