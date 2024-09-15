@@ -43,16 +43,12 @@ resource "random_string" "main_db_password" {
 }
 
 resource "aws_db_instance" "main" {
+  identifier = "main"
+
   engine         = "mysql"
   engine_version = "8.0"
 
-  identifier = "mysql"
-
-  username = "admin_${var.env}"
-  password = random_string.main_db_password.result
-
-  instance_class = "db.t3.micro"
-
+  instance_class        = "db.t3.micro"
   allocated_storage     = 20
   max_allocated_storage = 50
   storage_type          = "gp2"
@@ -65,6 +61,8 @@ resource "aws_db_instance" "main" {
   publicly_accessible    = false
   port                   = 3306
 
+  username             = "admin_${var.env}"
+  password             = random_string.main_db_password.result
   db_name              = "${var.project}_${var.env}"
   parameter_group_name = aws_db_parameter_group.mysql.name
   option_group_name    = aws_db_option_group.mysql.name
