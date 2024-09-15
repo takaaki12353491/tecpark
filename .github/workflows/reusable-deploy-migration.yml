@@ -108,7 +108,7 @@ jobs:
           --health-retries 10
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ariga/setup-atlas@v0
         with:
           cloud-token: ${{ secrets.ATLAS_CLOUD_TOKEN }}
