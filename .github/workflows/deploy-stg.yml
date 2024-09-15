@@ -32,3 +32,4 @@ jobs:
     with:
       env: stg
       should_run_migration: ${{ needs.changes.outputs.migration == 'true' }}
+    secrets: inherit

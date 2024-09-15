@@ -24,3 +24,4 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-migration.yml
     with:
       env: ${{ inputs.env }}
+    secrets: inherit
