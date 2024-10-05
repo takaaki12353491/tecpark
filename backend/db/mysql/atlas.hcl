@@ -23,3 +23,9 @@ env "gorm" {
     }
   }
 }
+
+env "local" {
+  src = "file://schema.hcl"
+  url = "mysql://root:root@localhost:23306/tecpark"
+  dev = "docker://mysql/8/dev"
+}
