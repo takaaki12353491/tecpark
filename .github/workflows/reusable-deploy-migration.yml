@@ -42,7 +42,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           export IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker build -t $IMAGE db/mysql
+          docker build -t $IMAGE backend/db/mysql
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: Push Docker image to ECR
@@ -119,6 +119,6 @@ jobs:
           cloud-token: ${{ secrets.ATLAS_CLOUD_TOKEN }}
       - uses: ariga/atlas-action/migrate/push@v1
         with:
-          dir: file://db/mysql/migrations
+          dir: file://backend/db/mysql/migrations
           dir-name: tecpark
           dev-url: mysql://root:pass@localhost:3306/dev

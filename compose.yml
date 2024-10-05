@@ -10,7 +10,7 @@ services:
       TZ: Asia/Tokyo
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./db/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
     ports:
       - 23306:3306
     healthcheck:
@@ -20,7 +20,7 @@ services:
 
   migrate:
     build:
-      context: ./db/mysql
+      context: backend/db/mysql
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306

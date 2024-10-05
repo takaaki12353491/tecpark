@@ -4,7 +4,7 @@ data "external_schema" "gorm" {
     "run",
     "ariga.io/atlas-provider-gorm",
     "load",
-    "--path", "../../backend/common/domain/model",
+    "--path", "../../common/domain/model",
     "--dialect", "mysql"
   ]
 }
