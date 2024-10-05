@@ -5,14 +5,13 @@ data "external_schema" "gorm" {
     "-mod=mod",
     "ariga.io/atlas-provider-gorm",
     "load",
-    "--path", "../../backend/user/domain/model",
+    "--path", "../../backend/common/domain/model",
     "--dialect", "mysql"
   ]
 }
 
 env "gorm" {
   src = data.external_schema.gorm.url
-  url = "mysql://tecpark:tecpark@localhost:23306/tecpark"
   dev = "docker://mysql/8/dev"
 
   migration {
