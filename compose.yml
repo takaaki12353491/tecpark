@@ -18,9 +18,13 @@ services:
     networks:
       - db
 
+  backend:
+    build: backend
+    image: backend:latest
+
   migrate:
     build:
-      context: backend/db/mysql
+      context: backend/db/mysql/schema
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -28,6 +32,8 @@ services:
       MYSQL_USER: tecpark
       MYSQL_PASSWORD: tecpark
     depends_on:
+      backend:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
