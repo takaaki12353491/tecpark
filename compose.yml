@@ -16,7 +16,7 @@ services:
     healthcheck:
       test: mysqladmin ping -proot
     networks:
-      - db
+      - service
 
   backend:
     build: backend
@@ -39,7 +39,7 @@ services:
       mysql:
         condition: service_healthy
     networks:
-      - db
+      - service
 
   migrate:
     build:
@@ -56,10 +56,10 @@ services:
       mysql:
         condition: service_healthy
     networks:
-      - db
+      - service
 
 volumes:
   mysql_data:
 
 networks:
-  db:
+  service:
