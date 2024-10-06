@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -14,12 +15,18 @@ import (
 )
 
 func main() {
+	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	location, err := time.LoadLocation(tz)
+	if err != nil {
+		panic(fmt.Sprintf("failed to load time location: %v", err))
+	}
+	time.Local = location
+
 	user := os.Getenv("MYSQL_USER")
 	password := os.Getenv("MYSQL_PASSWORD")
 	host := os.Getenv("MYSQL_HOST")
 	port := os.Getenv("MYSQL_PORT")
 	database := os.Getenv("MYSQL_DATABASE")
-	tz := util.GetEnv("TZ", "Asia/Tokyo")
 	tzEncoded := url.QueryEscape(tz)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s", user, password, host, port, database, tzEncoded)
 
