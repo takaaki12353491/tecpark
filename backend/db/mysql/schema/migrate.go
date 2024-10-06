@@ -2,8 +2,10 @@ package main
 
 import (
 	"common/domain/model"
+	"common/util"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -17,7 +19,9 @@ func main() {
 	host := os.Getenv("MYSQL_HOST")
 	port := os.Getenv("MYSQL_PORT")
 	database := os.Getenv("MYSQL_DATABASE")
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, password, host, port, database)
+	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	tzEncoded := url.QueryEscape(tz)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s", user, password, host, port, database, tzEncoded)
 
 	logger := logger.New(
 		log.Default(),
