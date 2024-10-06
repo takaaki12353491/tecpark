@@ -1,5 +1,5 @@
 inspect:
-	atlas schema inspect --env local > schema/tmp.hcl
+	atlas schema inspect --env local > schema/schema.hcl
 
 apply:
 	atlas schema apply --env local
