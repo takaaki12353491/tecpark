@@ -2,24 +2,5 @@
 
 package gqlmodel
 
-import (
-	"common/domain/model"
-)
-
-type Mutation struct {
-}
-
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
-
 type Query struct {
-}
-
-type Todo struct {
-	ID   string      `json:"id"`
-	Text string      `json:"text"`
-	Done bool        `json:"done"`
-	User *model.User `json:"user"`
 }
