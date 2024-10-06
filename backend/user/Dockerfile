@@ -1,15 +1,12 @@
-FROM golang:1.22-alpine AS build
+FROM backend:latest AS build
 
-WORKDIR /app
+WORKDIR /app/user
 
-COPY go.mod go.sum ./
 RUN go mod download
-
-COPY . .
 
 RUN GOARCH=amd64 GOOS=linux go build -o /main
 
-FROM alpine:3.18
+FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
