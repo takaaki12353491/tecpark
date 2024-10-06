@@ -14,8 +14,8 @@ func main() {
 	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: &resolver.Resolver{}}))
 
 	e := echo.New()
-	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/playground")))
-	e.GET("/query", echo.WrapHandler(srv))
+	e.POST("/query", echo.WrapHandler(srv))
+	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
 
 	port := "8080"
 	log.Printf("connect to http://localhost:%s/playground for GraphQL playground", port)
