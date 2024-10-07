@@ -6,7 +6,9 @@ import (
 	"common/domain/repository"
 )
 
-func NewUserRepository(query *query.Query) repository.UserRepository {
+var _ repository.UserRepository = (*UserRepository)(nil) // インターフェースを実装しているか確認
+
+func NewUserRepository(query *query.Query) *UserRepository {
 	return &UserRepository{query}
 }
 
