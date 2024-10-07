@@ -8,12 +8,10 @@ import (
 
 func NewUserRepository(query *query.Query) repository.UserRepository {
 	return &userRepository{
-		UserRepository: db.UserRepository{
-			Query: query,
-		},
+		UserRepository: db.NewUserRepository(query),
 	}
 }
 
 type userRepository struct {
-	db.UserRepository
+	*db.UserRepository
 }
