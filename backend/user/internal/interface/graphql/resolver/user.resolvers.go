@@ -7,13 +7,12 @@ package resolver
 import (
 	"common/domain/model"
 	"context"
-	"fmt"
 	graphql1 "user/internal/interface/graphql"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Users - users"))
+	return r.UserService.GetUsers()
 }
 
 // Query returns graphql1.QueryResolver implementation.
