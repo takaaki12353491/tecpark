@@ -2,7 +2,7 @@ package service
 
 import (
 	"common/domain/model"
-	"common/domain/repository"
+	"user/internal/domain/repository"
 )
 
 type UserService interface {
