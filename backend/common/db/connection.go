@@ -1,6 +1,7 @@
 package db
 
 import (
+	"common/log"
 	"common/util"
 	"fmt"
 	"net/url"
@@ -8,7 +9,6 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 type Config struct {
@@ -49,7 +49,7 @@ func NewDB(options ...Option) (*gorm.DB, error) {
 	dsn := config.getDSN()
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: log.NewLogger(),
 	})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
