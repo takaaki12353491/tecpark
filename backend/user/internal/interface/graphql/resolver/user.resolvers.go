@@ -12,7 +12,7 @@ import (
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	return r.UserService.GetUsers()
+	return r.userService.GetUsers()
 }
 
 // Query returns graphql1.QueryResolver implementation.

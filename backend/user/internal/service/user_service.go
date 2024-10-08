@@ -5,21 +5,17 @@ import (
 	"user/internal/domain/repository"
 )
 
-type UserService interface {
-	GetUsers() ([]*model.User, error)
-}
-
-type userService struct {
+type UserService struct {
 	userRepository repository.UserRepository
 }
 
-func NewUserService(userRepository repository.UserRepository) UserService {
-	return &userService{
+func NewUserService(userRepository repository.UserRepository) *UserService {
+	return &UserService{
 		userRepository: userRepository,
 	}
 }
 
-func (s *userService) GetUsers() ([]*model.User, error) {
+func (s *UserService) GetUsers() ([]*model.User, error) {
 	users, err := s.userRepository.GetUsers()
 	if err != nil {
 		return nil, err

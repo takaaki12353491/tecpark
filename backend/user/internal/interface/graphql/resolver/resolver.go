@@ -7,13 +7,13 @@ import "user/internal/service"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	UserService service.UserService
+	userService *service.UserService
 }
 
 func NewResolver(
-	userService service.UserService,
+	userService *service.UserService,
 ) *Resolver {
 	return &Resolver{
-		UserService: userService,
+		userService: userService,
 	}
 }
