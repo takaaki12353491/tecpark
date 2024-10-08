@@ -9,14 +9,14 @@ type UserService interface {
 	GetUsers() ([]*model.User, error)
 }
 
+type userService struct {
+	userRepository repository.UserRepository
+}
+
 func NewUserService(userRepository repository.UserRepository) UserService {
 	return &userService{
 		userRepository: userRepository,
 	}
-}
-
-type userService struct {
-	userRepository repository.UserRepository
 }
 
 func (s *userService) GetUsers() ([]*model.User, error) {
