@@ -9,13 +9,22 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var _ logger.Interface = (*Logger)(nil)
-
 type Logger struct {
 	logger.Writer
 	logger.Config
 	infoStr, warnStr, errStr            string
 	traceStr, traceErrStr, traceWarnStr string
+}
+
+func NewLogger() logger.Interface {
+	return &Logger{
+		Config: logger.Config{
+			SlowThreshold:             200 * time.Millisecond,
+			LogLevel:                  logger.Info,
+			IgnoreRecordNotFoundError: true,
+			Colorful:                  false,
+		},
+	}
 }
 
 func (l *Logger) LogMode(level logger.LogLevel) logger.Interface {
