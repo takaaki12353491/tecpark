@@ -18,7 +18,7 @@ CMD [ "air" ]
 
 FROM alpine:latest
 
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates tzdata
 
 COPY --from=build /main /main
 
