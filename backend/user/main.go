@@ -3,7 +3,9 @@ package main
 import (
 	"common/db"
 	"common/db/query"
+	xslog "common/log"
 	"common/util"
+	"context"
 	"fmt"
 	"log"
 	"time"
@@ -13,6 +15,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
 func main() {
@@ -23,12 +26,19 @@ func main() {
 	}
 	time.Local = location
 
+	tp, err := xslog.InitTracer()
+	if err != nil {
+		panic(fmt.Sprintf("failed to initialize tracer: %v", err))
+	}
+	defer tp.Shutdown(context.Background())
+
 	db, _ := db.NewDB(db.WithTZ(tz))
 	query := query.Use(db)
 	resolver := di.InitializeResolver(query)
 	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e := echo.New()
+	e.Use(otelecho.Middleware("tecpark-user"))
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
 
