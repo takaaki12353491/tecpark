@@ -3,6 +3,9 @@ module common
 go 1.22.5
 
 require (
+	go.opentelemetry.io/otel v1.30.0
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.30.0
+	go.opentelemetry.io/otel/sdk v1.30.0
 	go.opentelemetry.io/otel/trace v1.30.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gen v0.3.26
@@ -12,13 +15,16 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/go-logr/logr v1.4.2 // indirect
+	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	go.opentelemetry.io/otel v1.30.0 // indirect
+	go.opentelemetry.io/otel/metric v1.30.0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	gorm.io/datatypes v1.2.2 // indirect
