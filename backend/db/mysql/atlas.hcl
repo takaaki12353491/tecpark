@@ -2,17 +2,15 @@ data "external_schema" "gorm" {
   program = [
     "go",
     "run",
-    "-mod=mod",
     "ariga.io/atlas-provider-gorm",
     "load",
-    "--path", "../../backend/user/domain/model",
+    "--path", "../../common/domain/model",
     "--dialect", "mysql"
   ]
 }
 
 env "gorm" {
   src = data.external_schema.gorm.url
-  url = "mysql://tecpark:tecpark@localhost:23306/tecpark"
   dev = "docker://mysql/8/dev"
 
   migration {
@@ -24,4 +22,10 @@ env "gorm" {
       diff = "{{ sql . \"  \" }}"
     }
   }
+}
+
+env "local" {
+  src = "file://schema/"
+  url = "mysql://root:root@localhost:23306/tecpark"
+  dev = "docker://mysql/8/dev"
 }

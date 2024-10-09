@@ -1,48 +1,48 @@
 package main
 
 import (
-	"encoding/json"
+	"common/db"
+	"common/db/query"
+	xslog "common/log"
+	"common/util"
+	"context"
+	"fmt"
 	"log"
-	"net/http"
-	"strings"
+	"time"
+	"user/internal/infra/di"
+	"user/internal/interface/graphql"
+
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/labstack/echo/v4"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
-type Response struct {
-	Message string `json:"message"`
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("アクセスがありました: %s %s", r.Method, r.URL.Path)
-	response := Response{Message: "Hello, World!"}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-}
-
-func corsMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin != "" && isAllowedOrigin(origin) {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-		}
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		if r.Method == "OPTIONS" {
-			w.WriteHeader(http.StatusOK)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
-// サブドメインとルートドメインをチェックする関数
-func isAllowedOrigin(origin string) bool {
-	allowedDomain := "stg.tecpark.net"
-	// サブドメインもしくはルートドメインが一致するかどうかをチェック
-	return origin == "http://"+allowedDomain || origin == "https://"+allowedDomain || strings.HasSuffix(origin, "."+allowedDomain)
-}
-
 func main() {
-	log.Println("サーバーが起動しました。ポート: 80")
-	http.Handle("/", corsMiddleware(http.HandlerFunc(handler)))
-	http.ListenAndServe(":80", nil)
+	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	location, err := time.LoadLocation(tz)
+	if err != nil {
+		panic(fmt.Sprintf("failed to load time location: %v", err))
+	}
+	time.Local = location
+
+	tp, err := xslog.InitTracer()
+	if err != nil {
+		panic(fmt.Sprintf("failed to initialize tracer: %v", err))
+	}
+	defer tp.Shutdown(context.Background())
+
+	db, _ := db.NewDB(db.WithTZ(tz))
+	query := query.Use(db)
+	resolver := di.InitializeResolver(query)
+	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
+
+	e := echo.New()
+	e.Use(otelecho.Middleware("tecpark-user"))
+	e.POST("/query", echo.WrapHandler(srv))
+	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
+
+	port := "80"
+	log.Printf("connect to http://localhost:%s/playground for GraphQL playground", port)
+	e.Logger.Fatal(e.Start(":" + port))
 }

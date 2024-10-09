@@ -1,6 +1,6 @@
 FROM arigaio/atlas:latest-alpine
 
-COPY ./migrations /migrations
+COPY . /migrations
 
 # デフォルトだとatlasになり変数展開できないので上書きする
 ENTRYPOINT ["/bin/sh", "-c"]

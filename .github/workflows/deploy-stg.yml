@@ -24,7 +24,7 @@ jobs:
           base: main
           filters: |
             migration:
-              - "db/mysql/migrations/**"
+              - "backend/common/domain/model/**"
 
   deploy:
     needs: changes
