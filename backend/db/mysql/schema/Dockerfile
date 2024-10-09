@@ -1,9 +1,7 @@
 FROM backend:latest
 
-WORKDIR /app/db/mysql
+WORKDIR /app/backend/db/mysql/schema
 
 RUN go mod download
-
-WORKDIR /app/db/mysql/schema
 
 CMD [ "go", "run", "migrate.go" ]

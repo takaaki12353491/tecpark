@@ -1,6 +1,6 @@
 FROM backend:latest AS build
 
-WORKDIR /app/user
+WORKDIR /app/backend/user
 
 RUN go mod download
 
@@ -8,7 +8,7 @@ RUN GOARCH=amd64 GOOS=linux go build -o /main
 
 FROM backend:latest AS local
 
-WORKDIR /app/user
+WORKDIR /app/backend/user
 
 RUN go install github.com/air-verse/air@latest
 
