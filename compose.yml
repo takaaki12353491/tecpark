@@ -25,12 +25,21 @@ services:
   user:
     build:
       context: backend/user
+      dockerfile_inline: |
+        FROM backend:latest
+        WORKDIR /app/backend/user
+        RUN go mod download
+        RUN go install github.com/air-verse/air@latest
+        EXPOSE 80
+        CMD [ "air" ]
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: tecpark
       MYSQL_USER: tecpark
       MYSQL_PASSWORD: tecpark
+    volumes:
+      - ./backend:/app/backend
     ports:
       - 8080:80
     depends_on:
