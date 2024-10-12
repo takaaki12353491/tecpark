@@ -3,7 +3,7 @@ package main
 import (
 	"common/db"
 	"common/db/query"
-	xslog "common/log"
+	xtracer "common/tracer"
 	"common/util"
 	"context"
 	"fmt"
@@ -26,7 +26,7 @@ func main() {
 	}
 	time.Local = location
 
-	tp, err := xslog.InitTracer()
+	tp, err := xtracer.InitTracer()
 	if err != nil {
 		panic(fmt.Sprintf("failed to initialize tracer: %v", err))
 	}
