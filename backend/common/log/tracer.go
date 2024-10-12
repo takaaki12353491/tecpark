@@ -1,4 +1,4 @@
-package xslog
+package xlog
 
 import (
 	"log/slog"

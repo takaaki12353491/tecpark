@@ -1,7 +1,7 @@
 package db
 
 import (
-	xslog "common/log"
+	xlog "common/log"
 	"common/util"
 	"fmt"
 	"net/url"
@@ -49,7 +49,7 @@ func NewDB(options ...Option) (*gorm.DB, error) {
 	dsn := config.getDSN()
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: xslog.NewLogger(),
+		Logger: xlog.NewLogger(),
 	})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
