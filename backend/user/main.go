@@ -41,6 +41,7 @@ func main() {
 	e := echo.New()
 	e.Use(
 		middleware.Recover(),
+		middleware.Logger(),
 		otelecho.Middleware("tecpark-user"),
 	)
 	e.POST("/query", echo.WrapHandler(srv))
