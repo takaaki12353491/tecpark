@@ -15,7 +15,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
-	"go.opentelemetry.io/otel/sdk/trace"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 )
 
 func main() {
@@ -34,8 +34,8 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
-	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(trace.NewTracerProvider())))
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{}))
+	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(sdktrace.NewTracerProvider())))
 
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
