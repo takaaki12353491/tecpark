@@ -3,9 +3,7 @@ package main
 import (
 	"common/db"
 	"common/db/query"
-	xtracer "common/tracer"
 	"common/util"
-	"context"
 	"fmt"
 	"log"
 	"time"
@@ -17,6 +15,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 func main() {
@@ -27,23 +26,17 @@ func main() {
 	}
 	time.Local = location
 
-	tp, err := xtracer.InitTracer()
-	if err != nil {
-		panic(fmt.Sprintf("failed to initialize tracer: %v", err))
-	}
-	defer tp.Shutdown(context.Background())
-
 	db, _ := db.NewDB(db.WithTZ(tz))
 	query := query.Use(db)
 	resolver := di.InitializeResolver(query)
 	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e := echo.New()
-	e.Use(
-		middleware.Recover(),
-		middleware.Logger(),
-		otelecho.Middleware("tecpark-user"),
-	)
+
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(trace.NewTracerProvider())))
+
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
 
