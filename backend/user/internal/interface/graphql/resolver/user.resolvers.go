@@ -7,13 +7,11 @@ package resolver
 import (
 	"common/domain/model"
 	"context"
-	"log/slog"
 	graphql1 "user/internal/interface/graphql"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	slog.InfoContext(ctx, "test")
 	return r.userService.GetUsers(ctx)
 }
 
