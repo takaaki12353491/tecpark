@@ -60,20 +60,20 @@ func (l *Logger) Trace(ctx context.Context, begin time.Time, fc func() (sql stri
 
 	switch {
 	case err != nil && l.LogLevel >= logger.Error:
-		slog.ErrorContext(ctx, "sql is error",
+		slog.ErrorContext(ctx, "query failed",
 			slog.String("latency", fmt.Sprintf("%.3fms", latency)),
 			slog.Int64("rows", rows),
 			slog.String("sql", sql),
 			slog.String("error", err.Error()),
 		)
 	case elapsed > l.SlowThreshold && l.SlowThreshold != 0 && l.LogLevel >= logger.Warn:
-		slog.WarnContext(ctx, "sql is slow",
+		slog.WarnContext(ctx, "query was slow",
 			slog.String("latency", fmt.Sprintf("%.3fms", latency)),
 			slog.Int64("rows", rows),
 			slog.String("sql", sql),
 		)
 	case l.LogLevel == logger.Info:
-		slog.InfoContext(ctx, "sql is success",
+		slog.InfoContext(ctx, "query was successful",
 			slog.String("latency", fmt.Sprintf("%.3fms", latency)),
 			slog.Int64("rows", rows),
 			slog.String("sql", sql),
