@@ -4,6 +4,7 @@ import (
 	xcontext "common/context"
 	"context"
 	"log/slog"
+	"os"
 
 	"go.opentelemetry.io/otel/trace"
 )
@@ -14,14 +15,6 @@ var keys = []xcontext.Key{
 
 type Handler struct {
 	slog.Handler
-}
-
-func New(
-	handler slog.Handler,
-) *Handler {
-	return &Handler{
-		Handler: handler,
-	}
 }
 
 func (h *Handler) Handle(
@@ -37,4 +30,12 @@ func (h *Handler) Handle(
 		}
 	}
 	return h.Handler.Handle(ctx, record)
+}
+
+func Init() {
+	log := slog.New(&Handler{
+		Handler: slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}),
+	})
+	slog.SetDefault(log)
+	slog.SetLogLoggerLevel(slog.LevelInfo)
 }
