@@ -1,6 +1,6 @@
 module mysql
 
-go 1.22.5
+go 1.23.2
 
 require (
 	ariga.io/atlas-provider-gorm v0.5.0
