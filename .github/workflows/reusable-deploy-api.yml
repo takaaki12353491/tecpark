@@ -75,3 +75,5 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.update-ecs-task-definition.outputs.task-definition }}
+          service: ${{ vars.AWS_API_ECS_SERVICE_NAME }}
+          cluster: ${{ vars.AWS_API_ECS_CLUSTER_NAME }}
