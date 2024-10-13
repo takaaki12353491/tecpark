@@ -1,0 +1,91 @@
+name: Reusable deploy api
+
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: false
+        type: string
+        default: tecpark
+      env:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ vars.AWS_API_ECR_REPOSITORY_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          export IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t backend:latest backend
+          docker build -t $IMAGE backend/user
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Push Docker image to ECR
+        env:
+          IMAGE: ${{ steps.build-image.outputs.image }}
+        run: docker push $IMAGE
+
+      - name: Download ECS task definition
+        id: download-ecs-task-definition
+        env:
+          ECS_TASK_FAMILY: ${{ vars.AWS_API_ECS_TASK_FAMILY }}
+          ECS_TASK_DEFINITION_FILE_PATH: task-definition.json
+        run: |
+          aws ecs describe-task-definition --task-definition $ECS_TASK_FAMILY --query taskDefinition | jq 'del(
+            .compatibilities,
+            .taskDefinitionArn,
+            .requiresAttributes,
+            .revision,
+            .status,
+            .registeredAt,
+            .registeredBy
+          )' > $ECS_TASK_DEFINITION_FILE_PATH
+          echo "file_path=$ECS_TASK_DEFINITION_FILE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Update ECS task definition
+        id: update-ecs-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.download-ecs-task-definition.outputs.file_path }}
+          container-name: api
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.update-ecs-task-definition.outputs.task-definition }}
+
+      - name: Run ECS task
+        env:
+          ECS_CLUSTER: ${{ vars.AWS_API_ECS_CLUSTER_NAME }}
+          ECS_TASK_DEFINITION: ${{ vars.AWS_API_ECS_TASK_FAMILY }}
+          SUBNET: ${{ vars.AWS_PRIVATE_SUBNET_AP_NORTHEAST_1A }}
+        run: |
+          aws ecs run-task \
+            --cluster $ECS_CLUSTER \
+            --task-definition $ECS_TASK_DEFINITION \
+            --launch-type FARGATE \
+            --network-configuration "awsvpcConfiguration={ \
+              subnets=[$SUBNET] \
+            }"
