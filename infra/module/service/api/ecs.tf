@@ -84,6 +84,11 @@ resource "aws_ecs_service" "api" {
     target_group_arn = var.alb_target_group_api_arn
   }
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   tags = {
     Name = "api"
   }
