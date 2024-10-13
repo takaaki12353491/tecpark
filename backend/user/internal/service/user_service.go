@@ -2,6 +2,7 @@ package service
 
 import (
 	"common/domain/model"
+	"context"
 	"user/internal/domain/repository"
 )
 
@@ -15,8 +16,8 @@ func NewUserService(userRepository repository.UserRepository) *UserService {
 	}
 }
 
-func (s *UserService) GetUsers() ([]*model.User, error) {
-	users, err := s.userRepository.GetUsers()
+func (s *UserService) GetUsers(ctx context.Context) ([]*model.User, error) {
+	users, err := s.userRepository.GetUsers(ctx)
 	if err != nil {
 		return nil, err
 	}

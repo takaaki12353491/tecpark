@@ -1,7 +1,10 @@
 package repository
 
-import "common/domain/model"
+import (
+	"common/domain/model"
+	"context"
+)
 
 type UserRepository interface {
-	GetUsers() ([]*model.User, error)
+	GetUsers(ctx context.Context) ([]*model.User, error)
 }
