@@ -58,6 +58,9 @@ func main() {
 
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(200, "OK")
+	})
 
 	port := "80"
 	fmt.Printf("connect to http://localhost:%s/playground for GraphQL playground", port)
