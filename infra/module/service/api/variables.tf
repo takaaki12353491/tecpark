@@ -1,3 +1,11 @@
+variable "env" {
+  type = string
+}
+
+variable "github_repository" {
+  type = string
+}
+
 variable "main_vpc_id" {
   type = string
 }
