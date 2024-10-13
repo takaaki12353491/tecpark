@@ -16,6 +16,9 @@ on:
       should_deploy_api:
         required: true
         type: boolean
+      wait-for-service-stability:
+        required: false
+        type: boolean
 
 jobs:
   migration:
@@ -30,4 +33,5 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-api.yml
     with:
       env: ${{ inputs.env }}
+      wait-for-service-stability: ${{ inputs.wait-for-service-stability }}
     secrets: inherit
