@@ -63,6 +63,5 @@ func main() {
 	})
 
 	port := "80"
-	fmt.Printf("connect to http://localhost:%s/playground for GraphQL playground", port)
 	e.Logger.Fatal(e.Start(":" + port))
 }
