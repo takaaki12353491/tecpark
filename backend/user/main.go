@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"common/db"
 	"common/db/query"
+	xlog "common/log"
 	"common/util"
 	"fmt"
 	"time"
@@ -26,6 +27,8 @@ func main() {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
 	}
 	time.Local = location
+
+	xlog.Init()
 
 	e := echo.New()
 
