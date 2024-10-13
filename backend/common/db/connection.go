@@ -9,6 +9,7 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 type Config struct {
@@ -53,6 +54,11 @@ func NewDB(options ...Option) (*gorm.DB, error) {
 	})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
+	}
+
+	err = db.Use(tracing.NewPlugin())
+	if err != nil {
+		panic(fmt.Sprintf("failed to setup tracing plugin: %v", err))
 	}
 
 	return db, nil
