@@ -12,8 +12,6 @@ import (
 type Logger struct {
 	logger.Writer
 	logger.Config
-	infoStr, warnStr, errStr            string
-	traceStr, traceErrStr, traceWarnStr string
 }
 
 func NewLogger() logger.Interface {
