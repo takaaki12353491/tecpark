@@ -26,7 +26,7 @@ func (m *MockUserRepository) GetUsers(ctx context.Context) ([]*model.User, error
 }
 
 func TestUserService(t *testing.T) {
-	suite.Run(t, &UserServiceSuite{})
+	suite.Run(t, new(UserServiceSuite))
 }
 
 type UserServiceSuite struct {
