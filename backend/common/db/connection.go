@@ -29,6 +29,12 @@ func (c *Config) getDSN() string {
 
 type Option func(*Config)
 
+func WithPort(port string) Option {
+	return func(c *Config) {
+		c.Port = port
+	}
+}
+
 func WithTZ(tz string) Option {
 	return func(c *Config) {
 		c.TZ = tz
