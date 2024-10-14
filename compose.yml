@@ -18,6 +18,22 @@ services:
     networks:
       - service
 
+  test_mysql:
+    image: mysql:8
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tecpark
+      MYSQL_USER: tecpark
+      MYSQL_PASSWORD: tecpark
+      TZ: Asia/Tokyo
+    volumes:
+      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - 33306:3306
+    healthcheck:
+      test: mysqladmin ping -proot
+
   backend:
     build: backend
     image: backend:latest
