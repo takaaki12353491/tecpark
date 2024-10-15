@@ -2,17 +2,24 @@ package service
 
 import (
 	"common/db"
+	"common/db/query"
 	"common/domain/model"
+	xlog "common/log"
 	"os"
 	"testing"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-var testDB *gorm.DB
+var testQuery *query.Query
 
 func TestMain(m *testing.M) {
-	testDB, _ = db.NewDB(db.WithPort("33306"))
+	testDB, _ := db.NewDB(db.WithPort("33306"))
+	testDB = testDB.Session(&gorm.Session{
+		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
+	})
+	testQuery = query.Use(testDB)
 
 	testDB.AutoMigrate(&model.User{})
 
