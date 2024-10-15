@@ -14,14 +14,28 @@ type Logger struct {
 	logger.Config
 }
 
-func NewLogger() logger.Interface {
+type Option func(*logger.Config)
+
+func WithLogLevel(level logger.LogLevel) Option {
+	return func(config *logger.Config) {
+		config.LogLevel = level
+	}
+}
+
+func NewLogger(options ...Option) logger.Interface {
+	config := logger.Config{
+		SlowThreshold:             200 * time.Millisecond,
+		LogLevel:                  logger.Info,
+		IgnoreRecordNotFoundError: true,
+		Colorful:                  false,
+	}
+
+	for _, option := range options {
+		option(&config)
+	}
+
 	return &Logger{
-		Config: logger.Config{
-			SlowThreshold:             200 * time.Millisecond,
-			LogLevel:                  logger.Info,
-			IgnoreRecordNotFoundError: true,
-			Colorful:                  false,
-		},
+		Config: config,
 	}
 }
 
