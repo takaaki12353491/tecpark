@@ -5,7 +5,6 @@ import (
 	"common/util"
 	"fmt"
 	"net/url"
-	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -43,11 +42,11 @@ func WithTZ(tz string) Option {
 
 func NewDB(options ...Option) (*gorm.DB, error) {
 	config := &Config{
-		User:     os.Getenv("MYSQL_USER"),
-		Password: os.Getenv("MYSQL_PASSWORD"),
-		Host:     os.Getenv("MYSQL_HOST"),
-		Port:     os.Getenv("MYSQL_PORT"),
-		Database: os.Getenv("MYSQL_DATABASE"),
+		User:     util.GetEnv("MYSQL_USER", "tecpark"),
+		Password: util.GetEnv("MYSQL_PASSWORD", "tecpark"),
+		Host:     util.GetEnv("MYSQL_HOST", "localhost"),
+		Port:     util.GetEnv("MYSQL_PORT", "3306"),
+		Database: util.GetEnv("MYSQL_DATABASE", "tecpark"),
 		TZ:       util.GetEnv("TZ", "Asia/Tokyo"),
 	}
 	for _, opt := range options {
