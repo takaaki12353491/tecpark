@@ -1,0 +1,28 @@
+name: Check api user
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - backend/common/**
+      - backend/api/user/**
+      - .github/workflows/check-api-user.yml
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run the lint in the user directory
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workdir: backend/api/user
+          level: error
+          reporter: github-pr-review
+          filter_mode: nofilter
