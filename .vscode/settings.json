@@ -17,7 +17,8 @@
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  "gopls": {
-    "staticcheck": true,
-  },
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": [
+    "--fast"
+  ]
 }
