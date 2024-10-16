@@ -2,7 +2,6 @@ package service
 
 import (
 	"common/db"
-	"common/db/query"
 	"common/domain/model"
 	xlog "common/log"
 	"os"
@@ -12,22 +11,21 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var testQuery *query.Query
+var testConn *gorm.DB
 
 func TestMain(m *testing.M) {
-	testDB, _ := db.NewConnection(db.WithPort("33306"))
-	testDB = testDB.Session(&gorm.Session{
+	conn, _ := db.NewConnection(db.WithPort("33306"))
+	testConn = conn.Session(&gorm.Session{
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})
-	testQuery = query.Use(testDB)
 
-	testDB.AutoMigrate(&model.User{})
+	testConn.AutoMigrate(&model.User{})
 
 	code := m.Run()
 
-	tables, _ := testDB.Migrator().GetTables()
+	tables, _ := testConn.Migrator().GetTables()
 	for _, table := range tables {
-		testDB.Migrator().DropTable(table)
+		testConn.Migrator().DropTable(table)
 	}
 
 	os.Exit(code)

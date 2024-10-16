@@ -1,29 +1,17 @@
 package service
 
 import (
+	"common/db/query"
 	"common/domain/model"
 	"context"
-	"errors"
 	"testing"
-	"user/internal/domain/repository"
+	"user/internal/infra/db"
 
-	"github.com/stretchr/testify/mock"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/suite"
+	"gorm.io/gorm"
 )
-
-var _ repository.UserRepository = (*MockUserRepository)(nil)
-
-type MockUserRepository struct {
-	mock.Mock
-}
-
-func (m *MockUserRepository) GetUsers(ctx context.Context) ([]*model.User, error) {
-	args := m.Called(ctx)
-	if args.Get(0) == nil {
-		return nil, args.Error(1)
-	}
-	return args.Get(0).([]*model.User), args.Error(1)
-}
 
 func TestUserService(t *testing.T) {
 	suite.Run(t, new(UserServiceSuite))
@@ -31,35 +19,35 @@ func TestUserService(t *testing.T) {
 
 type UserServiceSuite struct {
 	suite.Suite
-	userService    *UserService
-	userRepository *MockUserRepository
+	userService *UserService
+	tx          *gorm.DB
 }
 
 func (s *UserServiceSuite) SetupTest() {
-	s.userRepository = new(MockUserRepository)
-	s.userService = NewUserService(s.userRepository)
+	s.tx = testConn.Begin()
+	userRepository := db.NewUserRepository(s.tx)
+	s.userService = NewUserService(userRepository)
 }
 
-func (s *UserServiceSuite) TestGetUsers_Success() {
-	expectedUsers := []*model.User{
-		{ID: "1", Nickname: "1"},
-		{ID: "2", Nickname: "2"},
+func (s *UserServiceSuite) TearDownTest() {
+	s.tx.Rollback()
+}
+
+func (s *UserServiceSuite) TestGetUsers() {
+	users := []*model.User{
+		{ID: "1", Nickname: "Nickname1"},
+		{ID: "2", Nickname: "Nickname2"},
 	}
-	s.userRepository.On("GetUsers", mock.Anything).Return(expectedUsers, nil)
+	query.Use(s.tx).User.CreateInBatches(users, 100)
 
 	result, err := s.userService.GetUsers(context.Background())
 
 	s.NoError(err)
-	s.Equal(expectedUsers, result)
-}
 
-func (s *UserServiceSuite) TestGetUsers_Error() {
-	expectedError := errors.New("failed to get users")
-	s.userRepository.On("GetUsers", mock.Anything).Return(nil, expectedError)
-
-	result, err := s.userService.GetUsers(context.Background())
-
-	s.Error(err)
-	s.Nil(result)
-	s.Equal(expectedError, err)
+	cmpopt := cmpopts.IgnoreFields(model.User{}, "CreatedAt", "UpdatedAt")
+	for k := range users {
+		if diff := cmp.Diff(users[k], result[k], cmpopt); diff != "" {
+			s.T().Errorf("user value is mismatch (-want +got):%s\n", diff)
+		}
+	}
 }
