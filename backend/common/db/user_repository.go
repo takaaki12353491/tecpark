@@ -20,5 +20,5 @@ func NewUserRepository(conn *gorm.DB) *UserRepository {
 }
 
 func (r *UserRepository) GetUsers(ctx context.Context) ([]*model.User, error) {
-	return query.Use(r.Conn).User.Find()
+	return query.Use(r.Conn).WithContext(ctx).User.Find()
 }
