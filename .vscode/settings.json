@@ -19,6 +19,5 @@
   },
   "gopls": {
     "staticcheck": true,
-    "buildFlags": ["-tags=tools"]
   },
 }
