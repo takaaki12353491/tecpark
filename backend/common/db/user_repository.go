@@ -5,18 +5,20 @@ import (
 	"common/domain/model"
 	"common/domain/repository"
 	"context"
+
+	"gorm.io/gorm"
 )
 
 var _ repository.UserRepository = (*UserRepository)(nil) // インターフェースを実装しているか確認
 
 type UserRepository struct {
-	Query *query.Query
+	Conn *gorm.DB
 }
 
-func NewUserRepository(query *query.Query) *UserRepository {
-	return &UserRepository{query}
+func NewUserRepository(conn *gorm.DB) *UserRepository {
+	return &UserRepository{conn}
 }
 
 func (r *UserRepository) GetUsers(ctx context.Context) ([]*model.User, error) {
-	return r.Query.WithContext(ctx).User.Find()
+	return query.Use(r.Conn).User.Find()
 }

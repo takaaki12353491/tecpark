@@ -7,7 +7,7 @@
 package di
 
 import (
-	"common/db/query"
+	"gorm.io/gorm"
 	"user/internal/infra/db"
 	"user/internal/interface/graphql/resolver"
 	"user/internal/service"
@@ -15,8 +15,8 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeResolver(query2 *query.Query) *resolver.Resolver {
-	userRepository := db.NewUserRepository(query2)
+func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
+	userRepository := db.NewUserRepository(conn)
 	userService := service.NewUserService(userRepository)
 	resolverResolver := resolver.NewResolver(userService)
 	return resolverResolver

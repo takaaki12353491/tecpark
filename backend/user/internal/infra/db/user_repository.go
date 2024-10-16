@@ -2,16 +2,17 @@ package db
 
 import (
 	"common/db"
-	"common/db/query"
 	"user/internal/domain/repository"
+
+	"gorm.io/gorm"
 )
 
 type userRepository struct {
 	*db.UserRepository
 }
 
-func NewUserRepository(query *query.Query) repository.UserRepository {
+func NewUserRepository(conn *gorm.DB) repository.UserRepository {
 	return &userRepository{
-		UserRepository: db.NewUserRepository(query),
+		UserRepository: db.NewUserRepository(conn),
 	}
 }

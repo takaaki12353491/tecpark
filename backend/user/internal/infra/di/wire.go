@@ -3,15 +3,15 @@
 package di
 
 import (
-	"common/db/query"
 	"user/internal/infra/db"
 	"user/internal/interface/graphql/resolver"
 	"user/internal/service"
 
 	"github.com/google/wire"
+	"gorm.io/gorm"
 )
 
-func InitializeResolver(query *query.Query) *resolver.Resolver {
+func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	wire.Build(
 		service.WireSet,
 		db.WireSet,

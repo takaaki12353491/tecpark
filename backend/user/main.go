@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"common/db"
-	"common/db/query"
 	xlog "common/log"
 	"common/util"
 	"fmt"
@@ -51,9 +50,8 @@ func main() {
 		},
 	}))
 
-	db, _ := db.NewDB(db.WithTZ(tz))
-	query := query.Use(db)
-	resolver := di.InitializeResolver(query)
+	conn, _ := db.NewDB(db.WithTZ(tz))
+	resolver := di.InitializeResolver(conn)
 	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e.POST("/query", echo.WrapHandler(srv))
