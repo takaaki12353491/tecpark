@@ -1,6 +1,6 @@
 FROM backend:latest AS build
 
-WORKDIR /app/backend/user
+WORKDIR /app/backend/api/user
 
 RUN go mod download
 

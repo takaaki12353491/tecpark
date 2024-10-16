@@ -40,10 +40,10 @@ services:
 
   user:
     build:
-      context: backend/user
+      context: backend/api/user
       dockerfile_inline: |
         FROM backend:latest
-        WORKDIR /app/backend/user
+        WORKDIR /app/backend/api/user
         RUN go mod download
         RUN go install github.com/air-verse/air@latest
         EXPOSE 80

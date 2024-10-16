@@ -42,7 +42,7 @@ jobs:
         run: |
           export IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker build -t backend:latest backend
-          docker build -t $IMAGE backend/user
+          docker build -t $IMAGE backend/api/user
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: Push Docker image to ECR

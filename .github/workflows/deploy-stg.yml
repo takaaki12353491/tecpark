@@ -28,7 +28,7 @@ jobs:
               - "backend/common/domain/model/**"
             api:
               - "backend/common/**"
-              - "backend/user/**"
+              - "backend/api/user/**"
 
   deploy:
     needs: changes
