@@ -15,4 +15,4 @@ tasks:
     cmd: go tool cover -html=coverage.out -o coverage.html; open coverage.html
 
   lint:
-    golangci-lint run
+    golangci-lint run --fix
