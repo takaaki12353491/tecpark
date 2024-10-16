@@ -4,6 +4,7 @@ import (
 	"common/db"
 	"common/domain/model"
 	xlog "common/log"
+	"log"
 	"os"
 	"testing"
 
@@ -19,13 +20,19 @@ func TestMain(m *testing.M) {
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})
 
-	testConn.AutoMigrate(&model.User{})
+	err := testConn.AutoMigrate(&model.User{})
+	if err != nil {
+		log.Fatalf("failed to auto-migrate: %v", err)
+	}
 
 	code := m.Run()
 
 	tables, _ := testConn.Migrator().GetTables()
 	for _, table := range tables {
-		testConn.Migrator().DropTable(table)
+		err := testConn.Migrator().DropTable(table)
+		if err != nil {
+			log.Fatalf("failed to drop table %s: %v", table, err)
+		}
 	}
 
 	os.Exit(code)

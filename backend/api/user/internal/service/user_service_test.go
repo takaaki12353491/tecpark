@@ -38,7 +38,10 @@ func (s *UserServiceSuite) TestGetUsers() {
 		{ID: "1", Nickname: "Nickname1"},
 		{ID: "2", Nickname: "Nickname2"},
 	}
-	query.Use(s.tx).User.CreateInBatches(users, 100)
+	err := query.Use(s.tx).User.CreateInBatches(users, 100)
+	if err != nil {
+		s.T().Fatalf("failed to create users in batches: %v", err)
+	}
 
 	result, err := s.userService.GetUsers(context.Background())
 
