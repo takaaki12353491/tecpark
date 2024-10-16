@@ -15,7 +15,7 @@ import (
 var testQuery *query.Query
 
 func TestMain(m *testing.M) {
-	testDB, _ := db.NewDB(db.WithPort("33306"))
+	testDB, _ := db.NewConnection(db.WithPort("33306"))
 	testDB = testDB.Session(&gorm.Session{
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})

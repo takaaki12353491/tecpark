@@ -40,7 +40,7 @@ func WithTZ(tz string) Option {
 	}
 }
 
-func NewDB(options ...Option) (*gorm.DB, error) {
+func NewConnection(options ...Option) (*gorm.DB, error) {
 	config := &Config{
 		User:     util.GetEnv("MYSQL_USER", "tecpark"),
 		Password: util.GetEnv("MYSQL_PASSWORD", "tecpark"),

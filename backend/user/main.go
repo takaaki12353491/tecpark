@@ -50,7 +50,7 @@ func main() {
 		},
 	}))
 
-	conn, _ := db.NewDB(db.WithTZ(tz))
+	conn, _ := db.NewConnection(db.WithTZ(tz))
 	resolver := di.InitializeResolver(conn)
 	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
