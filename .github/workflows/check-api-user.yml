@@ -46,11 +46,7 @@ jobs:
             backend/common/go.sum
             backend/api/user/go.sum
 
-      - name: Install dependencies in common directory
-        working-directory: backend/common
-        run: go mod download
-
-      - name: Install dependencies in user directory
+      - name: Install dependencies
         run: go mod download
 
       - name: Run go generate
