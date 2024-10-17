@@ -66,13 +66,12 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
-      - name: Run go generate
+      - name: Check generated changes
         env:
           GOWORK: off
-        run: go generate ./...
-
-      - name: Check for unstaged changes from go generate
-        run: git diff --exit-code
+        run: |
+          go generate ./...
+          git diff --exit-code
 
       - name: Build
         run: go build
