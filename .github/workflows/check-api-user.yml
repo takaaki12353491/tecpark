@@ -11,6 +11,10 @@ on:
   workflow_dispatch:
   workflow_call:
 
+defaults:
+  run:
+    working-directory: backend/api/user
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -27,3 +31,38 @@ jobs:
           level: error
           reporter: github-pr-review
           filter_mode: nofilter
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/api/user/go.mod
+          cache-dependency-path: |
+            backend/common/go.sum
+            backend/api/user/go.sum
+
+      - name: Install dependencies in common directory
+        working-directory: backend/common
+        run: go mod download
+
+      - name: Install dependencies in user directory
+        run: go mod download
+
+      - name: Run go generate
+        env:
+          GOWORK: off
+        run: go generate ./...
+
+      - name: Check for unstaged changes from go generate
+        run: git diff --exit-code
+
+      - name: Build
+        run: go build
+
+      - name: Run tests
+        run: go test ./... -v
