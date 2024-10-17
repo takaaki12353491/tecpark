@@ -37,5 +37,4 @@ jobs:
       env: stg
       should_run_migration: ${{ needs.changes.outputs.migration == 'true' }}
       should_deploy_api: ${{ needs.changes.outputs.api == 'true' }}
-      wait-for-service-stability: false
     secrets: inherit

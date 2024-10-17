@@ -10,10 +10,6 @@ on:
       env:
         required: true
         type: string
-      wait-for-service-stability:
-        required: false
-        type: boolean
-        default: true
 
 jobs:
   deploy:
@@ -81,4 +77,4 @@ jobs:
           task-definition: ${{ steps.update-ecs-task-definition.outputs.task-definition }}
           service: ${{ vars.AWS_API_ECS_SERVICE_NAME }}
           cluster: ${{ vars.AWS_API_ECS_CLUSTER_NAME }}
-          wait-for-service-stability: ${{ inputs.wait-for-service-stability }}
+          wait-for-service-stability: true
