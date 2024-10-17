@@ -66,6 +66,11 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
+      - name: Check go.mod or go.sum
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+
       - name: Check generated changes
         env:
           GOWORK: off
