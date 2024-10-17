@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - main
     paths:
-      - db/mysql/migrations/**
+      - backend/db/mysql/migrations/**
       - .github/workflows/check-migration.yml
   workflow_dispatch:
   workflow_call:
@@ -39,7 +39,7 @@ jobs:
       - name: Lint
         uses: ariga/atlas-action/migrate/lint@v1
         with:
-          dir: file://db/mysql/migrations
+          dir: file://backend/db/mysql/migrations
           dir-name: tecpark
           dev-url: mysql://root:pass@localhost:3306/dev
 
@@ -71,5 +71,5 @@ jobs:
       - name: Test
         uses: ariga/atlas-action/migrate/test@v1
         with:
-          dir: file://db/mysql/migrations
+          dir: file://backend/db/mysql/migrations
           dev-url: mysql://root:pass@localhost:3306/dev

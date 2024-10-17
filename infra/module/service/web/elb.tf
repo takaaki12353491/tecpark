@@ -17,6 +17,10 @@ resource "aws_lb_target_group" "api" {
   port        = 80
   target_type = "ip"
 
+  health_check {
+    path = "/health"
+  }
+
   tags = {
     Name = "api"
   }

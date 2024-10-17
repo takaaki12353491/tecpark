@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+  inspect:
+    cmd: atlas schema inspect --env local > schema/schema.hcl
+  
+  apply:
+    cmd: atlas schema apply --env local
+
+  diff:
+    cmd: atlas migrate diff {{.file}} --env gorm
+
+  migrate:
+    cmd: atlas migrate apply --env local

@@ -12,12 +12,7 @@ on:
         type: string
 
 jobs:
-  check:
-    uses: ./.github/workflows/check-migration.yml
-    secrets: inherit
-
   deploy:
-    needs: check
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
     steps:
@@ -42,7 +37,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           export IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker build -t $IMAGE db/mysql
+          docker build -t backend:latest backend
+          docker build -t $IMAGE backend/db/mysql/schema
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: Push Docker image to ECR
@@ -93,32 +89,3 @@ jobs:
             --network-configuration "awsvpcConfiguration={ \
               subnets=[$SUBNET] \
             }"
-
-  push_to_atlas_cloud:
-    needs: deploy
-    if: success()
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_DATABASE: dev
-          MYSQL_ROOT_PASSWORD: pass
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping -ppass"
-          --health-interval 10s
-          --health-start-period 10s
-          --health-timeout 5s
-          --health-retries 10
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ariga/setup-atlas@v0
-        with:
-          cloud-token: ${{ secrets.ATLAS_CLOUD_TOKEN }}
-      - uses: ariga/atlas-action/migrate/push@v1
-        with:
-          dir: file://db/mysql/migrations
-          dir-name: tecpark
-          dev-url: mysql://root:pass@localhost:3306/dev

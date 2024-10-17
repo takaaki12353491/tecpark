@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  setup:
+    cmd: docker compose up -d
+  
+  down:
+    cmd: docker compose down --volumes --rmi local
+
+  mysql-login:
+    cmd: docker compose exec mysql mysql -u tecpark -ptecpark -h 127.0.0.1 tecpark

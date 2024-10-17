@@ -19,14 +19,36 @@ resource "aws_ecs_task_definition" "api" {
       name      = "api"
       image     = "${aws_ecr_repository.api.repository_url}:latest"
       essential = true
-
+      environment = [
+        {
+          name  = "MYSQL_HOST",
+          value = var.main_db_host
+        },
+        {
+          name  = "MYSQL_PORT",
+          value = var.main_db_port
+        },
+        {
+          name  = "MYSQL_DATABASE",
+          value = var.main_db_database
+        },
+        {
+          name  = "MYSQL_USER",
+          value = var.main_db_username
+        },
+      ]
+      secrets = [
+        {
+          name      = "MYSQL_PASSWORD",
+          valueFrom = var.main_db_password_secretsmanager_secret_arn
+        }
+      ]
       portMappings = [
         {
           containerPort = 80
           hostPort      = 80
         }
       ]
-
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -60,6 +82,11 @@ resource "aws_ecs_service" "api" {
     container_name   = "api"
     container_port   = 80
     target_group_arn = var.alb_target_group_api_arn
+  }
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
   }
 
   tags = {

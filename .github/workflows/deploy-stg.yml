@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       migration: ${{ steps.filter.outputs.migration }}
+      api: ${{ steps.filter.outputs.api }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -24,7 +25,10 @@ jobs:
           base: main
           filters: |
             migration:
-              - "db/mysql/migrations/**"
+              - "backend/common/domain/model/**"
+            api:
+              - "backend/common/**"
+              - "backend/api/user/**"
 
   deploy:
     needs: changes
@@ -32,4 +36,5 @@ jobs:
     with:
       env: stg
       should_run_migration: ${{ needs.changes.outputs.migration == 'true' }}
+      should_deploy_api: ${{ needs.changes.outputs.api == 'true' }}
     secrets: inherit

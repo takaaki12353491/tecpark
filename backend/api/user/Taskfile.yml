@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  gqlgen:
+    cmd: go run github.com/99designs/gqlgen generate
+  
+  wire:
+    dir: internal/infra/di
+    cmd: wire gen
+
+  test:
+    cmd: go test -v -cover -coverprofile=coverage.out  ./...
+
+  coverage:
+    cmd: go tool cover -html=coverage.out -o coverage.html; open coverage.html
+
+  lint:
+    golangci-lint run --fix

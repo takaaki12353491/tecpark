@@ -13,11 +13,24 @@ on:
       should_run_migration:
         required: true
         type: boolean
+      should_deploy_api:
+        required: true
+        type: boolean
+      wait-for-service-stability:
+        required: false
+        type: boolean
 
 jobs:
   migration:
     if: ${{ inputs.should_run_migration }}
     uses: ./.github/workflows/reusable-deploy-migration.yml
+    with:
+      env: ${{ inputs.env }}
+    secrets: inherit
+
+  api:
+    if: ${{ inputs.should_deploy_api }}
+    uses: ./.github/workflows/reusable-deploy-api.yml
     with:
       env: ${{ inputs.env }}
     secrets: inherit

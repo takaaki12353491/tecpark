@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8
     platform: linux/amd64
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -10,17 +10,65 @@ services:
       TZ: Asia/Tokyo
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./db/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
     ports:
       - 23306:3306
     healthcheck:
       test: mysqladmin ping -proot
     networks:
-      - db
+      - service
+
+  test_mysql:
+    image: mysql:8
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tecpark
+      MYSQL_USER: tecpark
+      MYSQL_PASSWORD: tecpark
+      TZ: Asia/Tokyo
+    volumes:
+      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - 33306:3306
+    healthcheck:
+      test: mysqladmin ping -proot
+
+  backend:
+    build: backend
+    image: backend:latest
+
+  user:
+    build:
+      context: backend/api/user
+      dockerfile_inline: |
+        FROM backend:latest
+        WORKDIR /app/backend/api/user
+        RUN go mod download
+        RUN go install github.com/air-verse/air@latest
+        EXPOSE 80
+        CMD [ "air" ]
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: tecpark
+      MYSQL_USER: tecpark
+      MYSQL_PASSWORD: tecpark
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - 8080:80
+    depends_on:
+      backend:
+        condition: service_completed_successfully
+      mysql:
+        condition: service_healthy
+    networks:
+      - service
 
   migrate:
     build:
-      context: ./db/mysql
+      context: backend/db/mysql/schema
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -28,13 +76,15 @@ services:
       MYSQL_USER: tecpark
       MYSQL_PASSWORD: tecpark
     depends_on:
+      backend:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
-      - db
+      - service
 
 volumes:
   mysql_data:
 
 networks:
-  db:
+  service:
