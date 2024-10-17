@@ -33,5 +33,4 @@ jobs:
     uses: ./.github/workflows/reusable-deploy-api.yml
     with:
       env: ${{ inputs.env }}
-      wait-for-service-stability: ${{ inputs.wait-for-service-stability }}
     secrets: inherit
