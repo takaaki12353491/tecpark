@@ -38,7 +38,7 @@ body:
     attributes:
       label: DoD
       description: チェックボックス形式にしてください。
-      value: \- \[ \] 
+      value: "- [ ]"
     validations:
       required: true  
   - type: textarea
