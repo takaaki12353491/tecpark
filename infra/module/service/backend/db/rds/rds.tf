@@ -68,9 +68,9 @@ resource "aws_db_instance" "main" {
   option_group_name    = aws_db_option_group.mysql.name
 
   # バックアップを行ってからメンテナンスを行うように時間設定
-  backup_window              = "04:00-05:00"
+  backup_window              = "18:00-19:00"
   backup_retention_period    = 7
-  maintenance_window         = "Mon:05:00-Mon:08:00"
+  maintenance_window         = "Sun:19:00-Sun:22:00"
   auto_minor_version_upgrade = true
 
   deletion_protection = true
