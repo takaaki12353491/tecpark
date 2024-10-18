@@ -1,7 +1,7 @@
 locals {
   project = "tecpark"
   env     = get_env("TF_VAR_env")
-  tool = "Terraform"
+  tool    = "Terraform"
 
   # AWS
   region = "ap-northeast-1"
@@ -60,6 +60,7 @@ provider "aws" {
       Project = "${local.project}"
       Env     = "${local.env}"
       Tool    = "${local.tool}"
+      Type    = "${regexall("[\\w]+", "${path_relative_to_include()}")[1]}"
     }
   }
 }
