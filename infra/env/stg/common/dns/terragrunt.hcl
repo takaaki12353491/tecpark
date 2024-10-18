@@ -3,5 +3,5 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/common/route53"
+  source = "${find_in_parent_folders("module")}/common/dns"
 }
