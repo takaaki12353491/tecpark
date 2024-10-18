@@ -10,7 +10,7 @@ body:
     attributes:
       label: ユーザーストーリー
       description: ペルソナ、目標、理由を埋めてください。
-      value: "[ペルソナ]として、[目標]したい。それは、[理由]からだ。"
+      value: "[ペルソナ]として、[目標]したい。それは、[理由]ためだ。"
     validations:
       required: true
   - type: textarea
