@@ -7,9 +7,5 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [aws_security_group.bastion.id]
 
   user_data = file("ec2_user_data.sh")
-
-  tags = {
-    Name = "bastion"
-  }
 }
 

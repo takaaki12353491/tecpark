@@ -1,9 +1,5 @@
 resource "aws_route53_zone" "main" {
   name = var.custom_domain
-
-  tags = {
-    Name = "main"
-  }
 }
 
 resource "aws_route53_record" "stg" {

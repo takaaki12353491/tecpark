@@ -23,8 +23,4 @@ resource "aws_security_group" "web" {
     to_port     = 80
     cidr_blocks = [local.all_cidr]
   }
-
-  tags = {
-    Name = "web"
-  }
 }

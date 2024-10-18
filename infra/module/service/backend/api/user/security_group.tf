@@ -1,13 +1,13 @@
-resource "aws_security_group" "bastion" {
-  name        = "bastion"
-  description = "bastion server role security group"
+resource "aws_security_group" "api" {
+  name        = "api"
+  description = "api server role security group"
   vpc_id      = var.main_vpc_id
 
-  egress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = [local.all_cidr]
+  ingress {
+    protocol        = "tcp"
+    from_port       = 80
+    to_port         = 80
+    security_groups = [var.web_security_group_id]
   }
 
   egress {

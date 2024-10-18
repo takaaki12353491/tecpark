@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/operation/bastion"
+  source = "${find_in_parent_folders("module")}/service/backend/db/rds"
 }
 
 dependency "network" {
@@ -15,4 +15,5 @@ inputs = {
   azs                = dependency.network.outputs.azs
   private_cidrs      = dependency.network.outputs.private_cidrs
   private_subnet_ids = dependency.network.outputs.private_subnet_ids
+  dummy_subnet_id    = dependency.network.outputs.dummy_subnet_id
 }

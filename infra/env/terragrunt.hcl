@@ -1,20 +1,16 @@
 locals {
-  local_vars = read_terragrunt_config(find_in_parent_folders("locals.tf"))
-  
-  tool   = local.local_vars.locals.tool
-  region = local.local_vars.locals.region
+  project = "tecpark"
+  env     = get_env("TF_VAR_env")
+  tool    = "Terraform"
 
-  project = get_env("TF_VAR_terragrunt_project")
-  env     = get_env("TF_VAR_terragrunt_env")
+  # AWS
+  region = "ap-northeast-1"
 
-  locals_content    = file("locals.tf")
-  variables_content = file("variables.tf")
-  provider_content  = file("provider.tf")
-  generated_content = join("\n", [
-    local.locals_content, 
-    local.variables_content, 
-    local.provider_content
-  ])
+  # GitHub
+  github_token = get_env("TF_VAR_github_token")
+  github_owner = get_env("TF_VAR_github_owner")
+
+  paths = regexall("[\\w]+", "${path_relative_to_include()}")
 }
 
 remote_state {
@@ -22,7 +18,9 @@ remote_state {
 
   config = {
     bucket  = "${local.project}-${local.env}-tfstate"
-    key     = "${basename(get_terragrunt_dir())}.tfstate"
+    // 下記のように環境ディレクトリをkeyから削除したいが正規表現の後読みがサポートされていないため使えない
+    // regex("(?<=${local.env}).*", path_relative_to_include())
+    key     = "${join("/", "${slice("${local.paths}", 1, length("${local.paths}"))}")}.tfstate"
     region  = "${local.region}"
     profile = "${local.project}-${local.env}"
     encrypt = true
@@ -37,7 +35,57 @@ remote_state {
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
-  contents  = local.generated_content
+  // tfファイルから読み込むこともできるが、terragruntで取得した値が渡せないなど不便なのでヒアドキュメントで定義する
+  contents  = <<EOF
+terraform {
+  required_version = "~> 1.9"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.66"
+    }
+
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.2"
+    }
+  }
+}
+
+provider "aws" {
+  profile = "${local.project}-${local.env}"
+  region  = "${local.region}"
+
+  default_tags {
+    tags = {
+      Project = "${local.project}"
+      Env     = "${local.env}"
+      Tool    = "${local.tool}"
+      Type    = "${local.paths[1]}"
+    }
+  }
+}
+
+provider "aws" {
+  alias   = "virginia"
+  profile = "${local.project}-${local.env}"
+  region  = "us-east-1"
+
+  default_tags {
+    tags = {
+      Tool    = "${local.tool}"
+      Project = "${local.project}"
+      Env     = "${local.env}"
+    }
+  }
+}
+
+provider "github" {
+  token = "${local.github_token}"
+  owner = "${local.github_owner}"
+}
+EOF
 }
 
 inputs = {

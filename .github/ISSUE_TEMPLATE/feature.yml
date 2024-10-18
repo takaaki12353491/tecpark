@@ -1,9 +1,13 @@
 name: 新規タスク
+
 description: 機能追加や改善要望など
+
 projects:
   - "takaaki12353491/11"
+
 assignees:
   - "takaaki12353491"
+
 body:
   - type: textarea
     id: user-story
@@ -13,12 +17,14 @@ body:
       value: "[ペルソナ]として、[目標]したい。それは、[理由]ためだ。"
     validations:
       required: true
+
   - type: textarea
     id: overview
     attributes:
       label: 概要
     validations:
       required: true
+
   - type: dropdown
     id: velocity
     attributes:
@@ -33,14 +39,16 @@ body:
         - "21"
     validations:
       required: true
+
   - type: textarea
     id: dod
     attributes:
       label: DoD
       description: チェックボックス形式にしてください。
-      value: "- [ ]"
+      value: "- [ ] "
     validations:
-      required: true  
+      required: true
+
   - type: textarea
     id: other
     attributes:

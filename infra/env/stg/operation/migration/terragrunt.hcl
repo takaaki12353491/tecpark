@@ -7,7 +7,7 @@ terraform {
 }
 
 dependency "rds" {
-  config_path = "${find_in_parent_folders("service")}/rds"
+  config_path = "${find_in_parent_folders("service")}/backend/db/rds"
 }
 
 inputs = {
