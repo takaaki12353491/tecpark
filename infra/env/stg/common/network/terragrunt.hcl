@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/common/vpc"
+  source = "${find_in_parent_folders("module")}/common/network"
 }
 
 inputs = {
