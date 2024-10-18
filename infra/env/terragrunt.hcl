@@ -9,6 +9,8 @@ locals {
   # GitHub
   github_token = get_env("TF_VAR_github_token")
   github_owner = get_env("TF_VAR_github_owner")
+
+  paths = regexall("[\\w]+", "${path_relative_to_include()}")
 }
 
 remote_state {
@@ -60,7 +62,7 @@ provider "aws" {
       Project = "${local.project}"
       Env     = "${local.env}"
       Tool    = "${local.tool}"
-      Type    = "${regexall("[\\w]+", "${path_relative_to_include()}")[1]}"
+      Type    = "${local.paths[1]}"
     }
   }
 }
