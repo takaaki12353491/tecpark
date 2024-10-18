@@ -22,7 +22,9 @@ remote_state {
 
   config = {
     bucket  = "${local.project}-${local.env}-tfstate"
-    key     = "${basename(get_terragrunt_dir())}.tfstate"
+    // 下記のように環境ディレクトリをkeyから削除したいが正規表現の後読みがサポートされていないので仕方なく環境をディレクトリに含める　　
+    // regex("(?<=${local.env}).*", path_relative_to_include()) 
+    key     = "${path_relative_to_include()}.tfstate"
     region  = "${local.region}"
     profile = "${local.project}-${local.env}"
     encrypt = true
