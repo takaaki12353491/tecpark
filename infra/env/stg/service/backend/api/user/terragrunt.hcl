@@ -3,11 +3,11 @@ include "root" {
 }
 
 terraform {
-  source = "${find_in_parent_folders("module")}/service/api"
+  source = "${find_in_parent_folders("module")}/service/backend/api/user"
 }
 
-dependency "vpc" {
-  config_path = "${find_in_parent_folders("common")}/vpc"
+dependency "network" {
+  config_path = "${find_in_parent_folders("common")}/network"
 }
 
 dependency "web" {
@@ -15,13 +15,13 @@ dependency "web" {
 }
 
 dependency "rds" {
-  config_path = "${find_in_parent_folders("service")}/rds"
+  config_path = "${find_in_parent_folders("db")}/rds"
 }
 
 inputs = {
-  main_vpc_id        = dependency.vpc.outputs.main_vpc_id
-  private_cidrs      = dependency.vpc.outputs.private_cidrs
-  private_subnet_ids = dependency.vpc.outputs.private_subnet_ids
+  main_vpc_id        = dependency.network.outputs.main_vpc_id
+  private_cidrs      = dependency.network.outputs.private_cidrs
+  private_subnet_ids = dependency.network.outputs.private_subnet_ids
 
   web_security_group_id    = dependency.web.outputs.web_security_group_id
   alb_target_group_api_arn = dependency.web.outputs.alb_target_group_api_arn
