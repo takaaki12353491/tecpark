@@ -8,17 +8,9 @@ resource "aws_iam_role" "bastion" {
     "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
   ]
-
-  tags = {
-    Name = "bastion"
-  }
 }
 
 resource "aws_iam_instance_profile" "bastion" {
   name = "bastion"
   role = aws_iam_role.bastion.name
-
-  tags = {
-    Name = "bastion"
-  }
 }

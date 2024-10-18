@@ -4,10 +4,6 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.web.id]
   subnets            = local.alb_subnets
-
-  tags = {
-    Name = "alb"
-  }
 }
 
 resource "aws_lb_target_group" "api" {
@@ -20,10 +16,6 @@ resource "aws_lb_target_group" "api" {
   health_check {
     path = "/health"
   }
-
-  tags = {
-    Name = "api"
-  }
 }
 
 resource "aws_lb_listener" "https" {
@@ -35,9 +27,5 @@ resource "aws_lb_listener" "https" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api.arn
-  }
-
-  tags = {
-    Name = "http"
   }
 }

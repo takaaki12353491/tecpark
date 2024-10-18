@@ -49,10 +49,6 @@ resource "aws_wafv2_web_acl" "user" {
       sampled_requests_enabled   = true
     }
   }
-
-  tags = {
-    Name = "user"
-  }
 }
 
 resource "aws_wafv2_web_acl_association" "user" {

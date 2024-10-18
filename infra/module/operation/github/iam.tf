@@ -6,10 +6,6 @@ resource "aws_iam_openid_connect_provider" "github_actions" {
   thumbprint_list = [
     data.tls_certificate.github_actions.certificates[0].sha1_fingerprint
   ]
-
-  tags = {
-    Name = "github-actions"
-  }
 }
 
 resource "aws_iam_role" "github_actions" {
@@ -23,8 +19,4 @@ resource "aws_iam_role" "github_actions" {
     "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
   ]
-
-  tags = {
-    Name = "github-actions"
-  }
 }

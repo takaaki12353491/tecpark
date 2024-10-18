@@ -7,8 +7,4 @@ resource "aws_iam_role" "ecs_api" {
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
     "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
   ]
-
-  tags = {
-    Name = "ecs-api"
-  }
 }

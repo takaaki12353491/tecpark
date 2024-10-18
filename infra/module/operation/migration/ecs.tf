@@ -1,9 +1,5 @@
 resource "aws_ecs_cluster" "migration" {
   name = "migration"
-
-  tags = {
-    Name = "migration"
-  }
 }
 
 resource "aws_ecs_task_definition" "migration" {
@@ -53,8 +49,4 @@ resource "aws_ecs_task_definition" "migration" {
       }
     }
   ])
-
-  tags = {
-    Name = "migration"
-  }
 }

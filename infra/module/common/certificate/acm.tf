@@ -3,10 +3,6 @@ resource "aws_acm_certificate" "main" {
   subject_alternative_names = ["*.${local.domain}"]
   validation_method         = "DNS"
 
-  tags = {
-    Name = "main"
-  }
-
   lifecycle {
     create_before_destroy = true
   }

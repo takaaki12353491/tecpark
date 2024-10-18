@@ -11,29 +11,17 @@ resource "aws_db_parameter_group" "mysql" {
     name  = "character_set_server"
     value = "utf8mb4"
   }
-
-  tags = {
-    Name = "mysql"
-  }
 }
 
 resource "aws_db_option_group" "mysql" {
   name                 = "mysql"
   engine_name          = "mysql"
   major_engine_version = "8.0"
-
-  tags = {
-    Name = "mysql"
-  }
 }
 
 resource "aws_db_subnet_group" "private" {
   name       = "private"
   subnet_ids = local.rds_subnets
-
-  tags = {
-    Name = "private"
-  }
 }
 
 resource "random_string" "main_db_password" {
@@ -78,8 +66,4 @@ resource "aws_db_instance" "main" {
   apply_immediately   = true
 
   final_snapshot_identifier = "main-final-snapshot-${formatdate("YYYYMMDDHHmmss", timestamp())}"
-
-  tags = {
-    Name = "main"
-  }
 }

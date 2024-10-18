@@ -5,11 +5,6 @@ resource "aws_route_table" "public" {
     cidr_block = local.all_cidr
     gateway_id = aws_internet_gateway.main.id
   }
-
-  tags = {
-    Name = "public"
-    Type = "public"
-  }
 }
 
 resource "aws_route_table_association" "public_subnet" {
@@ -33,11 +28,6 @@ resource "aws_route_table" "private" {
   route {
     cidr_block     = local.all_cidr
     nat_gateway_id = each.value.id
-  }
-
-  tags = {
-    Name = "private-${each.key}"
-    Type = "private"
   }
 }
 

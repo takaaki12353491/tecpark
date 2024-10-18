@@ -10,8 +10,4 @@ resource "aws_security_group" "rds" {
     # security_groupsではなくcidr_blocksを指定することで依存関係を減らし、新しいリソースが追加されても対応できるようにする。
     cidr_blocks = values(var.private_cidrs)
   }
-
-  tags = {
-    Name = "rds"
-  }
 }

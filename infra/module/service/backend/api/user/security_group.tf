@@ -23,8 +23,4 @@ resource "aws_security_group" "api" {
     to_port     = 3306
     cidr_blocks = values(var.private_cidrs)
   }
-
-  tags = {
-    Name = "api"
-  }
 }

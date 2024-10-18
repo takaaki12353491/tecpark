@@ -1,9 +1,5 @@
 resource "aws_s3_bucket" "front_admin" {
   bucket = "${var.project}-${var.env}-front-admin"
-
-  tags = {
-    Name = "front-admin"
-  }
 }
 
 resource "aws_s3_bucket_public_access_block" "front_admin" {

@@ -1,9 +1,5 @@
 resource "aws_ecs_cluster" "api" {
   name = "api"
-
-  tags = {
-    Name = "api"
-  }
 }
 
 resource "aws_ecs_task_definition" "api" {
@@ -59,10 +55,6 @@ resource "aws_ecs_task_definition" "api" {
       }
     }
   ])
-
-  tags = {
-    Name = "api"
-  }
 }
 
 resource "aws_ecs_service" "api" {
@@ -87,9 +79,5 @@ resource "aws_ecs_service" "api" {
   deployment_circuit_breaker {
     enable   = true
     rollback = true
-  }
-
-  tags = {
-    Name = "api"
   }
 }
