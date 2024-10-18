@@ -1,7 +1,6 @@
 locals {
   local_vars = read_terragrunt_config(find_in_parent_folders("locals.tf"))
-  
-  tool   = local.local_vars.locals.tool
+
   region = local.local_vars.locals.region
 
   project = get_env("TF_VAR_terragrunt_project")
