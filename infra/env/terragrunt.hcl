@@ -22,9 +22,9 @@ remote_state {
 
   config = {
     bucket  = "${local.project}-${local.env}-tfstate"
-    // 下記のように環境ディレクトリをkeyから削除したいが正規表現の後読みがサポートされていないので仕方なく環境をディレクトリに含める　　
-    // regex("(?<=${local.env}).*", path_relative_to_include()) 
-    key     = "${path_relative_to_include()}.tfstate"
+    // 下記のように環境ディレクトリをkeyから削除したいが正規表現の後読みがサポートされていないので仕方なくreplaceを使う
+    // regex("(?<=${local.env}).*", path_relative_to_include())
+    key     = "${replace("foobar${path_relative_to_include()}", "foobar${local.env}/", "")}.tfstate"
     region  = "${local.region}"
     profile = "${local.project}-${local.env}"
     encrypt = true
