@@ -4159,7 +4159,6 @@
     "packageJson": {
       "dependencies": [
         "npm:@remix-run/dev@^2.13.1",
-        "npm:@remix-run/node@^2.13.1",
         "npm:@remix-run/react@^2.13.1",
         "npm:@remix-run/serve@^2.13.1",
         "npm:@types/react-dom@^18.2.7",
