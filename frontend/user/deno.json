@@ -3,5 +3,9 @@
     "dev": "deno run -A npm:@remix-run/dev vite:dev",
     "build": "deno run -A npm:@remix-run/dev vite:build",
     "typecheck": "deno check '**/*'"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window", "dom"],
+    "jsx":"react-jsx"
   }
 }
