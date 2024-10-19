@@ -20,5 +20,8 @@
   "go.lintTool": "golangci-lint",
   "go.lintFlags": [
     "--fast"
-  ]
+  ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }
