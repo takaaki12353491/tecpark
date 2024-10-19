@@ -6,6 +6,6 @@
   },
   "compilerOptions": {
     "lib": ["deno.window", "dom"],
-    "jsx":"react-jsx"
+    "jsx": "react-jsx"
   }
 }
