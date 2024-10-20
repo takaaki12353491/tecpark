@@ -4,7 +4,7 @@
     "build": "deno run -A npm:@remix-run/dev vite:build",
     "typecheck": "deno check '**/*'",
     "prisma:pull": "deno run -A npm:prisma db pull",
-    "prisma:generate": "deno run -A npm:prisma generate"
+    "prisma:generate": "deno run -A npm:prisma generate --sql --watch"
   },
   "compilerOptions": {
     "lib": ["deno.window", "dom"],
