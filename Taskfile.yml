@@ -8,4 +8,4 @@ tasks:
     cmd: docker compose down --volumes --rmi local
 
   mysql-login:
-    cmd: docker compose exec mysql mysql -u tecpark -ptecpark -h 127.0.0.1 tecpark
+    cmd: docker compose exec mysql mysql -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -h 127.0.0.1 ${MYSQL_DATABASE}
