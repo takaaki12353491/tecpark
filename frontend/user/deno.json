@@ -2,7 +2,9 @@
   "tasks": {
     "dev": "deno run -A npm:@remix-run/dev vite:dev",
     "build": "deno run -A npm:@remix-run/dev vite:build",
-    "typecheck": "deno check '**/*'"
+    "typecheck": "deno check '**/*'",
+    "prisma:pull": "deno run -A npm:prisma db pull",
+    "prisma:generate": "deno run -A npm:prisma generate"
   },
   "compilerOptions": {
     "lib": ["deno.window", "dom"],
