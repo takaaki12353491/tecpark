@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "hashicorp.terraform",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "prisma.prisma"
   ]
 }
