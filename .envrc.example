@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Time
+export TZ=Asia/Tokyo
+
+# MySQL
 export MYSQL_USER=tecpark
 export MYSQL_PASSWORD=tecpark
 export MYSQL_HOST=localhost
