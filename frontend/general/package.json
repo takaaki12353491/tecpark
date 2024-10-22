@@ -6,8 +6,10 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
+    "format": "bunx biome format",
+    "lint": "bunx biome lint",
+    "check": "bunx biome check",
     "typecheck": "tsc",
     "prisma:pull": "prisma db pull",
     "prisma:generate": "prisma generate --sql --watch"
