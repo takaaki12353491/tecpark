@@ -1,28 +1,26 @@
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "files.exclude": {
-    "**/.terragrunt-cache": true
-  },
-  "[terraform]": {
-    "editor.defaultFormatter": "hashicorp.terraform",
-    "editor.formatOnSaveMode": "file"
-  },
-  "[sql]": {
-    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
-  },
-  "Prettier-SQL.expressionWidth": 100,
-  "Prettier-SQL.keywordCase": "upper",
-  "Prettier-SQL.ignoreTabSettings": true,
-  "Prettier-SQL.tabSizeOverride": 2,
-  "[go]": {
-    "editor.defaultFormatter": "golang.go"
-  },
-  "go.lintTool": "golangci-lint",
-  "go.lintFlags": [
-    "--fast"
-  ],
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"files.exclude": {
+		"**/.terragrunt-cache": true
+	},
+	"[terraform]": {
+		"editor.defaultFormatter": "hashicorp.terraform",
+		"editor.formatOnSaveMode": "file"
+	},
+	"[sql]": {
+		"editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+	},
+	"Prettier-SQL.expressionWidth": 100,
+	"Prettier-SQL.keywordCase": "upper",
+	"Prettier-SQL.ignoreTabSettings": true,
+	"Prettier-SQL.tabSizeOverride": 2,
+	"[go]": {
+		"editor.defaultFormatter": "golang.go"
+	},
+	"go.lintTool": "golangci-lint",
+	"go.lintFlags": ["--fast"],
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}
 }
