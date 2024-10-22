@@ -212,7 +212,7 @@ export function Header({
 						color="inherit"
 						aria-label="open drawer"
 						sx={{ mr: 2 }}
-						onCanPlay={handleSidebarToggle}
+						onClick={handleSidebarToggle}
 					>
 						<MenuIcon />
 					</IconButton>
