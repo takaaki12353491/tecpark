@@ -9,5 +9,6 @@
   "compilerOptions": {
     "lib": ["deno.window", "dom"],
     "jsx": "react-jsx"
-  }
+  },
+  "nodeModulesDir": "auto"
 }
