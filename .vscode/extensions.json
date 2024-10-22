@@ -2,6 +2,7 @@
   "recommendations": [
     "hashicorp.terraform",
     "bradlc.vscode-tailwindcss",
-    "prisma.prisma"
+    "prisma.prisma",
+    "denoland.vscode-deno"
   ]
 }
