@@ -14,7 +14,7 @@ export const loader: LoaderFunction = () => {
   const users: User[] = [
     { id: 1, name: "太郎" },
     { id: 2, name: "花子" },
-    { id: 3, name: "次郎" }
+    { id: 3, name: "次郎" },
   ];
   return json<LoaderData>({ users });
 };
@@ -24,9 +24,7 @@ export default function Index() {
 
   return (
     <ul>
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
+      {users.map((user) => <li key={user.id}>{user.name}</li>)}
     </ul>
   );
 }
