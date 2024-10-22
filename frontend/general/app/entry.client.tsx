@@ -7,12 +7,19 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+
+const cache = createCache({ key: "css" });
 
 startTransition(() => {
-  hydrateRoot(
-    document,
-    <StrictMode>
-      <RemixBrowser />
-    </StrictMode>
-  );
+	hydrateRoot(
+		document,
+		<StrictMode>
+			{/* ハイドレーションエラー回避のために必要 */}
+			<CacheProvider value={cache}>
+				<RemixBrowser />
+			</CacheProvider>
+		</StrictMode>,
+	);
 });

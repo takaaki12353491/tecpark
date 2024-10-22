@@ -284,7 +284,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Header />
 				{children}
 				<ScrollRestoration />
-				{/*<Scripts />*/}
+				<Scripts />
 			</body>
 		</html>
 	);
