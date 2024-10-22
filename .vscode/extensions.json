@@ -3,6 +3,7 @@
     "hashicorp.terraform",
     "bradlc.vscode-tailwindcss",
     "prisma.prisma",
-    "denoland.vscode-deno"
+    "denoland.vscode-deno",
+    "biomejs.biome"
   ]
 }
