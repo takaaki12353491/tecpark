@@ -21,4 +21,12 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  resolve: {
+    alias: [
+      {
+        find: '@/',
+        replacement: `${__dirname}/`
+      }
+    ]
+  }
 });
