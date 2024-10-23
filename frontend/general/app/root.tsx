@@ -306,6 +306,7 @@ export function Header({
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
+	marginTop: theme.mixins.toolbar.minHeight,
 	width: drawerWidth,
 	transition: theme.transitions.create("width", {
 		easing: theme.transitions.easing.sharp,
@@ -315,6 +316,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+	marginTop: theme.mixins.toolbar.minHeight,
 	transition: theme.transitions.create("width", {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
@@ -325,10 +327,6 @@ const closedMixin = (theme: Theme): CSSObject => ({
 		width: `calc(${theme.spacing(8)} + 1px)`,
 	},
 });
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-	...theme.mixins.toolbar,
-}));
 
 const Drawer = styled(MuiDrawer, {
 	shouldForwardProp: (prop) => prop !== "open",
@@ -359,7 +357,6 @@ const Drawer = styled(MuiDrawer, {
 export function Sidebar({ isOpen }: { theme: Theme; isOpen: boolean }) {
 	return (
 		<Drawer variant="permanent" open={isOpen}>
-			<DrawerHeader />
 			<List>
 				{["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
 					<ListItem key={text} disablePadding sx={{ display: "block" }}>
