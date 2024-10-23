@@ -7,9 +7,9 @@
 		"build": "remix vite:build",
 		"dev": "remix vite:dev",
 		"start": "remix-serve ./build/server/index.js",
-		"format": "bunx biome format",
-		"lint": "bunx biome lint",
-		"check": "bunx biome check",
+		"format": "biome format",
+		"lint": "biome lint",
+		"check": "biome check",
 		"typecheck": "tsc",
 		"prisma:pull": "prisma db pull",
 		"prisma:generate": "prisma generate --sql --watch"
