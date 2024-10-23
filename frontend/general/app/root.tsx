@@ -14,6 +14,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { styled, alpha, useTheme } from "@mui/material/styles";
 import type { Theme, CSSObject } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -490,6 +491,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Header handleSidebarToggle={handleSidebarToggle} />
 				<Sidebar theme={theme} isOpen={isOpen} />
 				<Main>{children}</Main>
+				<CssBaseline />
 				<ScrollRestoration />
 				<Scripts />
 			</Box>
