@@ -327,10 +327,15 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	},
 });
 
+const DrawerHeader = styled("div")(({ theme }) => ({
+	...theme.mixins.toolbar,
+}));
+
 const Drawer = styled(MuiDrawer, {
 	shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
 	width: drawerWidth,
+	paddingTop: theme.mixins.toolbar.height,
 	flexShrink: 0,
 	whiteSpace: "nowrap",
 	boxSizing: "border-box",
@@ -352,9 +357,10 @@ const Drawer = styled(MuiDrawer, {
 	],
 }));
 
-export function Sidebar({ theme, isOpen }: { theme: Theme; isOpen: boolean }) {
+export function Sidebar({ isOpen }: { theme: Theme; isOpen: boolean }) {
 	return (
 		<Drawer variant="permanent" open={isOpen}>
+			<DrawerHeader />
 			<List>
 				{["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
 					<ListItem key={text} disablePadding sx={{ display: "block" }}>
@@ -481,10 +487,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<body>
 				<div className="flex flex-col min-h-screen">
 					<Header handleSidebarToggle={handleSidebarToggle} />
-					<div className="flex-1 flex flex-col md:flex-row">
-						<Sidebar theme={theme} isOpen={isOpen} />
-						<main className="flex-1 bg-white p-4">{children}</main>
-					</div>
+					<Sidebar theme={theme} isOpen={isOpen} />
+					<main className="flex-1 bg-white p-4">{children}</main>
 				</div>
 				<ScrollRestoration />
 				<Scripts />
