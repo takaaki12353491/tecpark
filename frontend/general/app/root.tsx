@@ -14,7 +14,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { styled, alpha, useTheme } from "@mui/material/styles";
 import type { Theme, CSSObject } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
+import MuiAppBar from "@mui/material/AppBar";
+import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -58,6 +59,24 @@ export const links: LinksFunction = () => [
 		href: "https://fonts.googleapis.com/icon?family=Material+Icons",
 	},
 ];
+
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
+	zIndex: theme.zIndex.drawer + 1,
+	transition: theme.transitions.create(["width", "margin"], {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
+	}),
+	variants: [
+		{
+			style: {
+				transition: theme.transitions.create(["width", "margin"], {
+					easing: theme.transitions.easing.sharp,
+					duration: theme.transitions.duration.enteringScreen,
+				}),
+			},
+		},
+	],
+}));
 
 const Search = styled("div")(({ theme }) => ({
 	position: "relative",
@@ -203,8 +222,8 @@ export function Header({
 	);
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+		<>
+			<AppBar position="fixed">
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -281,7 +300,7 @@ export function Header({
 			</AppBar>
 			{renderMobileMenu}
 			{renderMenu}
-		</Box>
+		</>
 	);
 }
 
