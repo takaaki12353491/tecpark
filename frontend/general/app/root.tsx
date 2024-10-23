@@ -15,7 +15,6 @@ import "@fontsource/roboto/700.css";
 import { styled, alpha, useTheme } from "@mui/material/styles";
 import type { Theme, CSSObject } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
-import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import MuiDrawer from "@mui/material/Drawer";
