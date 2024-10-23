@@ -1,7 +1,0 @@
-#!/bin/bash
-
-export MYSQL_USER=tecpark
-export MYSQL_PASSWORD=tecpark
-export MYSQL_HOST=localhost
-export MYSQL_PORT=23306
-export MYSQL_DATABASE=tecpark
