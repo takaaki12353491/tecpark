@@ -484,15 +484,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Meta />
 				<Links />
 			</head>
-			<body>
-				<div className="flex flex-col min-h-screen">
-					<Header handleSidebarToggle={handleSidebarToggle} />
-					<Sidebar theme={theme} isOpen={isOpen} />
-					<main className="flex-1 bg-white p-4">{children}</main>
-				</div>
+			<Box component="body" sx={{ display: "flex" }}>
+				<Header handleSidebarToggle={handleSidebarToggle} />
+				<Sidebar theme={theme} isOpen={isOpen} />
+				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+					<DrawerHeader />
+					{children}
+				</Box>
 				<ScrollRestoration />
 				<Scripts />
-			</body>
+			</Box>
 		</html>
 	);
 }
