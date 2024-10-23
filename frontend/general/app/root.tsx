@@ -467,6 +467,12 @@ export function Sidebar({ isOpen }: { theme: Theme; isOpen: boolean }) {
 	);
 }
 
+const Main = styled("main")(({ theme }) => ({
+	flexGrow: 1,
+	padding: theme.spacing(3),
+	marginTop: theme.mixins.toolbar.minHeight,
+}));
+
 export function Layout({ children }: { children: React.ReactNode }) {
 	const theme = useTheme();
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -486,10 +492,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<Box component="body" sx={{ display: "flex" }}>
 				<Header handleSidebarToggle={handleSidebarToggle} />
 				<Sidebar theme={theme} isOpen={isOpen} />
-				<Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-					<DrawerHeader />
-					{children}
-				</Box>
+				<Main>{children}</Main>
 				<ScrollRestoration />
 				<Scripts />
 			</Box>
