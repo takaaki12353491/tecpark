@@ -28,10 +28,10 @@ jobs:
         run: bun i
 
       - name: Check format
-        run: bun biome format
+        run: bun run format
 
       - name: Check lint
-        run: bun biome lint
+        run: bun run lint
 
   test:
     runs-on: ubuntu-latest
