@@ -4,10 +4,10 @@ services:
     platform: linux/amd64
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tecpark
-      MYSQL_USER: tecpark
-      MYSQL_PASSWORD: tecpark
-      TZ: Asia/Tokyo
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      TZ: ${TZ}
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
@@ -23,10 +23,10 @@ services:
     platform: linux/amd64
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tecpark
-      MYSQL_USER: tecpark
-      MYSQL_PASSWORD: tecpark
-      TZ: Asia/Tokyo
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      TZ: ${TZ}
     volumes:
       - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
     ports:

@@ -1,0 +1,16 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DSN")
+}
+
+model users {
+  id         String   @id @db.Char(26)
+  nickname   String   @db.VarChar(30)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
