@@ -1,6 +1,6 @@
 FROM backend:latest
 
-WORKDIR /app/backend/db/mysql/schema
+WORKDIR /app/backend/db/rdb/schema
 
 RUN go mod download
 
