@@ -1,0 +1,2 @@
+[tasks.gqlgen]
+run = "go tool gqlgen"
