@@ -1,0 +1,11 @@
+[tasks."schema:inspect"]
+run = "atlas schema inspect --env local > schema/schema.hcl"
+
+[tasks."schema:apply"]
+run = "atlas schema apply --env local"
+
+[tasks."migrate:diff"]
+run = "atlas migrate diff {{.file}} --env gorm"
+
+[tasks."migrate:apply"]
+run = "atlas migrate apply --env local"
