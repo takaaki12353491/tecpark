@@ -1,2 +1,6 @@
 [tasks.gqlgen]
 run = "go tool gqlgen"
+
+[tasks.wire]
+run = "go tool wire"
+dir = "internal/infra/di"
