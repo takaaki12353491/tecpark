@@ -47,8 +47,8 @@ func main() {
 			`"bytes_in":${bytes_in},"bytes_out":${bytes_out}}` + "\n",
 		CustomTagFunc: func(c echo.Context, buf *bytes.Buffer) (int, error) {
 			span := trace.SpanFromContext(c.Request().Context())
-			buf.WriteString(fmt.Sprintf("\"%s\":\"%s\"", "traceID", span.SpanContext().TraceID().String()))
-			buf.WriteString(fmt.Sprintf(",\"%s\":\"%s\"", "spanID", span.SpanContext().SpanID().String()))
+			fmt.Fprintf(buf, "\"%s\":\"%s\"", "traceID", span.SpanContext().TraceID().String())
+			fmt.Fprintf(buf, ",\"%s\":\"%s\"", "spanID", span.SpanContext().SpanID().String())
 			return 0, nil
 		},
 	}))
