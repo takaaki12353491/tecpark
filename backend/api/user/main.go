@@ -55,7 +55,7 @@ func main() {
 
 	conn, _ := db.NewConnection(db.WithTZ(tz))
 	resolver := di.InitializeResolver(conn)
-	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
+	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
