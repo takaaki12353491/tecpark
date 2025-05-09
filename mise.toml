@@ -5,3 +5,12 @@ kubectl = "1.33.0"
 node = "24.0.0"
 terraform = "1.11.4"
 terragrunt = "0.77.22"
+
+[tasks."docker:up"]
+run = "docker compose up -d"
+  
+[tasks."docker:down"]
+run = "docker compose down --volumes --rmi local"
+
+[tasks."mysql:login"]
+run = "docker compose exec mysql mysql -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -h 127.0.0.1 ${MYSQL_DATABASE}"
