@@ -1,11 +1,12 @@
 package service
 
 import (
-	"common/db/query"
-	"common/domain/model"
 	"context"
 	"testing"
 	"user/internal/infra/db"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db/query"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"

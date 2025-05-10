@@ -4,7 +4,7 @@ package graphql
 
 import (
 	"bytes"
-	"common/domain/model"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 	"context"
 	"embed"
 	"errors"

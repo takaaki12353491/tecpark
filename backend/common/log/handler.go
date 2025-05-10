@@ -1,10 +1,11 @@
 package xlog
 
 import (
-	xcontext "common/context"
 	"context"
 	"log/slog"
 	"os"
+
+	xcontext "github.com/takaaki12353491/tecpark/backend/common/context"
 
 	"go.opentelemetry.io/otel/trace"
 )

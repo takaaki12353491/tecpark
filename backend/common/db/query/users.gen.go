@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"common/domain/model"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {

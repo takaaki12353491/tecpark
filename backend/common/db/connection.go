@@ -1,10 +1,11 @@
 package db
 
 import (
-	xlog "common/log"
-	"common/util"
 	"fmt"
 	"net/url"
+
+	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
