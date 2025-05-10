@@ -22,7 +22,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workdir: backend/common
-          go_version_file: .go-version
+          go_version_file: backend/common/go.mod
           level: error
           reporter: github-pr-review
           filter_mode: nofilter
