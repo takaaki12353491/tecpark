@@ -1,6 +1,6 @@
 module github.com/takaaki12353491/tecpark/backend/common
 
-go 1.23.2
+go 1.24.3
 
 require (
 	github.com/stretchr/testify v1.9.0

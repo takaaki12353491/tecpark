@@ -47,15 +47,15 @@ func main() {
 			`"bytes_in":${bytes_in},"bytes_out":${bytes_out}}` + "\n",
 		CustomTagFunc: func(c echo.Context, buf *bytes.Buffer) (int, error) {
 			span := trace.SpanFromContext(c.Request().Context())
-			buf.WriteString(fmt.Sprintf("\"%s\":\"%s\"", "traceID", span.SpanContext().TraceID().String()))
-			buf.WriteString(fmt.Sprintf(",\"%s\":\"%s\"", "spanID", span.SpanContext().SpanID().String()))
+			fmt.Fprintf(buf, "\"%s\":\"%s\"", "traceID", span.SpanContext().TraceID().String())
+			fmt.Fprintf(buf, ",\"%s\":\"%s\"", "spanID", span.SpanContext().SpanID().String())
 			return 0, nil
 		},
 	}))
 
 	conn, _ := db.NewConnection(db.WithTZ(tz))
 	resolver := di.InitializeResolver(conn)
-	srv := handler.NewDefaultServer(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
+	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))

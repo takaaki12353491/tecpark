@@ -10,7 +10,7 @@ services:
       TZ: ${TZ}
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./backend/db/rdb/my.cnf:/etc/mysql/my.cnf
     ports:
       - 23306:3306
     healthcheck:
@@ -28,7 +28,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       TZ: ${TZ}
     volumes:
-      - ./backend/db/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./backend/db/rdb/my.cnf:/etc/mysql/my.cnf
     ports:
       - 33306:3306
     healthcheck:
@@ -68,7 +68,7 @@ services:
 
   migrate:
     build:
-      context: backend/db/mysql/schema
+      context: backend/db/rdb/schema
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306

@@ -1,0 +1,21 @@
+[tasks.gqlgen]
+run = "go tool gqlgen"
+
+[tasks.wire]
+run = "go tool wire"
+dir = "internal/infra/di"
+
+[tasks.test]
+run = "go test -v -cover -coverprofile=coverage.out ./..."
+
+[tasks.coverage]
+run = [
+  "go tool cover -html=coverage.out -o coverage.html",
+  "open coverage.html",
+]
+
+[tasks.lint]
+run = "golangci-lint run"
+
+[tasks."lint:fix"]
+run = "golangci-lint run --fix"
