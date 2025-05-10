@@ -1,8 +1,9 @@
 package db
 
 import (
-	"common/db"
 	"user/internal/domain/repository"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db"
 
 	"gorm.io/gorm"
 )

@@ -2,13 +2,14 @@ package main
 
 import (
 	"bytes"
-	"common/db"
-	xlog "common/log"
-	"common/util"
 	"fmt"
 	"time"
 	"user/internal/infra/di"
 	"user/internal/interface/graphql"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db"
+	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"

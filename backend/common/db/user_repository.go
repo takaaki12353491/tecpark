@@ -1,10 +1,11 @@
 package db
 
 import (
-	"common/db/query"
-	"common/domain/model"
-	"common/domain/repository"
 	"context"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db/query"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/repository"
 
 	"gorm.io/gorm"
 )

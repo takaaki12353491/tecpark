@@ -1,12 +1,13 @@
 package service
 
 import (
-	"common/db"
-	"common/domain/model"
-	xlog "common/log"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

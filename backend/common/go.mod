@@ -1,4 +1,4 @@
-module common
+module github.com/takaaki12353491/tecpark/backend/common
 
 go 1.23.2
 

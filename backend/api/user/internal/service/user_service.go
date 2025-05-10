@@ -1,9 +1,10 @@
 package service
 
 import (
-	"common/domain/model"
 	"context"
 	"user/internal/domain/repository"
+
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
 type UserService struct {

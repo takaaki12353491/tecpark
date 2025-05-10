@@ -1,7 +1,7 @@
 package test
 
 import (
-	"common/util"
+	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	"gorm.io/gorm"
 )

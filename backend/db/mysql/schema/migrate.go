@@ -1,11 +1,12 @@
 package main
 
 import (
-	"common/db"
-	"common/domain/model"
-	"common/util"
 	"fmt"
 	"time"
+
+	"github.com/takaaki12353491/tecpark/backend/common/db"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	"github.com/takaaki12353491/tecpark/backend/common/util"
 )
 
 func main() {

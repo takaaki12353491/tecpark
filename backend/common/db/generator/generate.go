@@ -1,7 +1,7 @@
 package main
 
 import (
-	"common/domain/model"
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 
 	"gorm.io/gen"
 )

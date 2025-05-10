@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"common/domain/model"
 	"context"
+
+	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
 type UserRepository interface {
