@@ -16,7 +16,7 @@ import (
 var testConn *gorm.DB
 
 func TestMain(m *testing.M) {
-	conn, _ := db.NewConnection(db.WithPort("33306"))
+	conn, _ := db.New(db.WithPort("33306"))
 	testConn = conn.Session(&gorm.Session{
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})

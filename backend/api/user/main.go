@@ -50,8 +50,8 @@ func main() {
 		},
 	}))
 
-	conn, _ := db.NewConnection(db.WithTZ(tz))
-	resolver := di.InitializeResolver(conn)
+	db, _ := db.New(db.WithTZ(tz))
+	resolver := di.InitializeResolver(db)
 	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e.POST("/query", echo.WrapHandler(srv))
