@@ -1,6 +1,8 @@
-FROM backend:latest
+FROM golang:1.24-alpine
 
-WORKDIR /app/backend/db/rdb/schema
+COPY . /app
+
+WORKDIR /app
 
 RUN go mod download
 

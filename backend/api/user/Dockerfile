@@ -1,6 +1,8 @@
-FROM backend:latest AS build
+FROM golang:1.24-alpine AS build
 
-WORKDIR /app/backend/api/user
+COPY . /app
+
+WORKDIR /app
 
 RUN go mod download
 

@@ -34,20 +34,10 @@ services:
     healthcheck:
       test: mysqladmin ping -proot
 
-  backend:
-    build: backend
-    image: backend:latest
-
   user:
     build:
       context: backend/api/user
-      dockerfile_inline: |
-        FROM backend:latest
-        WORKDIR /app/backend/api/user
-        RUN go mod download
-        RUN go install github.com/air-verse/air@latest
-        EXPOSE 80
-        CMD [ "air" ]
+      dockerfile: Dockerfile.local
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -55,12 +45,10 @@ services:
       MYSQL_USER: tecpark
       MYSQL_PASSWORD: tecpark
     volumes:
-      - ./backend:/app/backend
+      - ./backend/api/user:/app
     ports:
       - 8080:80
     depends_on:
-      backend:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
@@ -68,7 +56,7 @@ services:
 
   migrate:
     build:
-      context: backend/db/rdb/schema
+      context: backend/db/rdb
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -76,8 +64,6 @@ services:
       MYSQL_USER: tecpark
       MYSQL_PASSWORD: tecpark
     depends_on:
-      backend:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     networks:
