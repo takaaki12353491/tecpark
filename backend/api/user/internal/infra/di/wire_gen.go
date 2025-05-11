@@ -16,8 +16,8 @@ import (
 // Injectors from wire.go:
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
-	userRepository := db.NewUserRepository(conn)
-	user := usecase.NewUser(userRepository)
-	resolverResolver := resolver.NewResolver(user)
+	user := db.NewUser(conn)
+	usecaseUser := usecase.NewUser(user)
+	resolverResolver := resolver.NewResolver(usecaseUser)
 	return resolverResolver
 }

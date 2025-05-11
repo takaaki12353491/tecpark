@@ -2,8 +2,7 @@ package repository
 
 import (
 	"context"
-
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	"user/internal/domain/model"
 )
 
 type User interface {

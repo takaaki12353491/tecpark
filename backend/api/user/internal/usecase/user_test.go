@@ -3,13 +3,13 @@ package usecase
 import (
 	"context"
 	"testing"
+	"user/internal/domain/model"
 	"user/internal/infra/db"
-
-	"github.com/takaaki12353491/tecpark/backend/common/db/query"
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	"user/internal/infra/db/query"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/oklog/ulid/v2"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
 )
@@ -26,7 +26,8 @@ type UserSuite struct {
 
 func (s *UserSuite) SetupTest() {
 	s.tx = testConn.Begin()
-	userRepository := db.NewUserRepository(s.tx)
+	query.SetDefault(s.tx)
+	userRepository := db.NewUser(s.tx)
 	s.user = NewUser(userRepository)
 }
 
@@ -35,11 +36,13 @@ func (s *UserSuite) TearDownTest() {
 }
 
 func (s *UserSuite) TestGetUsers() {
+	ctx := s.T().Context()
+
 	users := []*model.User{
-		{ID: "1", Nickname: "Nickname1"},
-		{ID: "2", Nickname: "Nickname2"},
+		{ID: ulid.Make(), Nickname: "Nickname1"},
+		{ID: ulid.Make(), Nickname: "Nickname2"},
 	}
-	err := query.Use(s.tx).User.CreateInBatches(users, 100)
+	err := query.User.WithContext(ctx).CreateInBatches(users, 100)
 	if err != nil {
 		s.T().Fatalf("failed to create users in batches: %v", err)
 	}

@@ -2,10 +2,10 @@ package db
 
 import (
 	"context"
+	"user/internal/domain/model"
 	"user/internal/domain/repository"
+	"user/internal/infra/db/query"
 
-	"github.com/takaaki12353491/tecpark/backend/common/db/query"
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +13,7 @@ type User struct {
 	Conn *gorm.DB
 }
 
-func NewUserRepository(conn *gorm.DB) repository.User {
+func NewUser(conn *gorm.DB) repository.User {
 	return &User{conn}
 }
 

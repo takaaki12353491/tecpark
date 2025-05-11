@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 	"testing"
+	"user/internal/domain/model"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
 
 	"gorm.io/gorm"

@@ -2,9 +2,8 @@ package usecase
 
 import (
 	"context"
+	"user/internal/domain/model"
 	"user/internal/domain/repository"
-
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
 type User struct {
