@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"mysql/schema"
 	"time"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
 	"github.com/takaaki12353491/tecpark/backend/common/util"
+	"github.com/takaaki12353491/tecpark/db/rdb/schema"
 )
 
 func main() {
