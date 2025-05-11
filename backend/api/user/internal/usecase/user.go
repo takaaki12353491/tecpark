@@ -7,18 +7,18 @@ import (
 	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
-type UserService struct {
+type User struct {
 	userRepository repository.UserRepository
 }
 
-func NewUserService(userRepository repository.UserRepository) *UserService {
-	return &UserService{
+func NewUser(userRepository repository.UserRepository) *User {
+	return &User{
 		userRepository: userRepository,
 	}
 }
 
-func (s *UserService) GetUsers(ctx context.Context) ([]*model.User, error) {
-	users, err := s.userRepository.GetUsers(ctx)
+func (uc *User) GetUsers(ctx context.Context) ([]*model.User, error) {
+	users, err := uc.userRepository.GetUsers(ctx)
 	if err != nil {
 		return nil, err
 	}

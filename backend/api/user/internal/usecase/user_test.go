@@ -14,27 +14,27 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestUserService(t *testing.T) {
-	suite.Run(t, new(UserServiceSuite))
+func TestUser(t *testing.T) {
+	suite.Run(t, new(UserSuite))
 }
 
-type UserServiceSuite struct {
+type UserSuite struct {
 	suite.Suite
-	userService *UserService
-	tx          *gorm.DB
+	user *User
+	tx   *gorm.DB
 }
 
-func (s *UserServiceSuite) SetupTest() {
+func (s *UserSuite) SetupTest() {
 	s.tx = testConn.Begin()
 	userRepository := db.NewUserRepository(s.tx)
-	s.userService = NewUserService(userRepository)
+	s.user = NewUser(userRepository)
 }
 
-func (s *UserServiceSuite) TearDownTest() {
+func (s *UserSuite) TearDownTest() {
 	s.tx.Rollback()
 }
 
-func (s *UserServiceSuite) TestGetUsers() {
+func (s *UserSuite) TestGetUsers() {
 	users := []*model.User{
 		{ID: "1", Nickname: "Nickname1"},
 		{ID: "2", Nickname: "Nickname2"},
@@ -44,7 +44,7 @@ func (s *UserServiceSuite) TestGetUsers() {
 		s.T().Fatalf("failed to create users in batches: %v", err)
 	}
 
-	result, err := s.userService.GetUsers(context.Background())
+	result, err := s.user.GetUsers(context.Background())
 
 	s.NoError(err)
 

@@ -17,7 +17,7 @@ import (
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	userRepository := db.NewUserRepository(conn)
-	userService := usecase.NewUserService(userRepository)
-	resolverResolver := resolver.NewResolver(userService)
+	user := usecase.NewUser(userRepository)
+	resolverResolver := resolver.NewResolver(user)
 	return resolverResolver
 }
