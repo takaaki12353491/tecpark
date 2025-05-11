@@ -6,6 +6,6 @@ import (
 	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 )
 
-type UserRepository interface {
+type User interface {
 	GetUsers(ctx context.Context) ([]*model.User, error)
 }

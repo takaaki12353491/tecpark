@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	userRepository repository.UserRepository
+	userRepository repository.User
 }
 
-func NewUser(userRepository repository.UserRepository) *User {
+func NewUser(userRepository repository.User) *User {
 	return &User{
 		userRepository: userRepository,
 	}
