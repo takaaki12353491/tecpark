@@ -10,7 +10,7 @@ require (
 	github.com/oklog/ulid v1.3.1
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/stretchr/testify v1.10.0
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250510112121-e926f900f943
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250511174628-d00b6712a5e9
 	github.com/vektah/gqlparser/v2 v2.5.26
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.55.0
 	go.opentelemetry.io/otel/sdk v1.31.0
