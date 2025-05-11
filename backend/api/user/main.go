@@ -7,14 +7,13 @@ import (
 	"user/internal/infra/di"
 	"user/internal/interface/graphql"
 
-	"github.com/takaaki12353491/tecpark/backend/common/db"
-	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
-	"github.com/takaaki12353491/tecpark/backend/common/util"
-
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/takaaki12353491/tecpark/backend/common/db"
+	_ "github.com/takaaki12353491/tecpark/backend/common/log"
+	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	//nolint:staticcheck
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
@@ -29,8 +28,6 @@ func main() {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
 	}
 	time.Local = location
-
-	xlog.Init()
 
 	e := echo.New()
 
