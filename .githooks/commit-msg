@@ -1,0 +1,14 @@
+#!/bin/sh
+
+COMMIT_MSG_FILE="$1"
+
+PATTERN="^(feat|fix|chore|docs|ref|test)(\(.+\))?: .+"
+
+FIRST_LINE=$(head -n 1 "$COMMIT_MSG_FILE")
+
+if ! echo "$FIRST_LINE" | grep -Eq "$PATTERN"; then
+  echo "エラー: コミットメッセージは 'feat,fix,chore,docs,ref,test' のいずれかで始める必要があります。" >&2
+  exit 1
+fi
+
+exit 0

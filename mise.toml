@@ -6,6 +6,12 @@ node = "24.0.0"
 terraform = "1.11.4"
 terragrunt = "0.77.22"
 
+[tasks.setup]
+run = [
+  "chmod +x .githooks/commit-msg",
+  "git config core.hooksPath .githooks",
+]
+
 [tasks."docker:up"]
 run = "docker compose up -d"
   
