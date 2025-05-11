@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"mysql/schema"
 	"time"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 	"github.com/takaaki12353491/tecpark/backend/common/util"
 )
 
@@ -19,5 +19,5 @@ func main() {
 
 	db, _ := db.NewConnection()
 
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&schema.User{})
 }
