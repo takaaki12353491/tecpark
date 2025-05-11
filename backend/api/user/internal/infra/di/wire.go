@@ -5,7 +5,7 @@ package di
 import (
 	"user/internal/infra/db"
 	"user/internal/interface/graphql/resolver"
-	"user/internal/service"
+	"user/internal/usecase"
 
 	"github.com/google/wire"
 	"gorm.io/gorm"
@@ -13,7 +13,7 @@ import (
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	wire.Build(
-		service.WireSet,
+		usecase.WireSet,
 		db.WireSet,
 		resolver.NewResolver,
 	)

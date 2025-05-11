@@ -1,17 +1,17 @@
 package resolver
 
-import "user/internal/service"
+import "user/internal/usecase"
 
 // This file will not be regenerated automatically.
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	userService *service.UserService
+	userService *usecase.UserService
 }
 
 func NewResolver(
-	userService *service.UserService,
+	userService *usecase.UserService,
 ) *Resolver {
 	return &Resolver{
 		userService: userService,
