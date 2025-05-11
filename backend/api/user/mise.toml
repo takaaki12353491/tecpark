@@ -5,6 +5,10 @@ run = "go tool gqlgen"
 run = "go tool wire"
 dir = "internal/infra/di"
 
+[tasks.query]
+run = "go run main.go"
+dir = "cmd/query"
+
 [tasks.test]
 run = "go test -v -cover -coverprofile=coverage.out ./..."
 
