@@ -7,12 +7,14 @@ require (
 	github.com/google/go-cmp v0.6.0
 	github.com/google/wire v0.6.0
 	github.com/labstack/echo/v4 v4.12.0
+	github.com/oklog/ulid/v2 v2.1.0
 	github.com/stretchr/testify v1.10.0
 	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250510112121-e926f900f943
 	github.com/vektah/gqlparser/v2 v2.5.26
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.55.0
 	go.opentelemetry.io/otel/sdk v1.31.0
 	go.opentelemetry.io/otel/trace v1.31.0
+	gorm.io/gen v0.3.26
 	gorm.io/gorm v1.25.12
 )
 
@@ -55,7 +57,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.2.2 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
-	gorm.io/gen v0.3.26 // indirect
 	gorm.io/hints v1.1.2 // indirect
 	gorm.io/plugin/dbresolver v1.5.3 // indirect
 	gorm.io/plugin/opentelemetry v0.1.7 // indirect
