@@ -1,9 +1,10 @@
 {
-  "recommendations": [
-    "hashicorp.terraform",
-    "bradlc.vscode-tailwindcss",
-    "prisma.prisma",
-    "denoland.vscode-deno",
-    "biomejs.biome"
-  ]
+	"recommendations": [
+		"hashicorp.terraform",
+		"bradlc.vscode-tailwindcss",
+		"prisma.prisma",
+		"denoland.vscode-deno",
+		"biomejs.biome",
+		"hverlin.mise-vscode"
+	]
 }
