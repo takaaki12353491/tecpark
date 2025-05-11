@@ -21,7 +21,7 @@ type Config struct {
 	TZ       string
 }
 
-func (c *Config) getDSN() string {
+func (c *Config) DSN() string {
 	tzEncoded := url.QueryEscape(c.TZ)
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
 		c.User, c.Password, c.Host, c.Port, c.Database, tzEncoded)
@@ -53,7 +53,7 @@ func NewConnection(options ...Option) (*gorm.DB, error) {
 	for _, opt := range options {
 		opt(config)
 	}
-	dsn := config.getDSN()
+	dsn := config.DSN()
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: xlog.NewLogger(),
