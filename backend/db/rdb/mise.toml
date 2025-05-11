@@ -5,7 +5,7 @@ run = "atlas schema inspect --env local > schema/schema.hcl"
 run = "atlas schema apply --env local"
 
 [tasks."migrate:diff"]
-run = "atlas migrate diff {{.file}} --env gorm"
+run = "atlas migrate diff --env gorm"
 
 [tasks."migrate:apply"]
 run = "atlas migrate apply --env local"
