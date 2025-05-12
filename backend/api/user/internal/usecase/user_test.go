@@ -1,17 +1,17 @@
-package usecase
+package usecase_test
 
 import (
 	"context"
 	"testing"
 	"user/internal/domain/model"
-	"user/internal/infra/db"
-	"user/internal/infra/db/query"
+	mock_repository "user/internal/domain/repository/mock"
+	"user/internal/usecase"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/suite"
 	"github.com/takaaki12353491/tecpark/backend/common/value"
-	"gorm.io/gorm"
+	"go.uber.org/mock/gomock"
 )
 
 func TestUser(t *testing.T) {
@@ -20,40 +20,39 @@ func TestUser(t *testing.T) {
 
 type UserSuite struct {
 	suite.Suite
-	user *User
-	tx   *gorm.DB
+	ctrl           *gomock.Controller
+	userRepository *mock_repository.MockUser
+	userUseCase    *usecase.User
 }
 
-func (s *UserSuite) SetupTest() {
-	s.tx = testConn.Begin()
-	query.SetDefault(s.tx)
-	userRepository := db.NewUser(s.tx)
-	s.user = NewUser(userRepository)
+func (s *UserSuite) SetupSuite() {
+	s.ctrl = gomock.NewController(s.T())
+	s.userRepository = mock_repository.NewMockUser(s.ctrl)
+	s.userUseCase = usecase.NewUser(s.userRepository)
 }
 
 func (s *UserSuite) TearDownTest() {
-	s.tx.Rollback()
+	s.ctrl.Finish()
 }
 
 func (s *UserSuite) TestGetUsers() {
-	ctx := s.T().Context()
-
-	users := []*model.User{
+	wont := []*model.User{
 		{ID: value.NewULID(), Nickname: "Nickname1"},
 		{ID: value.NewULID(), Nickname: "Nickname2"},
 	}
-	err := query.User.WithContext(ctx).CreateInBatches(users, 100)
-	if err != nil {
-		s.T().Fatalf("failed to create users in batches: %v", err)
-	}
 
-	result, err := s.user.GetUsers(context.Background())
+	s.userRepository.EXPECT().
+		GetUsers(gomock.Any()).
+		Return(wont, nil).
+		Times(1)
+
+	got, err := s.userUseCase.GetUsers(context.Background())
 
 	s.NoError(err)
 
 	cmpopt := cmpopts.IgnoreFields(model.User{}, "CreatedAt", "UpdatedAt")
-	for k := range users {
-		if diff := cmp.Diff(users[k], result[k], cmpopt); diff != "" {
+	for k := range wont {
+		if diff := cmp.Diff(wont[k], got[k], cmpopt); diff != "" {
 			s.T().Errorf("user value is mismatch (-want +got):%s\n", diff)
 		}
 	}
