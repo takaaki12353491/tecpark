@@ -8,7 +8,6 @@ import (
 	"context"
 	"strings"
 
-	"github.com/oklog/ulid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
@@ -19,6 +18,8 @@ import (
 	"gorm.io/plugin/dbresolver"
 
 	"user/internal/domain/model"
+
+	"github.com/takaaki12353491/tecpark/backend/common/value"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {
@@ -29,7 +30,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 
 	tableName := _user.userDo.TableName()
 	_user.ALL = field.NewAsterisk(tableName)
-	_user.ID = field.NewField(tableName, "id")
+	_user.ID = field.NewString(tableName, "id")
 	_user.Nickname = field.NewString(tableName, "nickname")
 	_user.CreatedAt = field.NewTime(tableName, "created_at")
 	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -43,7 +44,7 @@ type user struct {
 	userDo userDo
 
 	ALL       field.Asterisk
-	ID        field.Field
+	ID        field.String
 	Nickname  field.String
 	CreatedAt field.Time
 	UpdatedAt field.Time
@@ -63,7 +64,7 @@ func (u user) As(alias string) *user {
 
 func (u *user) updateTableName(table string) *user {
 	u.ALL = field.NewAsterisk(table)
-	u.ID = field.NewField(table, "id")
+	u.ID = field.NewString(table, "id")
 	u.Nickname = field.NewString(table, "nickname")
 	u.CreatedAt = field.NewTime(table, "created_at")
 	u.UpdatedAt = field.NewTime(table, "updated_at")
@@ -111,7 +112,7 @@ func (u user) replaceDB(db *gorm.DB) user {
 type userDo struct{ gen.DO }
 
 // SELECT * FROM @@table WHERE id=@id
-func (u userDo) GetByID(id ulid.ULID) (result model.User, err error) {
+func (u userDo) GetByID(id value.ULID) (result model.User, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

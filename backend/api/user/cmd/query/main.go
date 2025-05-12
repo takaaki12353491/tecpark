@@ -3,13 +3,13 @@ package main
 import (
 	"user/internal/domain/model"
 
-	"github.com/oklog/ulid/v2"
+	"github.com/takaaki12353491/tecpark/backend/common/value"
 	"gorm.io/gen"
 )
 
 type Querier interface {
 	// SELECT * FROM @@table WHERE id=@id
-	GetByID(id ulid.ULID) (gen.T, error)
+	GetByID(id value.ULID) (gen.T, error)
 }
 
 func main() {
