@@ -36,14 +36,14 @@ func (s *UserSuite) TearDownTest() {
 }
 
 func (s *UserSuite) TestGetUsers() {
-	wont := []*model.User{
+	want := []*model.User{
 		{ID: value.NewULID(), Nickname: "Nickname1"},
 		{ID: value.NewULID(), Nickname: "Nickname2"},
 	}
 
 	s.userRepository.EXPECT().
 		GetUsers(gomock.Any()).
-		Return(wont, nil).
+		Return(want, nil).
 		Times(1)
 
 	got, err := s.userUseCase.GetUsers(context.Background())
@@ -51,8 +51,8 @@ func (s *UserSuite) TestGetUsers() {
 	s.Require().NoError(err)
 
 	cmpopt := cmpopts.IgnoreFields(model.User{}, "CreatedAt", "UpdatedAt")
-	for k := range wont {
-		if diff := cmp.Diff(wont[k], got[k], cmpopt); diff != "" {
+	for k := range want {
+		if diff := cmp.Diff(want[k], got[k], cmpopt); diff != "" {
 			s.T().Errorf("user value is mismatch (-want +got):%s\n", diff)
 		}
 	}
