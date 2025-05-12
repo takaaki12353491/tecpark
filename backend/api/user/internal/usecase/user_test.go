@@ -48,7 +48,7 @@ func (s *UserSuite) TestGetUsers() {
 
 	got, err := s.userUseCase.GetUsers(context.Background())
 
-	s.NoError(err)
+	s.Require().NoError(err)
 
 	cmpopt := cmpopts.IgnoreFields(model.User{}, "CreatedAt", "UpdatedAt")
 	for k := range wont {
