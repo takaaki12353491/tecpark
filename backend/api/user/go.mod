@@ -10,11 +10,12 @@ require (
 	github.com/oklog/ulid v1.3.1
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/stretchr/testify v1.10.0
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250511174628-d00b6712a5e9
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250512111748-60c718111ccd
 	github.com/vektah/gqlparser/v2 v2.5.26
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.55.0
 	go.opentelemetry.io/otel/sdk v1.31.0
 	go.opentelemetry.io/otel/trace v1.31.0
+	go.uber.org/mock v0.5.2
 	gorm.io/gen v0.3.26
 	gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver v1.5.3
@@ -66,4 +67,5 @@ require (
 tool (
 	github.com/99designs/gqlgen
 	github.com/google/wire/cmd/wire
+	go.uber.org/mock/mockgen
 )
