@@ -1,8 +1,11 @@
-module mysql
+module github.com/takaaki12353491/tecpark/db/rdb
 
 go 1.24.3
 
-require github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250510121036-b0d4799c6cda
+require (
+	github.com/oklog/ulid/v2 v2.1.0
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250512150015-729e62507f69
+)
 
 require (
 	ariga.io/atlas-go-sdk v0.6.8 // indirect
@@ -31,7 +34,6 @@ require (
 	github.com/microsoft/go-mssqldb v1.7.2 // indirect
 	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
@@ -39,22 +41,17 @@ require (
 	go.opentelemetry.io/otel/metric v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	golang.org/x/crypto v0.38.0 // indirect
-	golang.org/x/mod v0.24.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/datatypes v1.2.5 // indirect
 	gorm.io/driver/clickhouse v0.6.1 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
 	gorm.io/driver/postgres v1.5.11 // indirect
 	gorm.io/driver/sqlite v1.5.7 // indirect
 	gorm.io/driver/sqlserver v1.5.4 // indirect
-	gorm.io/gen v0.3.27 // indirect
 	gorm.io/gorm v1.26.1 // indirect
-	gorm.io/hints v1.1.2 // indirect
-	gorm.io/plugin/dbresolver v1.6.0 // indirect
 	gorm.io/plugin/opentelemetry v0.1.14 // indirect
 )
 

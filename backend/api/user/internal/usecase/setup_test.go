@@ -1,12 +1,12 @@
-package service
+package usecase_test
 
 import (
 	"log"
 	"os"
 	"testing"
+	"user/internal/domain/model"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
 
 	"gorm.io/gorm"
@@ -16,7 +16,7 @@ import (
 var testConn *gorm.DB
 
 func TestMain(m *testing.M) {
-	conn, _ := db.NewConnection(db.WithPort("33306"))
+	conn, _ := db.New(db.WithPort("33306"))
 	testConn = conn.Session(&gorm.Session{
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})

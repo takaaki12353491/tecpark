@@ -1,20 +1,21 @@
 package main
 
 import (
-	"github.com/takaaki12353491/tecpark/backend/common/domain/model"
+	"user/internal/domain/model"
 
+	"github.com/takaaki12353491/tecpark/backend/common/value"
 	"gorm.io/gen"
 )
 
 type Querier interface {
 	// SELECT * FROM @@table WHERE id=@id
-	GetByID(id model.ULID) (gen.T, error)
+	GetByID(id value.ULID) (gen.T, error)
 }
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "../query",
-		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
+		OutPath: "../../internal/infra/db/query",
+		Mode:    gen.WithDefaultQuery,
 	})
 
 	g.ApplyBasic(model.User{})

@@ -7,14 +7,13 @@ import (
 	"user/internal/infra/di"
 	"user/internal/interface/graphql"
 
-	"github.com/takaaki12353491/tecpark/backend/common/db"
-	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
-	"github.com/takaaki12353491/tecpark/backend/common/util"
-
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/takaaki12353491/tecpark/backend/common/db"
+	"github.com/takaaki12353491/tecpark/backend/common/env"
+	_ "github.com/takaaki12353491/tecpark/backend/common/log"
 
 	//nolint:staticcheck
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
@@ -23,14 +22,12 @@ import (
 )
 
 func main() {
-	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	tz := env.Get("TZ", "Asia/Tokyo")
 	location, err := time.LoadLocation(tz)
 	if err != nil {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
 	}
 	time.Local = location
-
-	xlog.Init()
 
 	e := echo.New()
 
@@ -53,8 +50,8 @@ func main() {
 		},
 	}))
 
-	conn, _ := db.NewConnection(db.WithTZ(tz))
-	resolver := di.InitializeResolver(conn)
+	db, _ := db.New(db.WithTZ(tz))
+	resolver := di.InitializeResolver(db)
 	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 
 	e.POST("/query", echo.WrapHandler(srv))

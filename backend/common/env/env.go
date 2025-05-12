@@ -1,8 +1,8 @@
-package util
+package env
 
 import "os"
 
-func GetEnv(key, defaultValue string) string {
+func Get(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/takaaki12353491/tecpark/backend/common/env"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
-	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,7 +21,7 @@ type Config struct {
 	TZ       string
 }
 
-func (c *Config) getDSN() string {
+func (c *Config) DSN() string {
 	tzEncoded := url.QueryEscape(c.TZ)
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
 		c.User, c.Password, c.Host, c.Port, c.Database, tzEncoded)
@@ -41,19 +41,19 @@ func WithTZ(tz string) Option {
 	}
 }
 
-func NewConnection(options ...Option) (*gorm.DB, error) {
+func New(options ...Option) (*gorm.DB, error) {
 	config := &Config{
-		User:     util.GetEnv("MYSQL_USER", "tecpark"),
-		Password: util.GetEnv("MYSQL_PASSWORD", "tecpark"),
-		Host:     util.GetEnv("MYSQL_HOST", "localhost"),
-		Port:     util.GetEnv("MYSQL_PORT", "3306"),
-		Database: util.GetEnv("MYSQL_DATABASE", "tecpark"),
-		TZ:       util.GetEnv("TZ", "Asia/Tokyo"),
+		User:     env.Get("MYSQL_USER", "tecpark"),
+		Password: env.Get("MYSQL_PASSWORD", "tecpark"),
+		Host:     env.Get("MYSQL_HOST", "localhost"),
+		Port:     env.Get("MYSQL_PORT", "3306"),
+		Database: env.Get("MYSQL_DATABASE", "tecpark"),
+		TZ:       env.Get("TZ", "Asia/Tokyo"),
 	}
 	for _, opt := range options {
 		opt(config)
 	}
-	dsn := config.getDSN()
+	dsn := config.DSN()
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: xlog.NewLogger(),

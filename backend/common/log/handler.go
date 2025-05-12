@@ -33,7 +33,7 @@ func (h *Handler) Handle(
 	return h.Handler.Handle(ctx, record)
 }
 
-func Init() {
+func init() {
 	log := slog.New(&Handler{
 		Handler: slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}),
 	})

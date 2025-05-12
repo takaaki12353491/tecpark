@@ -11,6 +11,9 @@ on:
   workflow_dispatch:
   workflow_call:
 
+env:
+  GOWORK: off
+
 defaults:
   run:
     working-directory: backend/api/user
@@ -66,14 +69,15 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
+      - name: Install tools
+        run: go install tool
+
       - name: Check go.mod or go.sum
         run: |
           go mod tidy
           git diff --exit-code go.mod go.sum
 
       - name: Check generated changes
-        env:
-          GOWORK: off
         run: |
           go generate ./...
           git diff --exit-code
