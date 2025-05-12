@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/oklog/ulid/v2"
 	"github.com/stretchr/testify/suite"
+	"github.com/takaaki12353491/tecpark/backend/common/value"
 	"gorm.io/gorm"
 )
 
@@ -39,8 +39,8 @@ func (s *UserSuite) TestGetUsers() {
 	ctx := s.T().Context()
 
 	users := []*model.User{
-		{ID: ulid.Make(), Nickname: "Nickname1"},
-		{ID: ulid.Make(), Nickname: "Nickname2"},
+		{ID: value.NewULID(), Nickname: "Nickname1"},
+		{ID: value.NewULID(), Nickname: "Nickname2"},
 	}
 	err := query.User.WithContext(ctx).CreateInBatches(users, 100)
 	if err != nil {
