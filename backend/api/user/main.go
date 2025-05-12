@@ -12,8 +12,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/takaaki12353491/tecpark/backend/common/db"
+	"github.com/takaaki12353491/tecpark/backend/common/env"
 	_ "github.com/takaaki12353491/tecpark/backend/common/log"
-	"github.com/takaaki12353491/tecpark/backend/common/util"
 
 	//nolint:staticcheck
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
@@ -22,7 +22,7 @@ import (
 )
 
 func main() {
-	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	tz := env.Get("TZ", "Asia/Tokyo")
 	location, err := time.LoadLocation(tz)
 	if err != nil {
 		panic(fmt.Sprintf("failed to load time location: %v", err))

@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
-	"github.com/takaaki12353491/tecpark/backend/common/util"
+	"github.com/takaaki12353491/tecpark/backend/common/env"
 	"github.com/takaaki12353491/tecpark/db/rdb/schema"
 )
 
 func main() {
-	tz := util.GetEnv("TZ", "Asia/Tokyo")
+	tz := env.Get("TZ", "Asia/Tokyo")
 	location, err := time.LoadLocation(tz)
 	if err != nil {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
