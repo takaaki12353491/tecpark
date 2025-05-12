@@ -24,15 +24,17 @@ import (
 func main() {
 	tz := env.Get("TZ", "Asia/Tokyo")
 	location, err := time.LoadLocation(tz)
+
 	if err != nil {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
 	}
 	time.Local = location
 
+	tp := sdktrace.NewTracerProvider()
+
 	e := echo.New()
 
 	e.Use(middleware.Recover())
-	tp := sdktrace.NewTracerProvider()
 	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(tp))) //先に設定しないとtraceIDなどがcontextに設定されない
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Skipper: func(c echo.Context) bool {
