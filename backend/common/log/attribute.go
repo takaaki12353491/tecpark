@@ -5,7 +5,8 @@ import "log/slog"
 type Key string
 
 const (
-	KeyError = Key("error")
+	KeyError      = Key("error")
+	KeyStackTrace = Key("stackTrace")
 )
 
 func (k Key) Attr(value any) slog.Attr {
