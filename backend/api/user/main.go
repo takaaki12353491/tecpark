@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"time"
 	"user/internal/infra/di"
 	"user/internal/interface/graphql"
@@ -59,7 +60,7 @@ func main() {
 	e.POST("/query", echo.WrapHandler(srv))
 	e.GET("/playground", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
 	e.GET("/health", func(c echo.Context) error {
-		return c.String(200, "OK")
+		return c.String(http.StatusOK, "OK")
 	})
 
 	port := "80"
