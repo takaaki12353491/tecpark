@@ -23,7 +23,7 @@ linters:
 
   exclusions:
     rules:
-      - path: main\.go
+      - path: cmd/
         linters:
           - exhaustruct
       - path: _test\.go
