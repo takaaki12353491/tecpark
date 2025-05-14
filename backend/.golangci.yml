@@ -20,3 +20,9 @@ linters:
         - Resolver$
     gosmopolitan:
       allow-time-local: true
+
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - exhaustruct
