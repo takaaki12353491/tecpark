@@ -6,6 +6,7 @@ import (
 	"user/internal/domain/repository"
 	"user/internal/infra/db/query"
 
+	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 	"gorm.io/gorm"
 )
 
@@ -18,5 +19,10 @@ func NewUser(conn *gorm.DB) repository.User {
 }
 
 func (db *User) GetUsers(ctx context.Context) ([]*model.User, error) {
-	return query.Use(db.Conn).WithContext(ctx).User.Find()
+	users, err := query.User.WithContext(ctx).Find()
+	if err != nil {
+		return []*model.User{}, xerrors.WithStack(err)
+	}
+
+	return users, nil
 }

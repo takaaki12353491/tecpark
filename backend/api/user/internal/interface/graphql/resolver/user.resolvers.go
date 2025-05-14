@@ -9,11 +9,18 @@ import (
 	"fmt"
 	model1 "user/internal/domain/model"
 	graphql1 "user/internal/interface/graphql"
+
+	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
-	return r.userUseCase.GetUsers(ctx)
+	users, err := r.userUseCase.GetUsers(ctx)
+	if err != nil {
+		return []*model1.User{}, xerrors.WithStack(err)
+	}
+
+	return users, nil
 }
 
 // ID is the resolver for the id field.
