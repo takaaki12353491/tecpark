@@ -2,3 +2,6 @@ version: "2"
 
 linters:
   default: all
+
+  disable:
+    - varnamelen #変数名は短い場合もあるため
