@@ -5,3 +5,9 @@ linters:
 
   disable:
     - varnamelen #変数名は短い場合もあるため
+
+  settings:
+    revive:
+      rules:
+        - name: package-comments
+          disabled: true #パッケージにコメントは必要ないため
