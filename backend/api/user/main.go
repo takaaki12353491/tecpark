@@ -23,11 +23,12 @@ import (
 
 func main() {
 	tz := env.Get("TZ", "Asia/Tokyo")
-	location, err := time.LoadLocation(tz)
 
+	location, err := time.LoadLocation(tz)
 	if err != nil {
 		panic(fmt.Sprintf("failed to load time location: %v", err))
 	}
+
 	time.Local = location
 
 	tp := sdktrace.NewTracerProvider()
