@@ -20,6 +20,16 @@ linters:
         - Resolver$
     gosmopolitan:
       allow-time-local: true
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: "math/rand$"
+              desc: use math/rand/v2
+            - pkg: "github.com/sirupsen/logrus"
+              desc: not allowed
+            - pkg: "github.com/pkg/errors"
+              desc: Should be replaced by standard lib errors package
 
   exclusions:
     rules:
