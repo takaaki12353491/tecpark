@@ -13,3 +13,8 @@ linters:
           disabled: true #パッケージにコメントは必要ないため
     paralleltest:
       ignore-missing: true #testifyではスイート単位で並列実行しない
+    ireturn:
+      allow:
+        - error
+        - .*/repository\.
+        - Resolver$
