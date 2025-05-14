@@ -3,7 +3,6 @@ package xlog
 import (
 	"context"
 	"log/slog"
-	"os"
 
 	xcontext "github.com/takaaki12353491/tecpark/backend/common/context"
 
@@ -31,12 +30,4 @@ func (h *Handler) Handle(
 		}
 	}
 	return h.Handler.Handle(ctx, record)
-}
-
-func init() {
-	log := slog.New(&Handler{
-		Handler: slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}),
-	})
-	slog.SetDefault(log)
-	slog.SetLogLoggerLevel(slog.LevelInfo)
 }
