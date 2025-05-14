@@ -18,3 +18,5 @@ linters:
         - error
         - .*/repository\.
         - Resolver$
+    gosmopolitan:
+      allow-time-local: true
