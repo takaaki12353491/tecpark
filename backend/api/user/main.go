@@ -47,6 +47,7 @@ func main() {
 			span := trace.SpanFromContext(c.Request().Context())
 			fmt.Fprintf(buf, "\"%s\":\"%s\"", "traceID", span.SpanContext().TraceID().String())
 			fmt.Fprintf(buf, ",\"%s\":\"%s\"", "spanID", span.SpanContext().SpanID().String())
+
 			return 0, nil
 		},
 	}))
