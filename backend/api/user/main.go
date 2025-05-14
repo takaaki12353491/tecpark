@@ -15,7 +15,6 @@ import (
 	"github.com/takaaki12353491/tecpark/backend/common/env"
 	_ "github.com/takaaki12353491/tecpark/backend/common/log"
 
-	//nolint:staticcheck
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
