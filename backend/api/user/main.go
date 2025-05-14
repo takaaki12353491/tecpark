@@ -36,7 +36,7 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
-	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(tp))) //先に設定しないとtraceIDなどがcontextに設定されない
+	e.Use(otelecho.Middleware("tecpark-user", otelecho.WithTracerProvider(tp))) // 先に設定しないとtraceIDなどがcontextに設定されない
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Skipper: func(c echo.Context) bool {
 			return c.Path() == "/metrics" || c.Path() == "/health"
