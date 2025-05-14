@@ -13,9 +13,9 @@ import (
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	wire.Build(
-		usecase.WireSet,
-		db.WireSet,
 		resolver.NewResolver,
+		usecase.NewUser,
+		db.NewUser,
 	)
 	return &resolver.Resolver{}
 }

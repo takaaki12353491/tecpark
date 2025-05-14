@@ -1,5 +1,44 @@
 version: "2"
 
 linters:
-  enable:
-    - misspell
+  default: all
+
+  disable:
+    - varnamelen #変数名は短い場合もあるため
+
+  settings:
+    revive:
+      rules:
+        - name: package-comments
+          disabled: true #パッケージにコメントは必要ないため
+    paralleltest:
+      ignore-missing: true #testifyではスイート単位で並列実行しない
+    ireturn:
+      allow:
+        - error
+        - .*/repository\.
+        - Resolver$
+    gosmopolitan:
+      allow-time-local: true
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: "math/rand$"
+              desc: use math/rand/v2
+            - pkg: "github.com/sirupsen/logrus"
+              desc: not allowed
+            - pkg: "github.com/pkg/errors"
+              desc: Should be replaced by standard lib errors package
+
+  exclusions:
+    rules:
+      - path: cmd/
+        linters:
+          - exhaustruct
+      - path: _test\.go
+        linters:
+          - exhaustruct
+      - path: export_test\.go
+        linters:
+          - gochecknoglobals

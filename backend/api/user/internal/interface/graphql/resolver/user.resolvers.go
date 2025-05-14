@@ -6,26 +6,23 @@ package resolver
 
 import (
 	"context"
-	"fmt"
 	model1 "user/internal/domain/model"
 	graphql1 "user/internal/interface/graphql"
+
+	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
-	return r.userUseCase.GetUsers(ctx)
-}
+	users, err := r.userUseCase.GetUsers(ctx)
+	if err != nil {
+		return []*model1.User{}, xerrors.WithStack(err)
+	}
 
-// ID is the resolver for the id field.
-func (r *userResolver) ID(ctx context.Context, obj *model1.User) (string, error) {
-	panic(fmt.Errorf("not implemented: ID - id"))
+	return users, nil
 }
 
 // Query returns graphql1.QueryResolver implementation.
 func (r *Resolver) Query() graphql1.QueryResolver { return &queryResolver{r} }
 
-// User returns graphql1.UserResolver implementation.
-func (r *Resolver) User() graphql1.UserResolver { return &userResolver{r} }
-
 type queryResolver struct{ *Resolver }
-type userResolver struct{ *Resolver }

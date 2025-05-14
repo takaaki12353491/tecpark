@@ -4,6 +4,8 @@ import (
 	"context"
 	"user/internal/domain/model"
 	"user/internal/domain/repository"
+
+	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
 
 type User struct {
@@ -19,7 +21,7 @@ func NewUser(userRepository repository.User) *User {
 func (uc *User) GetUsers(ctx context.Context) ([]*model.User, error) {
 	users, err := uc.userRepository.GetUsers(ctx)
 	if err != nil {
-		return nil, err
+		return nil, xerrors.WithStack(err)
 	}
 
 	return users, nil
