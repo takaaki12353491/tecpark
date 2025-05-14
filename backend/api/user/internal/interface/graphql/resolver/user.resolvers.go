@@ -6,7 +6,6 @@ package resolver
 
 import (
 	"context"
-	"fmt"
 	model1 "user/internal/domain/model"
 	graphql1 "user/internal/interface/graphql"
 
@@ -23,16 +22,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
 	return users, nil
 }
 
-// ID is the resolver for the id field.
-func (r *userResolver) ID(ctx context.Context, obj *model1.User) (string, error) {
-	panic(fmt.Errorf("not implemented: ID - id"))
-}
-
 // Query returns graphql1.QueryResolver implementation.
 func (r *Resolver) Query() graphql1.QueryResolver { return &queryResolver{r} }
 
-// User returns graphql1.UserResolver implementation.
-func (r *Resolver) User() graphql1.UserResolver { return &userResolver{r} }
-
 type queryResolver struct{ *Resolver }
-type userResolver struct{ *Resolver }
