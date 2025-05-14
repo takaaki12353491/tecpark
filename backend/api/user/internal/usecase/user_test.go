@@ -14,15 +14,15 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-func TestUser(t *testing.T) {
-	suite.Run(t, new(UserSuite))
-}
-
 type UserSuite struct {
 	suite.Suite
 	ctrl           *gomock.Controller
 	userRepository *mock_repository.MockUser
 	userUseCase    *usecase.User
+}
+
+func TestUser(t *testing.T) {
+	suite.Run(t, new(UserSuite))
 }
 
 func (s *UserSuite) SetupSuite() {
@@ -36,6 +36,8 @@ func (s *UserSuite) TearDownTest() {
 }
 
 func (s *UserSuite) TestGetUsers() {
+	s.T().Parallel()
+
 	want := []*model.User{
 		{ID: value.NewULID(), Nickname: "Nickname1"},
 		{ID: value.NewULID(), Nickname: "Nickname2"},
