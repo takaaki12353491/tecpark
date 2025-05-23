@@ -6,20 +6,14 @@ package resolver
 
 import (
 	"context"
-	model1 "user/internal/domain/model"
+	"fmt"
+	"user/internal/domain/model"
 	graphql1 "user/internal/interface/graphql"
-
-	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
 
 // Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
-	users, err := r.userIPort.GetUsers(ctx)
-	if err != nil {
-		return []*model1.User{}, xerrors.WithStack(err)
-	}
-
-	return users, nil
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented: Users - users"))
 }
 
 // Query returns graphql1.QueryResolver implementation.

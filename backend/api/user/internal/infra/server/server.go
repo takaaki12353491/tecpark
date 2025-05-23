@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"user/di"
-	"user/internal/interface/graphql"
+	"user/internal/adapter/graphql"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"

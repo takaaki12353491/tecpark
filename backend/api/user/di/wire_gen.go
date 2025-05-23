@@ -8,8 +8,8 @@ package di
 
 import (
 	"gorm.io/gorm"
+	"user/internal/adapter/graphql/resolver"
 	"user/internal/infra/db"
-	"user/internal/interface/graphql/resolver"
 	"user/internal/usecase/interactor"
 )
 

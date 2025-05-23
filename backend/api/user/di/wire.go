@@ -3,8 +3,8 @@
 package di
 
 import (
+	"user/internal/adapter/graphql/resolver"
 	"user/internal/infra/db"
-	"user/internal/interface/graphql/resolver"
 	"user/internal/usecase/interactor"
 
 	"github.com/google/wire"
