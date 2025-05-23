@@ -1,11 +1,11 @@
-package usecase_test
+package interactor_test
 
 import (
 	"context"
 	"testing"
 	"user/internal/domain/model"
 	mock_repository "user/internal/domain/repository/mock"
-	"user/internal/usecase"
+	"user/internal/usecase/interactor"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -18,7 +18,7 @@ type UserSuite struct {
 	suite.Suite
 	ctrl           *gomock.Controller
 	userRepository *mock_repository.MockUser
-	userUseCase    *usecase.User
+	userUseCase    *interactor.User
 }
 
 func TestUser(t *testing.T) {
@@ -28,7 +28,7 @@ func TestUser(t *testing.T) {
 func (s *UserSuite) SetupSuite() {
 	s.ctrl = gomock.NewController(s.T())
 	s.userRepository = mock_repository.NewMockUser(s.ctrl)
-	s.userUseCase = usecase.NewUser(s.userRepository)
+	s.userUseCase = interactor.NewUser(s.userRepository).(*interactor.User)
 }
 
 func (s *UserSuite) TearDownTest() {

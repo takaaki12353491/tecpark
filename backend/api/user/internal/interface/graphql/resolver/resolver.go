@@ -1,19 +1,21 @@
 package resolver
 
-import "user/internal/usecase"
+import (
+	iport "user/internal/usecase/input/port"
+)
 
 // This file will not be regenerated automatically.
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	userUseCase *usecase.User
+	userIPort iport.User
 }
 
 func NewResolver(
-	userUseCase *usecase.User,
+	userIPort iport.User,
 ) *Resolver {
 	return &Resolver{
-		userUseCase: userUseCase,
+		userIPort: userIPort,
 	}
 }

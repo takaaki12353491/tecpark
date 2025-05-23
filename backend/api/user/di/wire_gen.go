@@ -10,14 +10,14 @@ import (
 	"gorm.io/gorm"
 	"user/internal/infra/db"
 	"user/internal/interface/graphql/resolver"
-	"user/internal/usecase"
+	"user/internal/usecase/interactor"
 )
 
 // Injectors from wire.go:
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	user := db.NewUser(conn)
-	usecaseUser := usecase.NewUser(user)
-	resolverResolver := resolver.NewResolver(usecaseUser)
+	iportUser := interactor.NewUser(user)
+	resolverResolver := resolver.NewResolver(iportUser)
 	return resolverResolver
 }

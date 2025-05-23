@@ -9,7 +9,7 @@ run = "go tool gqlgen"
 
 [tasks.wire]
 run = "go tool wire"
-dir = "internal/infra/di"
+dir = "di"
 
 [tasks.query]
 run = "go run main.go"

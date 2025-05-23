@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
-	"user/internal/infra/di"
+	"user/di"
 	"user/internal/interface/graphql"
 
 	"github.com/99designs/gqlgen/graphql/handler"

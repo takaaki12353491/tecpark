@@ -14,7 +14,7 @@ import (
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
-	users, err := r.userUseCase.GetUsers(ctx)
+	users, err := r.userIPort.GetUsers(ctx)
 	if err != nil {
 		return []*model1.User{}, xerrors.WithStack(err)
 	}
