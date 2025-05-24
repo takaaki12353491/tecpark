@@ -1,4 +1,4 @@
-module github.com/takaaki12353491/tecpark/db/rdb
+module github.com/takaaki12353491/tecpark/backend/db/rdb
 
 go 1.24.3
 

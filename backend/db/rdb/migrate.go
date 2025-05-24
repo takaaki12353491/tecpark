@@ -6,7 +6,7 @@ import (
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
 	"github.com/takaaki12353491/tecpark/backend/common/env"
-	"github.com/takaaki12353491/tecpark/db/rdb/schema"
+	"github.com/takaaki12353491/tecpark/backend/db/rdb/schema"
 )
 
 func main() {
