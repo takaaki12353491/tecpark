@@ -4,11 +4,11 @@ import (
 	"context"
 	"user/internal/domain/model"
 	"user/internal/domain/repository"
-	"user/internal/infra/db/query"
 
 	"github.com/oklog/ulid/v2"
 	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 	dbmodel "github.com/takaaki12353491/tecpark/backend/db/rdb/model"
+	"github.com/takaaki12353491/tecpark/backend/db/rdb/query"
 	"gorm.io/gorm"
 )
 

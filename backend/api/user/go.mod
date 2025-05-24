@@ -10,15 +10,13 @@ require (
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/stretchr/testify v1.10.0
 	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250514233101-5b559f15d986
-	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250524073043-8b7e4f6a487a
+	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250524201232-d9b6bbced680
 	github.com/vektah/gqlparser/v2 v2.5.27
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.61.0
 	go.opentelemetry.io/otel/sdk v1.36.0
 	go.opentelemetry.io/otel/trace v1.36.0
 	go.uber.org/mock v0.5.2
-	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.26.1
-	gorm.io/plugin/dbresolver v1.6.0
 )
 
 require (
@@ -86,7 +84,9 @@ require (
 	gorm.io/driver/clickhouse v0.6.1 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
 	gorm.io/driver/postgres v1.5.11 // indirect
+	gorm.io/gen v0.3.27 // indirect
 	gorm.io/hints v1.1.2 // indirect
+	gorm.io/plugin/dbresolver v1.6.0 // indirect
 	gorm.io/plugin/opentelemetry v0.1.14 // indirect
 )
 
