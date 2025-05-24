@@ -2,10 +2,7 @@ module github.com/takaaki12353491/tecpark/db/rdb
 
 go 1.24.3
 
-require (
-	github.com/oklog/ulid/v2 v2.1.0
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250512150015-729e62507f69
-)
+require github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250512150015-729e62507f69
 
 require (
 	ariga.io/atlas-go-sdk v0.6.8 // indirect
