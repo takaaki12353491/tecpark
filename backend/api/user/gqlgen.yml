@@ -85,8 +85,7 @@ autobind:
 # your liking
 models:
   ULID:
-    model:
-      - github.com/takaaki12353491/tecpark/backend/common/value.ULID
+    model: user/schema.ULID
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int

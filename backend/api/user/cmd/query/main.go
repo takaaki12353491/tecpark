@@ -1,15 +1,13 @@
 package main
 
 import (
-	"user/internal/domain/model"
-
-	"github.com/takaaki12353491/tecpark/backend/common/value"
+	dbmodel "github.com/takaaki12353491/tecpark/backend/db/rdb/model"
 	"gorm.io/gen"
 )
 
 type Querier interface {
 	// SELECT * FROM @@table WHERE id=@id
-	GetByID(id value.ULID) (gen.T, error)
+	GetByID(id string) (gen.T, error)
 }
 
 func main() {
@@ -18,9 +16,9 @@ func main() {
 		Mode:    gen.WithDefaultQuery,
 	})
 
-	g.ApplyBasic(model.User{})
+	g.ApplyBasic(dbmodel.User{})
 
-	g.ApplyInterface(func(Querier) {}, model.User{})
+	g.ApplyInterface(func(Querier) {}, dbmodel.User{})
 
 	g.Execute()
 }
