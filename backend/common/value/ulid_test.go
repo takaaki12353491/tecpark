@@ -17,7 +17,5 @@ func TestULID(t *testing.T) {
 
 func (s *ULIDTestSuite) TestNewULID() {
 	ulid := value.NewULID()
-	s.Regexp(`^[0-9A-Z]{26}`, string(ulid))
-	s.Regexp(`^[0-7][0-9A-Z]{9}`, string(ulid)[:10])
-	s.Regexp(`[0-9A-Z]{16}$`, string(ulid)[10:])
+	s.Regexp(`^[0-7][0-9A-Z]{9}[0-9A-Z]{16}$`, ulid.String())
 }

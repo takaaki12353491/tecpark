@@ -1,9 +1,10 @@
-package usecase
+package interactor
 
 import (
 	"context"
 	"user/internal/domain/model"
 	"user/internal/domain/repository"
+	iport "user/internal/usecase/input/port"
 
 	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
@@ -12,7 +13,7 @@ type User struct {
 	userRepository repository.User
 }
 
-func NewUser(userRepository repository.User) *User {
+func NewUser(userRepository repository.User) iport.User {
 	return &User{
 		userRepository: userRepository,
 	}

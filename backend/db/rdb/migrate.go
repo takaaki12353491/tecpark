@@ -6,7 +6,7 @@ import (
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
 	"github.com/takaaki12353491/tecpark/backend/common/env"
-	"github.com/takaaki12353491/tecpark/db/rdb/schema"
+	dbmodel "github.com/takaaki12353491/tecpark/backend/db/rdb/model"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	}
 	time.Local = location
 
-	db, _ := db.New()
+	db := db.New()
 
-	db.AutoMigrate(&schema.User{})
+	db.AutoMigrate(&dbmodel.User{})
 }
