@@ -13,11 +13,11 @@ import (
 )
 
 type User struct {
-	Conn *gorm.DB
+	db *gorm.DB
 }
 
-func NewUser(conn *gorm.DB) repository.User {
-	return &User{conn}
+func NewUser(db *gorm.DB) repository.User {
+	return &User{db}
 }
 
 func (db *User) GetUsers(ctx context.Context) ([]*model.User, error) {

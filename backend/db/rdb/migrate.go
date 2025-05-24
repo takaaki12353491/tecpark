@@ -17,7 +17,7 @@ func main() {
 	}
 	time.Local = location
 
-	db, _ := db.New()
+	db := db.New()
 
 	db.AutoMigrate(&dbmodel.User{})
 }
