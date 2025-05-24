@@ -6,13 +6,14 @@ require (
 	github.com/99designs/gqlgen v0.17.73
 	github.com/google/go-cmp v0.7.0
 	github.com/google/wire v0.6.0
-	github.com/labstack/echo/v4 v4.13.3
-	github.com/oklog/ulid/v2 v2.1.0
+	github.com/labstack/echo/v4 v4.13.4
+	github.com/oklog/ulid/v2 v2.1.1
 	github.com/stretchr/testify v1.10.0
 	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250514233101-5b559f15d986
+	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250524055920-e8af755d32ef
 	github.com/vektah/gqlparser/v2 v2.5.27
-	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.60.0
-	go.opentelemetry.io/otel/sdk v1.35.0
+	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.61.0
+	go.opentelemetry.io/otel/sdk v1.36.0
 	go.opentelemetry.io/otel/trace v1.36.0
 	go.uber.org/mock v0.5.2
 	gorm.io/gen v0.3.27
@@ -65,7 +66,6 @@ require (
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
-	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250524055920-e8af755d32ef // indirect
 	github.com/urfave/cli/v2 v2.27.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
