@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/oklog/ulid/v2"
 	"github.com/stretchr/testify/suite"
-	"github.com/takaaki12353491/tecpark/backend/common/value"
 	"go.uber.org/mock/gomock"
 )
 
@@ -39,8 +39,8 @@ func (s *UserSuite) TestGetUsers() {
 	s.T().Parallel()
 
 	want := []*model.User{
-		{ID: value.NewULID(), Nickname: "Nickname1"},
-		{ID: value.NewULID(), Nickname: "Nickname2"},
+		{ID: ulid.Make(), Nickname: "Nickname1"},
+		{ID: ulid.Make(), Nickname: "Nickname2"},
 	}
 
 	s.userRepository.EXPECT().
