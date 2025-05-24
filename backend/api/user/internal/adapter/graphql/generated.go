@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"user/graphql/scalar"
 	"user/internal/domain/model"
-	"user/schema"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -190,9 +190,9 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../../../schema/scalar.graphql", Input: `scalar ULID
+	{Name: "../../../graphql/schema/scalar.graphql", Input: `scalar ULID
 `, BuiltIn: false},
-	{Name: "../../../schema/user.graphql", Input: `type User {
+	{Name: "../../../graphql/schema/user.graphql", Input: `type User {
   id: ULID!
   nickname: String!
 }
@@ -3043,13 +3043,13 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 }
 
 func (ec *executionContext) unmarshalNULID2githubᚗcomᚋoklogᚋulidᚋv2ᚐULID(ctx context.Context, v any) (ulid.ULID, error) {
-	res, err := schema.UnmarshalULID(v)
+	res, err := scalar.UnmarshalULID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNULID2githubᚗcomᚋoklogᚋulidᚋv2ᚐULID(ctx context.Context, sel ast.SelectionSet, v ulid.ULID) graphql.Marshaler {
 	_ = sel
-	res := schema.MarshalULID(v)
+	res := scalar.MarshalULID(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")

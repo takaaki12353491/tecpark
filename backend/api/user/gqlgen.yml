@@ -1,6 +1,6 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - schema/*.graphql
+  - graphql/schema/*.graphql
 
 # Where should the generated server code go?
 exec:
@@ -85,7 +85,7 @@ autobind:
 # your liking
 models:
   ULID:
-    model: user/schema.ULID
+    model: user/graphql/scalar.ULID
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int

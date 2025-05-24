@@ -1,4 +1,4 @@
-package schema
+package scalar
 
 import (
 	"fmt"
