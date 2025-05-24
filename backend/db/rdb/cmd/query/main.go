@@ -12,7 +12,7 @@ type Querier interface {
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "../../internal/infra/db/query",
+		OutPath: "../../query",
 		Mode:    gen.WithDefaultQuery,
 	})
 
