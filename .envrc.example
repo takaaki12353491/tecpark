@@ -10,3 +10,11 @@ export MYSQL_HOST=localhost
 export MYSQL_PORT=23306
 export MYSQL_DATABASE=tecpark
 export DSN="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}"
+
+# PostgreSQL
+export POSTGRES_USER=tecpark
+export POSTGRES_PASSWORD=tecpark
+export POSTGRES_HOST=localhost
+export POSTGRES_PORT=25432
+export POSTGRES_DB=tecpark
+export POSTGRES_DSN="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
