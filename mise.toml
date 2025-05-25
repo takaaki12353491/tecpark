@@ -10,6 +10,7 @@ terragrunt = "0.77.22"
 run = [
   "chmod +x .githooks/commit-msg",
   "git config core.hooksPath .githooks",
+  "brew install libpq"
 ]
 
 [tasks."docker:up"]
@@ -20,3 +21,6 @@ run = "docker compose down --volumes --rmi local"
 
 [tasks."mysql:login"]
 run = "docker compose exec mysql mysql -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -h 127.0.0.1 ${MYSQL_DATABASE}"
+
+[tasks."postgres:login"]
+run = "docker compose exec postgres psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}"

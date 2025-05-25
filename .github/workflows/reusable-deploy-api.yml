@@ -13,7 +13,7 @@ on:
 
 jobs:
   check:
-    uses: ./.github/workflows/check-api-user.yml
+    uses: ./.github/workflows/check-backend-api-user.yml
 
   deploy:
     needs: check

@@ -9,8 +9,8 @@ require (
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/stretchr/testify v1.10.0
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250525012414-d46881276219
-	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250524201232-d9b6bbced680
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250525170421-9ddb5e86ba23
+	github.com/takaaki12353491/tecpark/backend/db/rdb v0.0.0-20250525012414-d46881276219
 	github.com/vektah/gqlparser/v2 v2.5.27
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.61.0
 	go.opentelemetry.io/otel/sdk v1.36.0

@@ -17,7 +17,7 @@ func main() {
 	}
 	time.Local = location
 
-	db := db.New()
+	db := db.NewPostgres()
 
 	db.AutoMigrate(&dbmodel.User{})
 }
