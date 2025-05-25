@@ -3,7 +3,7 @@ module github.com/takaaki12353491/tecpark/backend/db/rdb
 go 1.24.3
 
 require (
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250514233101-5b559f15d986
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250525012414-d46881276219
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.26.1
 	gorm.io/plugin/dbresolver v1.6.0
