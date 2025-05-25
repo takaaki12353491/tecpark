@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 	"testing"
-	"user/internal/domain/model"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	dbmodel "github.com/takaaki12353491/tecpark/backend/db/rdb/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -21,7 +21,7 @@ func TestMain(m *testing.M) {
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})
 
-	err := testConn.AutoMigrate(&model.User{})
+	err := testConn.AutoMigrate(&dbmodel.User{})
 	if err != nil {
 		log.Fatalf("failed to auto-migrate: %v", err)
 	}
