@@ -3,7 +3,7 @@ module github.com/takaaki12353491/tecpark/backend/db/rdb
 go 1.24.3
 
 require (
-	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250525012414-d46881276219
+	github.com/takaaki12353491/tecpark/backend/common v0.0.0-20250525170421-9ddb5e86ba23
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.26.1
 	gorm.io/plugin/dbresolver v1.6.0
@@ -56,15 +56,15 @@ require (
 	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
-	golang.org/x/tools v0.31.0 // indirect
+	golang.org/x/tools v0.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/datatypes v1.2.4 // indirect
+	gorm.io/datatypes v1.2.5 // indirect
 	gorm.io/driver/clickhouse v0.6.1 // indirect
 	gorm.io/driver/mysql v1.5.7 // indirect
 	gorm.io/driver/postgres v1.5.11 // indirect
 	gorm.io/driver/sqlite v1.5.7 // indirect
 	gorm.io/driver/sqlserver v1.5.4 // indirect
-	gorm.io/hints v1.1.0 // indirect
+	gorm.io/hints v1.1.2 // indirect
 	gorm.io/plugin/opentelemetry v0.1.14 // indirect
 )
 
