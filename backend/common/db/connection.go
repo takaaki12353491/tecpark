@@ -6,6 +6,7 @@ import (
 
 	"github.com/takaaki12353491/tecpark/backend/common/env"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	"github.com/takaaki12353491/tecpark/backend/db/rdb/query"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -66,6 +67,8 @@ func New(options ...Option) *gorm.DB {
 	if err != nil {
 		panic(fmt.Sprintf("failed to setup tracing plugin: %v", err))
 	}
+
+	query.SetDefault(db)
 
 	return db
 }
