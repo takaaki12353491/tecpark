@@ -13,7 +13,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:
-      - service
+      - tecpark
     healthcheck:
       test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 5s
@@ -35,7 +35,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - service
+      - tecpark
 
   user:
     build:
@@ -55,10 +55,10 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - service
+      - tecpark
 
 volumes:
   postgres_data:
 
 networks:
-  service:
+  tecpark:
