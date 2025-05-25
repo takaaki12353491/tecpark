@@ -30,7 +30,7 @@ services:
     volumes:
       - ./backend/db/rdb/my.cnf:/etc/mysql/my.cnf
     ports:
-      - 33306:3306
+      - "${MYSQL_PORT}:3306"
     healthcheck:
       test: mysqladmin ping -proot
 
@@ -45,7 +45,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "${POSTGRES_PORT}:5432"
     networks:
       - service
     healthcheck:
