@@ -1,0 +1,54 @@
+name: Check api user
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - backend/common/**
+      - backend/api/user/**
+      - .github/workflows/check-backend-api-user.yml
+  workflow_dispatch:
+  workflow_call:
+
+env:
+  GOWORK: off
+
+defaults:
+  run:
+    working-directory: backend/api/user
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: reviewdog/action-golangci-lint@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workdir: backend/api/user
+          go_version_file: backend/api/user/go.mod
+          level: error
+          reporter: github-pr-review
+          filter_mode: nofilter
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/api/user/go.mod
+          cache-dependency-path: |
+            backend/common/go.sum
+            backend/api/user/go.sum
+      - run: go mod download
+      - run: go install tool
+      - run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+      - run: |
+          go generate ./...
+          git diff --exit-code
+      - run: go build
+      - run: go test ./... -v
