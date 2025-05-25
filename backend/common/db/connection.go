@@ -6,6 +6,7 @@ import (
 
 	"github.com/takaaki12353491/tecpark/backend/common/env"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	"github.com/takaaki12353491/tecpark/backend/db/rdb/query"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -41,7 +42,7 @@ func WithTZ(tz string) Option {
 	}
 }
 
-func New(options ...Option) (*gorm.DB, error) {
+func New(options ...Option) *gorm.DB {
 	config := &Config{
 		User:     env.Get("MYSQL_USER", "tecpark"),
 		Password: env.Get("MYSQL_PASSWORD", "tecpark"),
@@ -67,5 +68,7 @@ func New(options ...Option) (*gorm.DB, error) {
 		panic(fmt.Sprintf("failed to setup tracing plugin: %v", err))
 	}
 
-	return db, nil
+	query.SetDefault(db)
+
+	return db
 }

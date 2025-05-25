@@ -5,8 +5,8 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
-	"user/internal/infra/di"
-	"user/internal/interface/graphql"
+	"user/di"
+	"user/internal/adapter/graphql"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -44,7 +44,7 @@ func Run() {
 		},
 	}))
 
-	db, _ := db.New()
+	db := db.New()
 	resolver := di.InitializeResolver(db)
 	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 

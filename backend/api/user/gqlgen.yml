@@ -1,10 +1,10 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - schema/*.graphql
+  - internal/adapter/graphql/schema/*.graphql
 
 # Where should the generated server code go?
 exec:
-  filename: internal/interface/graphql/generated.go
+  filename: internal/adapter/graphql/generated.go
   package: graphql
 
 # Uncomment to enable federation
@@ -17,13 +17,13 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: internal/interface/graphql/gqlmodel/models_gen.go
+  filename: internal/adapter/graphql/gqlmodel/models_gen.go
   package: gqlmodel
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: internal/interface/graphql/resolver
+  dir: internal/adapter/graphql/resolver
   package: resolver
   filename_template: "{name}.resolvers.go"
   # Optional: turn on to not generate template comments above resolvers
@@ -85,8 +85,7 @@ autobind:
 # your liking
 models:
   ULID:
-    model:
-      - github.com/takaaki12353491/tecpark/backend/common/value.ULID
+    model: user/internal/adapter/graphql/scalar.ULID
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int

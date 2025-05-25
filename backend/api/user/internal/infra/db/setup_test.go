@@ -4,10 +4,10 @@ import (
 	"log"
 	"os"
 	"testing"
-	"user/internal/domain/model"
 
 	"github.com/takaaki12353491/tecpark/backend/common/db"
 	xlog "github.com/takaaki12353491/tecpark/backend/common/log"
+	dbmodel "github.com/takaaki12353491/tecpark/backend/db/rdb/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -16,12 +16,12 @@ import (
 func TestMain(m *testing.M) {
 	var testConn *gorm.DB
 
-	conn, _ := db.New(db.WithPort("33306"))
+	conn := db.New(db.WithPort("33306"))
 	testConn = conn.Session(&gorm.Session{
 		Logger: xlog.NewLogger(xlog.WithLogLevel(logger.Error)),
 	})
 
-	err := testConn.AutoMigrate(&model.User{})
+	err := testConn.AutoMigrate(&dbmodel.User{})
 	if err != nil {
 		log.Fatalf("failed to auto-migrate: %v", err)
 	}

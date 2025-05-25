@@ -9,3 +9,7 @@ run = "atlas migrate diff --env gorm"
 
 [tasks."migrate:apply"]
 run = "atlas migrate apply --env local"
+
+[tasks.query]
+run = "go run main.go"
+dir = "cmd/query"

@@ -6,15 +6,15 @@ package resolver
 
 import (
 	"context"
+	graphql2 "user/internal/adapter/graphql"
 	model1 "user/internal/domain/model"
-	graphql1 "user/internal/interface/graphql"
 
 	xerrors "github.com/takaaki12353491/tecpark/backend/common/errors"
 )
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
-	users, err := r.userUseCase.GetUsers(ctx)
+	users, err := r.userIPort.GetUsers(ctx)
 	if err != nil {
 		return []*model1.User{}, xerrors.WithStack(err)
 	}
@@ -22,7 +22,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model1.User, error) {
 	return users, nil
 }
 
-// Query returns graphql1.QueryResolver implementation.
-func (r *Resolver) Query() graphql1.QueryResolver { return &queryResolver{r} }
+// Query returns graphql2.QueryResolver implementation.
+func (r *Resolver) Query() graphql2.QueryResolver { return &queryResolver{r} }
 
 type queryResolver struct{ *Resolver }

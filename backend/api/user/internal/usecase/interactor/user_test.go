@@ -1,24 +1,25 @@
-package usecase_test
+package interactor_test
 
 import (
 	"context"
 	"testing"
 	"user/internal/domain/model"
 	mock_repository "user/internal/domain/repository/mock"
-	"user/internal/usecase"
+	"user/internal/usecase/interactor"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/oklog/ulid/v2"
 	"github.com/stretchr/testify/suite"
-	"github.com/takaaki12353491/tecpark/backend/common/value"
 	"go.uber.org/mock/gomock"
 )
 
 type UserSuite struct {
 	suite.Suite
 	ctrl           *gomock.Controller
+	tx             *mock_repository.MockTransaction
 	userRepository *mock_repository.MockUser
-	userUseCase    *usecase.User
+	userUseCase    *interactor.User
 }
 
 func TestUser(t *testing.T) {
@@ -27,8 +28,9 @@ func TestUser(t *testing.T) {
 
 func (s *UserSuite) SetupSuite() {
 	s.ctrl = gomock.NewController(s.T())
+	s.tx = mock_repository.NewMockTransaction(s.ctrl)
 	s.userRepository = mock_repository.NewMockUser(s.ctrl)
-	s.userUseCase = usecase.NewUser(s.userRepository)
+	s.userUseCase = interactor.NewUser(s.tx, s.userRepository).(*interactor.User)
 }
 
 func (s *UserSuite) TearDownTest() {
@@ -39,8 +41,8 @@ func (s *UserSuite) TestGetUsers() {
 	s.T().Parallel()
 
 	want := []*model.User{
-		{ID: value.NewULID(), Nickname: "Nickname1"},
-		{ID: value.NewULID(), Nickname: "Nickname2"},
+		{ID: ulid.Make(), Nickname: "Nickname1"},
+		{ID: ulid.Make(), Nickname: "Nickname2"},
 	}
 
 	s.userRepository.EXPECT().

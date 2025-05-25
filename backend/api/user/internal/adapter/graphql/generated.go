@@ -5,16 +5,18 @@ package graphql
 import (
 	"bytes"
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"user/internal/adapter/graphql/scalar"
 	"user/internal/domain/model"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/takaaki12353491/tecpark/backend/common/value"
+	ulid "github.com/oklog/ulid/v2"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -188,18 +190,20 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(ec.Schema(), ec.Schema().Types[name]), nil
 }
 
-var sources = []*ast.Source{
-	{Name: "../../../schema/scalar.graphql", Input: `scalar ULID
-`, BuiltIn: false},
-	{Name: "../../../schema/user.graphql", Input: `type User {
-  id: ULID!
-  nickname: String!
+//go:embed "schema/scalar.graphql" "schema/user.graphql"
+var sourcesFS embed.FS
+
+func sourceData(filename string) string {
+	data, err := sourcesFS.ReadFile(filename)
+	if err != nil {
+		panic(fmt.Sprintf("codegen problem: %s not available", filename))
+	}
+	return string(data)
 }
 
-extend type Query {
-  users: [User!]!
-}
-`, BuiltIn: false},
+var sources = []*ast.Source{
+	{Name: "schema/scalar.graphql", Input: sourceData("schema/scalar.graphql"), BuiltIn: false},
+	{Name: "schema/user.graphql", Input: sourceData("schema/user.graphql"), BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -537,9 +541,9 @@ func (ec *executionContext) _User_id(ctx context.Context, field graphql.Collecte
 		}
 		return graphql.Null
 	}
-	res := resTmp.(value.ULID)
+	res := resTmp.(ulid.ULID)
 	fc.Result = res
-	return ec.marshalNULID2githubᚗcomᚋtakaaki12353491ᚋtecparkᚋbackendᚋcommonᚋvalueᚐULID(ctx, field.Selections, res)
+	return ec.marshalNULID2githubᚗcomᚋoklogᚋulidᚋv2ᚐULID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3041,15 +3045,14 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) unmarshalNULID2githubᚗcomᚋtakaaki12353491ᚋtecparkᚋbackendᚋcommonᚋvalueᚐULID(ctx context.Context, v any) (value.ULID, error) {
-	tmp, err := graphql.UnmarshalString(v)
-	res := value.ULID(tmp)
+func (ec *executionContext) unmarshalNULID2githubᚗcomᚋoklogᚋulidᚋv2ᚐULID(ctx context.Context, v any) (ulid.ULID, error) {
+	res, err := scalar.UnmarshalULID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNULID2githubᚗcomᚋtakaaki12353491ᚋtecparkᚋbackendᚋcommonᚋvalueᚐULID(ctx context.Context, sel ast.SelectionSet, v value.ULID) graphql.Marshaler {
+func (ec *executionContext) marshalNULID2githubᚗcomᚋoklogᚋulidᚋv2ᚐULID(ctx context.Context, sel ast.SelectionSet, v ulid.ULID) graphql.Marshaler {
 	_ = sel
-	res := graphql.MarshalString(string(v))
+	res := scalar.MarshalULID(v)
 	if res == graphql.Null {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
