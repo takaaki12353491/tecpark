@@ -5,12 +5,13 @@ package graphql
 import (
 	"bytes"
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"strconv"
 	"sync"
 	"sync/atomic"
-	"user/graphql/scalar"
+	"user/internal/adapter/graphql/scalar"
 	"user/internal/domain/model"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -189,18 +190,20 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(ec.Schema(), ec.Schema().Types[name]), nil
 }
 
-var sources = []*ast.Source{
-	{Name: "../../../graphql/schema/scalar.graphql", Input: `scalar ULID
-`, BuiltIn: false},
-	{Name: "../../../graphql/schema/user.graphql", Input: `type User {
-  id: ULID!
-  nickname: String!
+//go:embed "schema/scalar.graphql" "schema/user.graphql"
+var sourcesFS embed.FS
+
+func sourceData(filename string) string {
+	data, err := sourcesFS.ReadFile(filename)
+	if err != nil {
+		panic(fmt.Sprintf("codegen problem: %s not available", filename))
+	}
+	return string(data)
 }
 
-extend type Query {
-  users: [User!]!
-}
-`, BuiltIn: false},
+var sources = []*ast.Source{
+	{Name: "schema/scalar.graphql", Input: sourceData("schema/scalar.graphql"), BuiltIn: false},
+	{Name: "schema/user.graphql", Input: sourceData("schema/user.graphql"), BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
