@@ -2,8 +2,8 @@ FROM golang:1.24-alpine
 
 COPY . /app
 
-WORKDIR /app
+WORKDIR /app/cmd/migrate
 
 RUN go mod download
 
-CMD [ "go", "run", "migrate.go" ]
+CMD [ "go", "run", "main.go" ]
