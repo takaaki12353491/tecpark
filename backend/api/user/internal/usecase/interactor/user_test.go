@@ -17,6 +17,7 @@ import (
 type UserSuite struct {
 	suite.Suite
 	ctrl           *gomock.Controller
+	tx             *mock_repository.MockTransaction
 	userRepository *mock_repository.MockUser
 	userUseCase    *interactor.User
 }
@@ -27,8 +28,9 @@ func TestUser(t *testing.T) {
 
 func (s *UserSuite) SetupSuite() {
 	s.ctrl = gomock.NewController(s.T())
+	s.tx = mock_repository.NewMockTransaction(s.ctrl)
 	s.userRepository = mock_repository.NewMockUser(s.ctrl)
-	s.userUseCase = interactor.NewUser(s.userRepository).(*interactor.User)
+	s.userUseCase = interactor.NewUser(s.tx, s.userRepository).(*interactor.User)
 }
 
 func (s *UserSuite) TearDownTest() {

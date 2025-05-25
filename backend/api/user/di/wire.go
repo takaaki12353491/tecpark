@@ -15,6 +15,7 @@ func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
 	wire.Build(
 		resolver.NewResolver,
 		interactor.NewUser,
+		db.NewTransaction,
 		db.NewUser,
 	)
 	return &resolver.Resolver{}

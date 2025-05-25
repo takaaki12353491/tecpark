@@ -10,11 +10,13 @@ import (
 )
 
 type User struct {
+	tx             repository.Transaction
 	userRepository repository.User
 }
 
-func NewUser(userRepository repository.User) iport.User {
+func NewUser(tx repository.Transaction, userRepository repository.User) iport.User {
 	return &User{
+		tx:             tx,
 		userRepository: userRepository,
 	}
 }

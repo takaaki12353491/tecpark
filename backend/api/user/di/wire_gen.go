@@ -16,8 +16,9 @@ import (
 // Injectors from wire.go:
 
 func InitializeResolver(conn *gorm.DB) *resolver.Resolver {
+	transaction := db.NewTransaction(conn)
 	user := db.NewUser(conn)
-	iportUser := interactor.NewUser(user)
+	iportUser := interactor.NewUser(transaction, user)
 	resolverResolver := resolver.NewResolver(iportUser)
 	return resolverResolver
 }
