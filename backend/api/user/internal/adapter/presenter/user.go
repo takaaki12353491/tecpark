@@ -12,7 +12,7 @@ func NewUser() *User {
 	return &User{}
 }
 
-func (u *User) Present(users []*model.User) ([]*odata.User, error) {
+func (u *User) Present(users []*model.User) []*odata.User {
 	odataUsers := make([]*odata.User, 0, len(users))
 	for _, user := range users {
 		odataUsers = append(odataUsers, &odata.User{
@@ -23,5 +23,5 @@ func (u *User) Present(users []*model.User) ([]*odata.User, error) {
 		})
 	}
 
-	return odataUsers, nil
+	return odataUsers
 }
