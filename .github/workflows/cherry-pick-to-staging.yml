@@ -62,6 +62,7 @@ jobs:
             echo "Cherry-pick successful"
             echo "success=true" >> $GITHUB_OUTPUT
             echo "is_empty=false" >> $GITHUB_OUTPUT
+            echo "has_conflicts=false" >> $GITHUB_OUTPUT
           else
             EXIT_CODE=$?
             
@@ -70,11 +71,13 @@ jobs:
               echo "Cherry-pick resulted in empty commit (changes already in staging)"
               echo "success=true" >> $GITHUB_OUTPUT
               echo "is_empty=true" >> $GITHUB_OUTPUT
+              echo "has_conflicts=false" >> $GITHUB_OUTPUT
               git cherry-pick --skip
             else
               echo "Cherry-pick failed with conflicts"
-              echo "success=false" >> $GITHUB_OUTPUT
+              echo "success=true" >> $GITHUB_OUTPUT
               echo "is_empty=false" >> $GITHUB_OUTPUT
+              echo "has_conflicts=true" >> $GITHUB_OUTPUT
               
               # コンフリクトが発生した場合の情報を記録
               git status > /tmp/conflict-status.txt
@@ -82,9 +85,12 @@ jobs:
               cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
               
-              # チェリーピックを中止
-              git cherry-pick --abort
-              exit 1
+              # コンフリクトファイルをそのままコミット
+              git add -A
+              git -c core.editor=true cherry-pick --continue || true
+              
+              # コミットメッセージを設定してコミット
+              git commit -m "Cherry-pick with conflicts from ${MERGE_COMMIT}" --no-edit --allow-empty || true
             fi
           fi
 
@@ -117,12 +123,35 @@ jobs:
           PR_NUMBER="${{ github.event.pull_request.number }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
           MERGE_COMMIT_SHA="${{ steps.get-merge-commit.outputs.merge_commit_sha }}"
+          HAS_CONFLICTS="${{ steps.cherry-pick.outputs.has_conflicts }}"
+
+          # コンフリクト警告の作成
+          CONFLICT_WARNING=""
+          if [ "${HAS_CONFLICTS}" = "true" ]; then
+            CONFLICT_WARNING=$(cat <<'CONFLICT_EOF'
+
+          ## ⚠️ コンフリクトが発生しました
+
+          このPRにはコンフリクトが含まれています。以下のファイルを確認して、手動で解決してください。
+
+          <details>
+          <summary>コンフリクト情報</summary>
+
+          \`\`\`
+          ${{ steps.cherry-pick.outputs.conflict_info }}
+          \`\`\`
+          </details>
+
+          CONFLICT_EOF
+          )
+          fi
 
           # PRの本文を作成
           PR_BODY=$(cat <<EOF
           ## 🍒 Cherry-pick from main to staging
 
           このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
+          ${CONFLICT_WARNING}
 
           ### 元のPR情報
           - **元のPR**: #${PR_NUMBER}
@@ -160,47 +189,18 @@ jobs:
           script: |
             const prNumber = '${{ github.event.pull_request.number }}';
             const newPrNumber = '${{ steps.create-pr.outputs.pr_number }}';
+            const hasConflicts = '${{ steps.cherry-pick.outputs.has_conflicts }}' === 'true';
+
+            let message = '';
+            if (hasConflicts) {
+              message = `⚠️ stagingブランチへのチェリーピックPRが作成されました: #${newPrNumber}\n\n**注意**: コンフリクトが発生しています。PRを確認して手動で解決してください。`;
+            } else {
+              message = `✅ stagingブランチへのチェリーピックPRが作成されました: #${newPrNumber}`;
+            }
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              body: `✅ stagingブランチへのチェリーピックPRが作成されました: #${newPrNumber}`
-            });
-
-      - name: Comment on failure
-        if: failure() && steps.cherry-pick.outputs.success == 'false'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = '${{ github.event.pull_request.number }}';
-            const conflictInfo = `${{ steps.cherry-pick.outputs.conflict_info }}`;
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: `⚠️ stagingブランチへの自動チェリーピックに失敗しました。
-
-            コンフリクトが発生している可能性があります。手動でのマージが必要です。
-
-            ### 手動でのマージ手順
-            \`\`\`bash
-            git fetch origin
-            git checkout -b cherry-pick-manual origin/staging
-            git cherry-pick -m 1 ${{ steps.get-merge-commit.outputs.merge_commit_sha }}
-            # コンフリクトを解決
-            git add .
-            git cherry-pick --continue
-            git push origin cherry-pick-manual
-            # その後、stagingへのPRを作成
-            \`\`\`
-
-            <details>
-            <summary>コンフリクト情報</summary>
-
-            \`\`\`
-            ${conflictInfo}
-            \`\`\`
-            </details>`
+              body: message
             });
