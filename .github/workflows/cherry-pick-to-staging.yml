@@ -9,7 +9,7 @@ on:
 jobs:
   cherry-pick:
     env:
-      GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
