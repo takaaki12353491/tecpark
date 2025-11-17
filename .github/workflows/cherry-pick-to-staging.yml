@@ -85,12 +85,21 @@ jobs:
               cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
               
-              # コンフリクトファイルをそのままコミット
+              # コンフリクトマーカー付きのファイルをステージング
               git add -A
-              git -c core.editor=true cherry-pick --continue || true
               
-              # コミットメッセージを設定してコミット
-              git commit -m "Cherry-pick with conflicts from ${MERGE_COMMIT}" --no-edit --allow-empty || true
+              # cherry-pickの状態を確認してコミット
+              if git rev-parse -q --verify CHERRY_PICK_HEAD > /dev/null; then
+                # cherry-pickが進行中の場合、continueで完了させる
+                GIT_EDITOR=true git cherry-pick --continue || true
+              else
+                # cherry-pickが中断されている場合、直接コミット
+                git commit -m "Cherry-pick with conflicts from ${MERGE_COMMIT}" \
+                  -m "This commit contains unresolved conflicts from the original PR." \
+                  -m "Please resolve the conflicts manually before merging." \
+                  -m "Original commit: ${MERGE_COMMIT}" \
+                  --no-verify --allow-empty || true
+              fi
             fi
           fi
 
