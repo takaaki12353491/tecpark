@@ -57,15 +57,20 @@ jobs:
 
           echo "Cherry-picking commit: ${MERGE_COMMIT}"
 
-          # チェリーピックを実行
-          if git cherry-pick -m 1 "${MERGE_COMMIT}" 2>&1 | tee /tmp/cherry-pick-output.txt; then
+          # チェリーピックを実行（パイプの終了コードを正しく取得）
+          set +e
+          git cherry-pick -m 1 "${MERGE_COMMIT}" 2>&1 | tee /tmp/cherry-pick-output.txt
+          CHERRY_PICK_EXIT_CODE=${PIPESTATUS[0]}
+          set -e
+
+          echo "Cherry-pick exit code: ${CHERRY_PICK_EXIT_CODE}"
+
+          if [ ${CHERRY_PICK_EXIT_CODE} -eq 0 ]; then
             echo "Cherry-pick successful"
             echo "success=true" >> $GITHUB_OUTPUT
             echo "is_empty=false" >> $GITHUB_OUTPUT
             echo "has_conflicts=false" >> $GITHUB_OUTPUT
           else
-            EXIT_CODE=$?
-            
             # 空のコミット（変更が既に含まれている）かどうかを確認
             if grep -q "The previous cherry-pick is now empty" /tmp/cherry-pick-output.txt; then
               echo "Cherry-pick resulted in empty commit (changes already in staging)"
