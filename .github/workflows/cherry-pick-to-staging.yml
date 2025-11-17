@@ -1,0 +1,168 @@
+name: Cherry-pick to Staging
+
+on:
+    pull_request:
+        types: [closed]
+        branches:
+            - main
+
+jobs:
+    cherry-pick:
+        # PRがマージされた場合のみ実行
+        if: github.event.pull_request.merged == true
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Configure Git
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            - name: Get merge commit SHA
+              id: get-merge-commit
+              run: |
+                  MERGE_COMMIT_SHA="${{ github.event.pull_request.merge_commit_sha }}"
+                  echo "merge_commit_sha=${MERGE_COMMIT_SHA}" >> $GITHUB_OUTPUT
+                  echo "Merge commit SHA: ${MERGE_COMMIT_SHA}"
+
+            - name: Create cherry-pick branch
+              id: create-branch
+              run: |
+                  # stagingブランチの最新を取得
+                  git fetch origin staging
+
+                  # ブランチ名を生成（元のPRのブランチ名を使用）
+                  SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
+                  TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+                  NEW_BRANCH="cherry-pick/${SOURCE_BRANCH}-to-staging-${TIMESTAMP}"
+
+                  echo "new_branch=${NEW_BRANCH}" >> $GITHUB_OUTPUT
+                  echo "source_branch=${SOURCE_BRANCH}" >> $GITHUB_OUTPUT
+
+                  # stagingから新しいブランチを作成
+                  git checkout -b "${NEW_BRANCH}" origin/staging
+                  echo "Created branch: ${NEW_BRANCH}"
+
+            - name: Cherry-pick commits
+              id: cherry-pick
+              run: |
+                  MERGE_COMMIT="${{ steps.get-merge-commit.outputs.merge_commit_sha }}"
+
+                  echo "Cherry-picking commit: ${MERGE_COMMIT}"
+
+                  # チェリーピックを実行
+                  if git cherry-pick -m 1 "${MERGE_COMMIT}"; then
+                    echo "Cherry-pick successful"
+                    echo "success=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "Cherry-pick failed with conflicts"
+                    echo "success=false" >> $GITHUB_OUTPUT
+                    
+                    # コンフリクトが発生した場合の情報を記録
+                    git status > /tmp/conflict-status.txt
+                    echo "conflict_info<<EOF" >> $GITHUB_OUTPUT
+                    cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
+                    echo "EOF" >> $GITHUB_OUTPUT
+                    
+                    # チェリーピックを中止
+                    git cherry-pick --abort
+                    exit 1
+                  fi
+
+            - name: Push branch
+              if: steps.cherry-pick.outputs.success == 'true'
+              run: |
+                  NEW_BRANCH="${{ steps.create-branch.outputs.new_branch }}"
+                  git push origin "${NEW_BRANCH}"
+                  echo "Pushed branch: ${NEW_BRANCH}"
+
+            - name: Create Pull Request
+              if: steps.cherry-pick.outputs.success == 'true'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const newBranch = '${{ steps.create-branch.outputs.new_branch }}';
+                      const sourceBranch = '${{ steps.create-branch.outputs.source_branch }}';
+                      const prNumber = '${{ github.event.pull_request.number }}';
+                      const prTitle = '${{ github.event.pull_request.title }}';
+                      const mergeCommitSha = '${{ steps.get-merge-commit.outputs.merge_commit_sha }}';
+
+                      const { data: pr } = await github.rest.pulls.create({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        title: `[Staging] ${prTitle}`,
+                        head: newBranch,
+                        base: 'staging',
+                        body: `## 🍒 Cherry-pick from main to staging
+
+                      このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
+
+                      ### 元のPR情報
+                      - **元のPR**: #${prNumber}
+                      - **元のブランチ**: \`${sourceBranch}\`
+                      - **マージコミット**: \`${mergeCommitSha}\`
+
+                      ### 確認事項
+                      - [ ] チェリーピックされた変更内容を確認
+                      - [ ] コンフリクトがないことを確認
+                      - [ ] テストが正常に動作することを確認
+
+                      ---
+                      _このPRは GitHub Actions により自動生成されました_`
+                      });
+
+                      console.log(`Pull Request created: ${pr.html_url}`);
+
+                      // 元のPRにコメントを追加
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: `✅ stagingブランチへのチェリーピックPRが作成されました: #${pr.number}`
+                      });
+
+            - name: Comment on failure
+              if: failure() && steps.cherry-pick.outputs.success == 'false'
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const prNumber = '${{ github.event.pull_request.number }}';
+                      const conflictInfo = `${{ steps.cherry-pick.outputs.conflict_info }}`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: `⚠️ stagingブランチへの自動チェリーピックに失敗しました。
+
+                      コンフリクトが発生している可能性があります。手動でのマージが必要です。
+
+                      ### 手動でのマージ手順
+                      \`\`\`bash
+                      git fetch origin
+                      git checkout -b cherry-pick-manual origin/staging
+                      git cherry-pick -m 1 ${{ steps.get-merge-commit.outputs.merge_commit_sha }}
+                      # コンフリクトを解決
+                      git add .
+                      git cherry-pick --continue
+                      git push origin cherry-pick-manual
+                      # その後、stagingへのPRを作成
+                      \`\`\`
+
+                      <details>
+                      <summary>コンフリクト情報</summary>
+
+                      \`\`\`
+                      ${conflictInfo}
+                      \`\`\`
+                      </details>`
+                      });
