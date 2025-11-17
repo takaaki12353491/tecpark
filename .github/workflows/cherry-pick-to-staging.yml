@@ -60,33 +60,59 @@ jobs:
           echo "Cherry-picking commit: ${MERGE_COMMIT}"
 
           # チェリーピックを実行
-          if git cherry-pick -m 1 "${MERGE_COMMIT}"; then
+          if git cherry-pick -m 1 "${MERGE_COMMIT}" 2>&1 | tee /tmp/cherry-pick-output.txt; then
             echo "Cherry-pick successful"
             echo "success=true" >> $GITHUB_OUTPUT
+            echo "is_empty=false" >> $GITHUB_OUTPUT
           else
-            echo "Cherry-pick failed with conflicts"
-            echo "success=false" >> $GITHUB_OUTPUT
+            EXIT_CODE=$?
             
-            # コンフリクトが発生した場合の情報を記録
-            git status > /tmp/conflict-status.txt
-            echo "conflict_info<<EOF" >> $GITHUB_OUTPUT
-            cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            
-            # チェリーピックを中止
-            git cherry-pick --abort
-            exit 1
+            # 空のコミット（変更が既に含まれている）かどうかを確認
+            if grep -q "The previous cherry-pick is now empty" /tmp/cherry-pick-output.txt; then
+              echo "Cherry-pick resulted in empty commit (changes already in staging)"
+              echo "success=true" >> $GITHUB_OUTPUT
+              echo "is_empty=true" >> $GITHUB_OUTPUT
+              git cherry-pick --skip
+            else
+              echo "Cherry-pick failed with conflicts"
+              echo "success=false" >> $GITHUB_OUTPUT
+              echo "is_empty=false" >> $GITHUB_OUTPUT
+              
+              # コンフリクトが発生した場合の情報を記録
+              git status > /tmp/conflict-status.txt
+              echo "conflict_info<<EOF" >> $GITHUB_OUTPUT
+              cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              
+              # チェリーピックを中止
+              git cherry-pick --abort
+              exit 1
+            fi
           fi
 
+      - name: Comment on empty commit
+        if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = '${{ github.event.pull_request.number }}';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `ℹ️ stagingブランチへのチェリーピックをスキップしました。\n\nこの変更は既にstagingブランチに含まれているため、チェリーピックの必要がありません。`
+            });
+
       - name: Push branch
-        if: steps.cherry-pick.outputs.success == 'true'
+        if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
         run: |
           NEW_BRANCH="${{ steps.create-branch.outputs.new_branch }}"
           git push origin "${NEW_BRANCH}"
           echo "Pushed branch: ${NEW_BRANCH}"
 
       - name: Create Pull Request
-        if: steps.cherry-pick.outputs.success == 'true'
+        if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
         uses: actions/github-script@v7
         with:
           script: |
@@ -95,7 +121,7 @@ jobs:
             const prNumber = '${{ github.event.pull_request.number }}';
             const prTitle = '${{ github.event.pull_request.title }}';
             const mergeCommitSha = '${{ steps.get-merge-commit.outputs.merge_commit_sha }}';
-            
+
             const { data: pr } = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -103,25 +129,25 @@ jobs:
               head: newBranch,
               base: 'staging',
               body: `## 🍒 Cherry-pick from main to staging
-            
+
             このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
-            
+
             ### 元のPR情報
             - **元のPR**: #${prNumber}
             - **元のブランチ**: \`${sourceBranch}\`
             - **マージコミット**: \`${mergeCommitSha}\`
-            
+
             ### 確認事項
             - [ ] チェリーピックされた変更内容を確認
             - [ ] コンフリクトがないことを確認
             - [ ] テストが正常に動作することを確認
-            
+
             ---
             _このPRは GitHub Actions により自動生成されました_`
             });
-            
+
             console.log(`Pull Request created: ${pr.html_url}`);
-            
+
             // 元のPRにコメントを追加
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -137,15 +163,15 @@ jobs:
           script: |
             const prNumber = '${{ github.event.pull_request.number }}';
             const conflictInfo = `${{ steps.cherry-pick.outputs.conflict_info }}`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
               body: `⚠️ stagingブランチへの自動チェリーピックに失敗しました。
-            
+
             コンフリクトが発生している可能性があります。手動でのマージが必要です。
-            
+
             ### 手動でのマージ手順
             \`\`\`bash
             git fetch origin
@@ -157,10 +183,10 @@ jobs:
             git push origin cherry-pick-manual
             # その後、stagingへのPRを作成
             \`\`\`
-            
+
             <details>
             <summary>コンフリクト情報</summary>
-            
+
             \`\`\`
             ${conflictInfo}
             \`\`\`
