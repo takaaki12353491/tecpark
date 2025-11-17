@@ -8,8 +8,8 @@ on:
 
 jobs:
   cherry-pick:
-    # PRがマージされた場合のみ実行
-    if: github.event.pull_request.merged == true
+    env:
+      GH_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -20,7 +20,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -113,48 +112,61 @@ jobs:
 
       - name: Create Pull Request
         if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
+        id: create-pr
+        run: |
+          SOURCE_BRANCH="${{ steps.create-branch.outputs.source_branch }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          MERGE_COMMIT_SHA="${{ steps.get-merge-commit.outputs.merge_commit_sha }}"
+
+          # PRの本文を作成
+          PR_BODY=$(cat <<EOF
+          ## 🍒 Cherry-pick from main to staging
+
+          このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
+
+          ### 元のPR情報
+          - **元のPR**: #${PR_NUMBER}
+          - **元のブランチ**: \`${SOURCE_BRANCH}\`
+          - **マージコミット**: \`${MERGE_COMMIT_SHA}\`
+
+          ### 確認事項
+          - [ ] チェリーピックされた変更内容を確認
+          - [ ] コンフリクトがないことを確認
+          - [ ] テストが正常に動作することを確認
+
+          ---
+          _このPRは GitHub Actions により自動生成されました_
+          EOF
+          )
+
+          # gh pr createでPRを作成
+          PR_URL=$(gh pr create \
+            --title "[Staging] ${PR_TITLE}" \
+            --body "${PR_BODY}" \
+            --base staging \
+            --head "${{ steps.create-branch.outputs.new_branch }}")
+
+          echo "pr_url=${PR_URL}" >> $GITHUB_OUTPUT
+          echo "Pull Request created: ${PR_URL}"
+
+          # PRの番号を抽出
+          PR_NUM=$(echo "${PR_URL}" | grep -oE '[0-9]+$')
+          echo "pr_number=${PR_NUM}" >> $GITHUB_OUTPUT
+
+      - name: Comment on original PR
+        if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
-            const newBranch = '${{ steps.create-branch.outputs.new_branch }}';
-            const sourceBranch = '${{ steps.create-branch.outputs.source_branch }}';
             const prNumber = '${{ github.event.pull_request.number }}';
-            const prTitle = '${{ github.event.pull_request.title }}';
-            const mergeCommitSha = '${{ steps.get-merge-commit.outputs.merge_commit_sha }}';
+            const newPrNumber = '${{ steps.create-pr.outputs.pr_number }}';
 
-            const { data: pr } = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `[Staging] ${prTitle}`,
-              head: newBranch,
-              base: 'staging',
-              body: `## 🍒 Cherry-pick from main to staging
-
-            このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
-
-            ### 元のPR情報
-            - **元のPR**: #${prNumber}
-            - **元のブランチ**: \`${sourceBranch}\`
-            - **マージコミット**: \`${mergeCommitSha}\`
-
-            ### 確認事項
-            - [ ] チェリーピックされた変更内容を確認
-            - [ ] コンフリクトがないことを確認
-            - [ ] テストが正常に動作することを確認
-
-            ---
-            _このPRは GitHub Actions により自動生成されました_`
-            });
-
-            console.log(`Pull Request created: ${pr.html_url}`);
-
-            // 元のPRにコメントを追加
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: prNumber,
-              body: `✅ stagingブランチへのチェリーピックPRが作成されました: #${pr.number}`
+              body: `✅ stagingブランチへのチェリーピックPRが作成されました: #${newPrNumber}`
             });
 
       - name: Comment on failure
