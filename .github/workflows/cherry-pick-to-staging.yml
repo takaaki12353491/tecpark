@@ -41,8 +41,7 @@ jobs:
 
           # ブランチ名を生成（元のPRのブランチ名を使用）
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          NEW_BRANCH="cherry-pick/${SOURCE_BRANCH}-to-staging-${TIMESTAMP}"
+          NEW_BRANCH="staging:${SOURCE_BRANCH}"
 
           echo "new_branch=${NEW_BRANCH}" >> $GITHUB_OUTPUT
           echo "source_branch=${SOURCE_BRANCH}" >> $GITHUB_OUTPUT
