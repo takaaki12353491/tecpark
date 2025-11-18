@@ -151,9 +151,9 @@ jobs:
           <details>
           <summary>コンフリクト情報</summary>
 
-          \`\`\`
+          ```
           ${{ steps.cherry-pick.outputs.conflict_info }}
-          \`\`\`
+          ```
           </details>
 
           CONFLICT_EOF
@@ -169,13 +169,9 @@ jobs:
 
           ### 元のPR情報
           - **元のPR**: #${PR_NUMBER}
-          - **元のブランチ**: \`${SOURCE_BRANCH}\`
-          - **マージコミット**: \`${MERGE_COMMIT_SHA}\`
 
           ### 確認事項
-          - [ ] チェリーピックされた変更内容を確認
           - [ ] コンフリクトがないことを確認
-          - [ ] テストが正常に動作することを確認
 
           ---
           _このPRは GitHub Actions により自動生成されました_
