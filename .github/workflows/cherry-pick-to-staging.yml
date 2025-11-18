@@ -162,7 +162,7 @@ jobs:
 
           # PRの本文を作成
           PR_BODY=$(cat <<EOF
-          ### 元のPR情報
+          ### 元のPR
           - #${PR_NUMBER}
 
           ${CONFLICT_WARNING}
