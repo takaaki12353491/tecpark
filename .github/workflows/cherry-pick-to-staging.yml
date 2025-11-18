@@ -41,7 +41,7 @@ jobs:
 
           # ブランチ名を生成（元のPRのブランチ名を使用）
           SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
-          NEW_BRANCH="staging_${SOURCE_BRANCH}"
+          NEW_BRANCH="staging#${SOURCE_BRANCH}"
 
           echo "new_branch=${NEW_BRANCH}" >> $GITHUB_OUTPUT
           echo "source_branch=${SOURCE_BRANCH}" >> $GITHUB_OUTPUT
@@ -151,9 +151,9 @@ jobs:
           <details>
           <summary>コンフリクト情報</summary>
 
-          \`\`\`
+          ```
           ${{ steps.cherry-pick.outputs.conflict_info }}
-          \`\`\`
+          ```
           </details>
 
           CONFLICT_EOF
@@ -169,13 +169,9 @@ jobs:
 
           ### 元のPR情報
           - **元のPR**: #${PR_NUMBER}
-          - **元のブランチ**: \`${SOURCE_BRANCH}\`
-          - **マージコミット**: \`${MERGE_COMMIT_SHA}\`
 
           ### 確認事項
-          - [ ] チェリーピックされた変更内容を確認
           - [ ] コンフリクトがないことを確認
-          - [ ] テストが正常に動作することを確認
 
           ---
           _このPRは GitHub Actions により自動生成されました_
