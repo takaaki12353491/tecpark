@@ -162,13 +162,10 @@ jobs:
 
           # PRの本文を作成
           PR_BODY=$(cat <<EOF
-          ## 🍒 Cherry-pick from main to staging
-
-          このPRは、mainブランチにマージされた変更を自動的にstagingブランチに反映するために作成されました。
-          ${CONFLICT_WARNING}
-
           ### 元のPR情報
-          - **元のPR**: #${PR_NUMBER}
+          - #${PR_NUMBER}
+
+          ${CONFLICT_WARNING}
 
           ### 確認事項
           - [ ] コンフリクトがないことを確認
