@@ -185,18 +185,12 @@ runs:
         EOF
         )
 
-<<<<<<< HEAD
-        # gh pr createでPRを作成
-        PR_URL=$(gh pr create \
-          --title "[${TARGET_BRANCH_LABEL}] ${PR_TITLE}" \
-=======
         # 元のタイトルから先頭の [] ラベルを削除
         ORIGINAL_TITLE=$(echo "${PR_TITLE}" | sed -E 's/^\[[^]]+\] //')
         
         # gh pr createでPRを作成
         PR_URL=$(gh pr create \
           --title "[${TARGET_BRANCH_LABEL}] ${ORIGINAL_TITLE}" \
->>>>>>> 9be1be4 (Merge pull request #84 from takaaki12353491/chore/auto-pr)
           --body "${PR_BODY}" \
           --base "${TARGET_BRANCH}" \
           --head "${{ steps.create-branch.outputs.new_branch }}")
