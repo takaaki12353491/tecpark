@@ -1,10 +1,10 @@
-name: Cherry-pick to Staging
+name: Cherry-pick to Production
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - main
+      - staging
 
 jobs:
   cherry-pick:
@@ -18,8 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cherry-pick to staging
+      - name: Cherry-pick to production
         uses: ./.github/actions/cherry-pick
         with:
-          target_branch: staging
+          target_branch: production
           github_token: ${{ secrets.GITHUB_TOKEN }}
