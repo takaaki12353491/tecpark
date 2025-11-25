@@ -3,8 +3,4 @@ go.work
 go.work.sum
 
 coverage.out
-<<<<<<< HEAD
 coverage.html
-=======
-coverage.html
->>>>>>> 99000ec (Merge pull request #77 from takaaki12353491/staging#test/auto-pr)
