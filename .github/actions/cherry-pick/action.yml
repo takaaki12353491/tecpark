@@ -37,7 +37,11 @@ runs:
 
         # ブランチ名を生成（元のPRのブランチ名を使用）
         SOURCE_BRANCH="${{ github.event.pull_request.head.ref }}"
-        NEW_BRANCH="${TARGET_BRANCH}#${SOURCE_BRANCH}"
+        
+        # ブランチ名から#以前の部分を削除（例: staging#feature/xxx -> feature/xxx）
+        ORIGINAL_BRANCH="${SOURCE_BRANCH##*#}"
+        
+        NEW_BRANCH="${TARGET_BRANCH}#${ORIGINAL_BRANCH}"
 
         echo "new_branch=${NEW_BRANCH}" >> $GITHUB_OUTPUT
         echo "source_branch=${SOURCE_BRANCH}" >> $GITHUB_OUTPUT
