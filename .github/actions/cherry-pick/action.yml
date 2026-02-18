@@ -41,7 +41,9 @@ runs:
         # ブランチ名から#以前の部分を削除（例: staging#feature/xxx -> feature/xxx）
         ORIGINAL_BRANCH="${SOURCE_BRANCH##*#}"
         
-        NEW_BRANCH="${TARGET_BRANCH}#${ORIGINAL_BRANCH}"
+        # ユニークなブランチ名を生成
+        TIMESTAMP=$(date +%Y%m%d%H%M%S)
+        NEW_BRANCH="${TARGET_BRANCH}#${ORIGINAL_BRANCH}_${TIMESTAMP}"
 
         echo "new_branch=${NEW_BRANCH}" >> $GITHUB_OUTPUT
         echo "source_branch=${SOURCE_BRANCH}" >> $GITHUB_OUTPUT
