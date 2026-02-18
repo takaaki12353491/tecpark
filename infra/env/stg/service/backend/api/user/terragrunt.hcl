@@ -7,7 +7,11 @@ terraform {
 }
 
 dependency "network" {
+<<<<<<< HEAD
   config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/network"
+=======
+  config_path = "${find_in_parent_folders("common")}/network"
+>>>>>>> 43b153f (Merge pull request #91 from takaaki12353491/fix/infra)
 }
 
 dependency "web" {
