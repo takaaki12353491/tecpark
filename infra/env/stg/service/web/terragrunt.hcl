@@ -7,15 +7,15 @@ terraform {
 }
 
 dependency "network" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/network"
+  config_path = "${find_in_parent_folders("common")}/network"
 }
 
 dependency "dns" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/dns"
+  config_path = "${find_in_parent_folders("common")}/dns"
 }
 
 dependency "certificate" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/certificate"
+  config_path = "${find_in_parent_folders("common")}/certificate"
 }
 
 inputs = {
