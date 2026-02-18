@@ -83,32 +83,25 @@ runs:
             echo "has_conflicts=false" >> $GITHUB_OUTPUT
             git cherry-pick --skip
           else
-            echo "Cherry-pick failed with conflicts"
-            echo "success=true" >> $GITHUB_OUTPUT
-            echo "is_empty=false" >> $GITHUB_OUTPUT
-            echo "has_conflicts=true" >> $GITHUB_OUTPUT
-            
-            # コンフリクトが発生した場合の情報を記録
-            git status > /tmp/conflict-status.txt
-            echo "conflict_info<<EOF" >> $GITHUB_OUTPUT
-            cat /tmp/conflict-status.txt >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            
-            # コンフリクトマーカー付きのファイルをステージング
+            echo "Cherry-pick failed with conflicts - attempting auto-resolve"
+            echo "has_empty_commit=false" >> $GITHUB_OUTPUT
+
+            # mainを取得
+            git fetch origin main
+
+            # コンフリクトしているファイル一覧を取得し、mainの内容で上書き
+            CONFLICT_FILES=$(git diff --name-only --diff-filter=U || true)
+            echo "${CONFLICT_FILES}" | while read -r FILE; do
+              [ -z "${FILE}" ] && continue
+              git checkout origin/main -- "${FILE}"
+            done
+
             git add -A
-            
-            # cherry-pickの状態を確認してコミット
-            if git rev-parse -q --verify CHERRY_PICK_HEAD > /dev/null; then
-              # cherry-pickが進行中の場合、continueで完了させる
-              GIT_EDITOR=true git cherry-pick --continue || true
-            else
-              # cherry-pickが中断されている場合、直接コミット
-              git commit -m "Cherry-pick with conflicts from ${MERGE_COMMIT}" \
-                -m "This commit contains unresolved conflicts from the original PR." \
-                -m "Please resolve the conflicts manually before merging." \
-                -m "Original commit: ${MERGE_COMMIT}" \
-                --no-verify --allow-empty || true
-            fi
+            GIT_EDITOR=true git cherry-pick --continue
+
+            echo "Auto-resolved conflicts"
+            echo "success=true" >> $GITHUB_OUTPUT
+            echo "has_conflicts=false" >> $GITHUB_OUTPUT
           fi
         fi
 
