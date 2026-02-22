@@ -44,7 +44,7 @@ func Run() {
 		},
 	}))
 
-	db := db.New()
+	db := db.NewMySQL()
 	resolver := di.InitializeResolver(db)
 	srv := handler.New(graphql.NewExecutableSchema(graphql.Config{Resolvers: resolver}))
 

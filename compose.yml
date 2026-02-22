@@ -1,76 +1,64 @@
 services:
-  mysql:
-    image: mysql:8
+  postgres:
+    image: postgres:17
     platform: linux/amd64
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       TZ: ${TZ}
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./backend/db/rdb/my.cnf:/etc/mysql/my.cnf
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - 23306:3306
-    healthcheck:
-      test: mysqladmin ping -proot
+      - "${POSTGRES_PORT}:5432"
     networks:
-      - service
-
-  test_mysql:
-    image: mysql:8
-    platform: linux/amd64
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      TZ: ${TZ}
-    volumes:
-      - ./backend/db/rdb/my.cnf:/etc/mysql/my.cnf
-    ports:
-      - 33306:3306
+      - tecpark
     healthcheck:
-      test: mysqladmin ping -proot
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  migrate:
+    build:
+      context: backend/db/rdb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      TZ: ${TZ}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tecpark
 
   user:
     build:
       context: backend/api/user
       dockerfile: Dockerfile.local
     environment:
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: tecpark
-      MYSQL_USER: tecpark
-      MYSQL_PASSWORD: tecpark
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ./backend/api/user:/app
     ports:
       - 8080:80
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     networks:
-      - service
-
-  migrate:
-    build:
-      context: backend/db/rdb
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_DATABASE: tecpark
-      MYSQL_USER: tecpark
-      MYSQL_PASSWORD: tecpark
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - service
+      - tecpark
 
 volumes:
-  mysql_data:
+  postgres_data:
 
 networks:
-  service:
+  tecpark:
