@@ -61,9 +61,9 @@ runs:
 
         echo "Cherry-picking commit: ${MERGE_COMMIT}"
 
-        # チェリーピックを実行（パイプの終了コードを正しく取得）
+        # チェリーピックを実行（cherry-pick 元の内容を優先しつつ、パイプの終了コードを正しく取得）
         set +e
-        git cherry-pick -m 1 "${MERGE_COMMIT}" 2>&1 | tee /tmp/cherry-pick-output.txt
+        git cherry-pick -m 1 -X theirs "${MERGE_COMMIT}" 2>&1 | tee /tmp/cherry-pick-output.txt
         CHERRY_PICK_EXIT_CODE=${PIPESTATUS[0]}
         set -e
 
@@ -83,25 +83,32 @@ runs:
             echo "has_conflicts=false" >> $GITHUB_OUTPUT
             git cherry-pick --skip
           else
-            echo "Cherry-pick failed with conflicts - attempting auto-resolve"
-            echo "has_empty_commit=false" >> $GITHUB_OUTPUT
+            echo "Cherry-pick failed with conflicts - auto-resolving by taking cherry-pick source (theirs) side"
 
-            # mainを取得
-            git fetch origin main
-
-            # コンフリクトしているファイル一覧を取得し、mainの内容で上書き
+            # コンフリクトしているファイル一覧を取得
             CONFLICT_FILES=$(git diff --name-only --diff-filter=U || true)
-            echo "${CONFLICT_FILES}" | while read -r FILE; do
-              [ -z "${FILE}" ] && continue
-              git checkout origin/main -- "${FILE}"
-            done
+            echo "Conflicted files:"
+            echo "${CONFLICT_FILES}"
 
-            git add -A
+            if [ -n "${CONFLICT_FILES}" ]; then
+              # 各コンフリクトファイルを cherry-pick 元（theirs 側）の内容で上書き
+              for FILE in ${CONFLICT_FILES}; do
+                [ -z "${FILE}" ] && continue
+                git checkout --theirs -- "${FILE}"
+                git add "${FILE}"
+              done
+            fi
+
+            # 解消したファイル一覧を出力用に整形
+            RESOLVED_FILES=$(echo "${CONFLICT_FILES}" | tr '\n' ',' | sed 's/,$//')
+
+            # 解消した変更を確定
             GIT_EDITOR=true git cherry-pick --continue
 
-            echo "Auto-resolved conflicts"
             echo "success=true" >> $GITHUB_OUTPUT
-            echo "has_conflicts=false" >> $GITHUB_OUTPUT
+            echo "is_empty=false" >> $GITHUB_OUTPUT
+            echo "has_conflicts=true" >> $GITHUB_OUTPUT
+            echo "resolved_files=${RESOLVED_FILES}" >> $GITHUB_OUTPUT
           fi
         fi
 
@@ -132,70 +139,54 @@ runs:
     - name: Create Pull Request
       if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
       id: create-pr
-      shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.github_token }}
-      run: |
-        SOURCE_BRANCH="${{ steps.create-branch.outputs.source_branch }}"
-        PR_NUMBER="${{ github.event.pull_request.number }}"
-        PR_TITLE="${{ github.event.pull_request.title }}"
-        MERGE_COMMIT_SHA="${{ steps.get-merge-commit.outputs.merge_commit_sha }}"
-        HAS_CONFLICTS="${{ steps.cherry-pick.outputs.has_conflicts }}"
-        TARGET_BRANCH="${{ inputs.target_branch }}"
-        TARGET_BRANCH_LABEL="$(echo ${TARGET_BRANCH} | sed 's/^\(.\)/\U\1/')"
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.github_token }}
+        script: |
+          const prNumber = ${{ github.event.pull_request.number }};
+          const prTitle = ${{ toJson(github.event.pull_request.title) }};
+          const hasConflicts = '${{ steps.cherry-pick.outputs.has_conflicts }}' === 'true';
+          const resolvedFiles = '${{ steps.cherry-pick.outputs.resolved_files }}';
+          const targetBranch = '${{ inputs.target_branch }}';
+          const newBranch = '${{ steps.create-branch.outputs.new_branch }}';
 
-        # コンフリクト警告の作成
-        CONFLICT_WARNING=""
-        if [ "${HAS_CONFLICTS}" = "true" ]; then
-          CONFLICT_WARNING=$(cat <<'CONFLICT_EOF'
+          const label = targetBranch.charAt(0).toUpperCase() + targetBranch.slice(1);
+          // 元のタイトルから先頭の[]ラベルを削除
+          const originalTitle = prTitle.replace(/^\[[^\]]+\]\s*/, '');
 
-        ## ⚠️ コンフリクトが発生しました
+          // コンフリクトを自動解消した旨の注記(解消したファイル一覧付き)
+          let conflictWarning = '';
+          if (hasConflicts) {
+            conflictWarning = `⚠️ コンフリクトを自動解消しました。\n\n解消したファイル一覧: ${resolvedFiles || '(取得できませんでした)'}`;
+          }
 
-        このPRにはコンフリクトが含まれています。以下のファイルを確認して、手動で解決してください。
+          // 新しいPRのタイトル
+          const newPRTitle = `[${label}] ${originalTitle}`;
 
-        <details>
-        <summary>コンフリクト情報</summary>
+          // 新しいPRの本文
+          const bodyLines = [
+            '### 元のPR',
+            `- #${prNumber}`,
+            '',
+            conflictWarning,
+            '',
+            '---',
+            '_このPRは GitHub Actions により自動生成されました_',
+          ];
+          const newPRBody = bodyLines.join('\n');
 
-        ```
-        ${{ steps.cherry-pick.outputs.conflict_info }}
-        ```
-        </details>
+          // PRを作成
+          const { data: newPR } = await github.rest.pulls.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: newPRTitle,
+            head: newBranch,
+            base: targetBranch,
+            body: newPRBody,
+          });
 
-        CONFLICT_EOF
-        )
-        fi
-
-        # PRの本文を作成
-        PR_BODY=$(cat <<EOF
-        ### 元のPR
-        - #${PR_NUMBER}
-
-        ${CONFLICT_WARNING}
-
-        ### 確認事項
-        - [ ] コンフリクトがないことを確認
-
-        ---
-        _このPRは GitHub Actions により自動生成されました_
-        EOF
-        )
-
-        # 元のタイトルから先頭の [] ラベルを削除
-        ORIGINAL_TITLE=$(echo "${PR_TITLE}" | sed -E 's/^\[[^]]+\] //')
-        
-        # gh pr createでPRを作成
-        PR_URL=$(gh pr create \
-          --title "[${TARGET_BRANCH_LABEL}] ${ORIGINAL_TITLE}" \
-          --body "${PR_BODY}" \
-          --base "${TARGET_BRANCH}" \
-          --head "${{ steps.create-branch.outputs.new_branch }}")
-
-        echo "pr_url=${PR_URL}" >> $GITHUB_OUTPUT
-        echo "Pull Request created: ${PR_URL}"
-
-        # PRの番号を抽出
-        PR_NUM=$(echo "${PR_URL}" | grep -oE '[0-9]+$')
-        echo "pr_number=${PR_NUM}" >> $GITHUB_OUTPUT
+          core.setOutput('pr_number', String(newPR.number));
+          core.setOutput('pr_url', newPR.html_url);
 
     - name: Comment on original PR
       if: steps.cherry-pick.outputs.success == 'true' && steps.cherry-pick.outputs.is_empty == 'false'
@@ -204,15 +195,15 @@ runs:
         github-token: ${{ inputs.github_token }}
         script: |
           const prNumber = '${{ github.event.pull_request.number }}';
-          const newPrNumber = '${{ steps.create-pr.outputs.pr_number }}';
+          const newPRNumber = '${{ steps.create-pr.outputs.pr_number }}';
           const hasConflicts = '${{ steps.cherry-pick.outputs.has_conflicts }}' === 'true';
           const targetBranch = '${{ inputs.target_branch }}';
 
           let message = '';
           if (hasConflicts) {
-            message = `⚠️ ${targetBranch}ブランチへのチェリーピックPRが作成されました: #${newPrNumber}\n\n**注意**: コンフリクトが発生しています。PRを確認して手動で解決してください。`;
+            message = `⚠️ ${targetBranch}ブランチへのチェリーピックPRが作成されました: #${newPRNumber}\n\n**注意**: コンフリクトを自動解消しました。PRを確認してください。`;
           } else {
-            message = `✅ ${targetBranch}ブランチへのチェリーピックPRが作成されました: #${newPrNumber}`;
+            message = `✅ ${targetBranch}ブランチへのチェリーピックPRが作成されました: #${newPRNumber}`;
           }
 
           await github.rest.issues.createComment({
