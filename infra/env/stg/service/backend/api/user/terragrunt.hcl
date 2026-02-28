@@ -7,7 +7,7 @@ terraform {
 }
 
 dependency "network" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/network"
+  config_path = "${find_in_parent_folders("common")}/network"
 }
 
 dependency "web" {
