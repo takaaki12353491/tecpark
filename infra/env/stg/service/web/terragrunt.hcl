@@ -7,17 +7,6 @@ terraform {
 }
 
 dependency "network" {
-<<<<<<< HEAD
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/network"
-}
-
-dependency "dns" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/dns"
-}
-
-dependency "certificate" {
-  config_path = "${find_in_parent_folders("github.com/takaaki12353491/tecpark/backend/common")}/certificate"
-=======
   config_path = "${find_in_parent_folders("common")}/network"
 }
 
@@ -27,7 +16,6 @@ dependency "dns" {
 
 dependency "certificate" {
   config_path = "${find_in_parent_folders("common")}/certificate"
->>>>>>> 43b153f (Merge pull request #91 from takaaki12353491/fix/infra)
 }
 
 inputs = {
